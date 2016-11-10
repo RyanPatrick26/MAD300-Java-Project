@@ -1,6 +1,7 @@
 package server;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -33,6 +34,11 @@ public class DatabaseConfig {
 			this.DatabaseHost = prop.getProperty("DatabaseHost");
 			this.DatabaseUser = prop.getProperty("DatabaseUser");
 			this.DatabaseName = prop.getProperty("DatabaseName");
+		
+		} catch (FileNotFoundException e) {
+			System.out.println("We can't find a configuration file at \"conf/database.properties\"");
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
