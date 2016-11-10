@@ -1,0 +1,4 @@
+DatabasePassword=secretpassword
+DatabaseHost=hostname
+DatabaseUser=username
+DatabaseName=databasename
