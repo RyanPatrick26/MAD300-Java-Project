@@ -55,4 +55,8 @@ public class Game {
 		this.lastPlayed = lastPlayed;
 	}
 	
+	public String toString(){
+		return getName();
+	}
+	
 }
