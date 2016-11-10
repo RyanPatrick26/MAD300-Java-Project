@@ -9,7 +9,25 @@ public class Game {
 	private int rating;
 	private String description;
 	private Calendar lastPlayed;
+	private String publisher;
+	private String releaseYear;
 	
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+
+	public String getReleaseYear() {
+		return releaseYear;
+	}
+
+	public void setReleaseYear(String releaseYear) {
+		this.releaseYear = releaseYear;
+	}
+
 	public Game(String name, ArrayList<String> category){
 		this.name = name;
 		this.category = category;
