@@ -57,7 +57,7 @@ public class Main {
 		return false;
 	}
 	
-	public static void createTable(String tableName) {
+	public static void createTable(String tableName, String SQLBody) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
@@ -69,12 +69,7 @@ public class Main {
 			
 			try {
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
-					"CREATE TABLE " + tableName + "(" +
-							"ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-							"GameName VARCHAR(32)," +
-							"Rating VARCHAR(16)," +
-							"Description TEXT" +
-							");"
+					"CREATE TABLE " + tableName + "(" + SQLBody + ");"
 					);
 				preparedStatement.execute();
 			} catch (SQLException e) {
@@ -104,7 +99,12 @@ public class Main {
 		} else {
 			System.out.println("Table Doesn't Exist!");
 			System.out.println("Creating Table...");
-			createTable("GameManagement");
+			String SQLBody =
+				"ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+				"GameName VARCHAR(32)," +
+				"Rating VARCHAR(16)," +
+				"Description TEXT";
+			createTable("GameManagement", SQLBody);
 			if (tableExists("GameManagement")) {
 				System.out.println("Table Exists Now!");
 			} else {
