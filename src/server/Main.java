@@ -100,14 +100,15 @@ public class Main {
 	protected static void initDB() {
 		
 		if (tableExists("GameManagement")) {
-			System.out.println("Table Exists!");
+			System.out.println("Table Already Exists!");
 		} else {
 			System.out.println("Table Doesn't Exist!");
 			System.out.println("Creating Table...");
 			createTable("GameManagement");
 			if (tableExists("GameManagement")) {
-				System.out.println("Table Exists!");
+				System.out.println("Table Exists Now!");
 			} else {
+				// Should never happen, but you never know.
 				System.out.println("Table Still Doesn't Exist!");
 				System.out.println("[SHUTTING DOWN]");
 				System.exit(0);
