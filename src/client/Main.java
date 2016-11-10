@@ -1,4 +1,5 @@
 package client;
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -44,7 +45,6 @@ public class Main extends Application {
 		VBox bottomBox = new VBox();
 		bottomBox.getChildren().addAll(previousGamesButton, copyrightText);
 		
-		
 		// Create the BorderPane for the main scene
 		BorderPane mainPane = new BorderPane();
 		mainPane.setTop(formTitleText);
@@ -57,6 +57,13 @@ public class Main extends Application {
 		// must store the game name, the genre(s), date last played, publisher, year the game was released
 		BorderPane previousGamesPane = new BorderPane();
 		
+		// Create the back button
+		File backImage = new File("images/back-arrow-icon.png");
+		if(backImage.isFile()) {
+			
+		} else {
+			Button backButton = new Button("");
+		}
 		
 		
 		/* SCENES & STAGE */
