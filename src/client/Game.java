@@ -1,20 +1,18 @@
 package client;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Game {
 	private String name;
-	private String category;
+	private ArrayList<String> category;
 	private int rating;
 	private String description;
 	private Calendar lastPlayed;
 	
-	public Game(String name, String category, int rating, String description, Calendar lastPlayed){
+	public Game(String name, ArrayList<String> category){
 		this.name = name;
 		this.category = category;
-		this.rating = rating;
-		this.description = description;
-		this.lastPlayed = lastPlayed;
 	}
 
 	public String getName() {
@@ -25,11 +23,11 @@ public class Game {
 		this.name = name;
 	}
 
-	public String getCategory() {
+	public ArrayList<String> getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(ArrayList<String> category) {
 		this.category = category;
 	}
 
