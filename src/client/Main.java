@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -57,7 +58,9 @@ public class Main extends Application {
 		// Create the back button
 		File backImage = new File("images/back-arrow-icon.png");
 		if(backImage.isFile()) {
-			customBackButton = new BackButton("Back", new Image("images/back-arrow-icon.png"));
+			customBackButton = new BackButton("Back", new Image("file:./images/back-arrow-icon.png"));
+			BorderPane.setAlignment(customBackButton, Pos.CENTER_LEFT);
+			customBackButton.getStyleClass().add("backbutton");
 			// Assign the event handler for the Back Button
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
@@ -66,10 +69,14 @@ public class Main extends Application {
 		
 		// Create the BorderPane for the previous games scene
 		BorderPane previousGamesPane = new BorderPane();
+		previousGamesPane.setPadding(new Insets(10,10,10,10));
 		previousGamesPane.setTop(customBackButton);
+		
 		
 		// Create the main and previousGames scenes
 		Scene previousGamesScene = new Scene(previousGamesPane, 800, 600);
+		previousGamesScene.getStylesheets().clear();
+		previousGamesScene.getStylesheets().add("file:./stylesheets/previousgames.css");
 		
 		
 		// Create event handler for the Previous Games Button

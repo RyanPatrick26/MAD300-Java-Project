@@ -14,12 +14,30 @@ public class BackButton extends BorderPane {
 	public BackButton(String backButtonString, Image backButtonImage) {
 		this.backButtonString = backButtonString;
 		this.backButtonImage = backButtonImage;
-	
 		Text backButtonText = new Text(backButtonString);
+		
+		this.setMaxWidth(100);
 		
 		// Check to see if an image has been passed
 		if(this.backButtonImage != null){
-			this.setCenter(new ImageView(this.backButtonImage));
+			ImageView backButtonImageView = new ImageView(this.backButtonImage);
+			backButtonImageView.setPreserveRatio(false);
+			backButtonImageView.setFitHeight(100);
+			backButtonImageView.setFitWidth(100);
+			// TODO Fix issue with mouse hover/border creation
+			/**
+			 * Event handler to add a border around the button when the user
+			 * hovers their mouse over the button.
+			 * 
+			 * @author Nicholas Allaire
+			 * @param None
+			 */
+//			backButtonImageView.setOnMouseEntered(e -> {
+//				this.setStyle("-fx-border-size: 20px;"
+//						+ "-fx-border-color: red;"
+//						+ "-fx-alignment: top-left;");
+//			});
+			this.setCenter(backButtonImageView);
 		}
 		else {
 			this.setCenter(backButtonText);
