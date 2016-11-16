@@ -1,6 +1,7 @@
 package client;
 import java.io.File;
 import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -43,6 +44,8 @@ public class Main extends Application {
 		// Create an VBox to store the bottom of the BorderPane 
 		VBox bottomBox = new VBox();
 		bottomBox.getChildren().addAll(previousGamesButton, copyrightText);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.setSpacing(10);
 		
 		// Create the BorderPane for the main scene
 		BorderPane mainPane = new BorderPane();
@@ -50,9 +53,14 @@ public class Main extends Application {
 		mainPane.setTop(formTitleText);
 		mainPane.setCenter(addGameText);
 		mainPane.setBottom(bottomBox);
+		BorderPane.setAlignment(formTitleText, Pos.CENTER);
 		
 		// Create the scene for the main screen
 		Scene mainScene = new Scene(mainPane, 800, 600);
+		
+		
+		
+		
 		
 		/* PREVIOUS GAMES SCREEN */
 		
