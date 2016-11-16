@@ -1,5 +1,8 @@
 package server;
 
+import java.io.IOException;
+import java.net.BindException;
+import java.net.ServerSocket;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +16,24 @@ public class Main {
 	
 	public static void main(String[] args) {	
 		initDB();
+		
+		ServerSocket serverSocket;
+		int serverListenPort = 16383;
+		try {
+			serverSocket = new ServerSocket(serverListenPort);
+			
+			// Here is where all the client/server interaction will happen
+			
+		} catch (BindException e) {
+			System.out.println("Permission denied to create socket on port " + serverListenPort);
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	static Connection connection;
@@ -77,7 +98,7 @@ public class Main {
 				System.out.println("SQL State: " + e.getSQLState());
 				System.out.println("SQL Error Code: " + e.getErrorCode());
 				System.out.println("[SHUTTING DOWN]");
-				System.exit(0);
+				System.exit(1);
 			}
 			
 			connection.close();
@@ -93,17 +114,17 @@ public class Main {
 	}
 	
 	protected static void initDB() {
-		String password = "Banana";
-		String candidate = "Banana";
-		String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
-		
-		//System.out.println(hashed);
-		
-		if (BCrypt.checkpw(candidate, hashed)) {
-		    System.out.println("It matches");
-		} else {
-		    System.out.println("It does not match");
-		}
+//		String password = "Banana";
+//		String candidate = "Banana";
+//		String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+//		
+//		//System.out.println(hashed);
+//		
+//		if (BCrypt.checkpw(candidate, hashed)) {
+//		    System.out.println("It matches");
+//		} else {
+//		    System.out.println("It does not match");
+//		}
 		
 		if (tableExists("GameManagement")) {
 			System.out.println("Table Already Exists!");
@@ -122,7 +143,7 @@ public class Main {
 				// Should never happen, but you never know.
 				System.out.println("Table Still Doesn't Exist!");
 				System.out.println("[SHUTTING DOWN]");
-				System.exit(0);
+				System.exit(1);
 			}
 		}
 	}
