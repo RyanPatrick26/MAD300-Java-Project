@@ -9,6 +9,8 @@ public class Game {
 	private int rating;
 	private String description;
 	private Calendar lastPlayed;
+	private String publisher;
+	private String releaseYear;
 	
 	public Game(String name, ArrayList<String> category){
 		this.name = name;
