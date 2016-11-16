@@ -15,7 +15,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	ArrayList<String> categories;
-	static BackButton customBackButton;
+	private static BackButton customBackButton;
+	private static Button backButton;
 	
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -56,28 +57,34 @@ public class Main extends Application {
 		/* PREVIOUS GAMES SCREEN */
 		
 		// Create the back button
-		File backImage = new File("images/back-arrow-icon.png");
+		File backImage = new File("");
+		// Check if the image file is a file. If not, create a regular button
 		if(backImage.isFile()) {
 			customBackButton = new BackButton("Back", new Image("file:./images/back-arrow-icon.png"));
 			BorderPane.setAlignment(customBackButton, Pos.CENTER_LEFT);
-			customBackButton.getStyleClass().add("backbutton");
 			// Assign the event handler for the Back Button
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
-			Button backButton = new Button("Back");
+			backButton = new Button("Back");
+			backButton.setOnAction(e->{
+				primaryStage.setScene(mainScene);
+				primaryStage.show();
+			});
 		}
 		
 		// Create the BorderPane for the previous games scene
 		BorderPane previousGamesPane = new BorderPane();
 		previousGamesPane.setPadding(new Insets(10,10,10,10));
-		previousGamesPane.setTop(customBackButton);
 		
+		// Check if the image for the back button is a file. If not, set the regular button
+		if(backImage.isFile()) {
+			previousGamesPane.setTop(customBackButton);
+		} else {
+			previousGamesPane.setTop(backButton);
+		}
 		
 		// Create the main and previousGames scenes
 		Scene previousGamesScene = new Scene(previousGamesPane, 800, 600);
-		previousGamesScene.getStylesheets().clear();
-		previousGamesScene.getStylesheets().add("file:./stylesheets/previousgames.css");
-		
 		
 		// Create event handler for the Previous Games Button
 		previousGamesButton.setOnAction(e -> {

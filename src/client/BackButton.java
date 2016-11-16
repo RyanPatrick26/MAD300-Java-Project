@@ -24,19 +24,26 @@ public class BackButton extends BorderPane {
 			backButtonImageView.setPreserveRatio(false);
 			backButtonImageView.setFitHeight(100);
 			backButtonImageView.setFitWidth(100);
+			backButtonImageView.setStyle("-fx-opacity: 0.3;");
 			// TODO Fix issue with mouse hover/border creation
 			/**
-			 * Event handler to add a border around the button when the user
-			 * hovers their mouse over the button.
+			 * Event handler to bring the opacity of the back button to 1.0.
 			 * 
 			 * @author Nicholas Allaire
 			 * @param None
 			 */
-//			backButtonImageView.setOnMouseEntered(e -> {
-//				this.setStyle("-fx-border-size: 20px;"
-//						+ "-fx-border-color: red;"
-//						+ "-fx-alignment: top-left;");
-//			});
+			backButtonImageView.setOnMouseEntered(e->{
+				backButtonImageView.setStyle("-fx-opacity: 1;");
+			});
+			/**
+			 * Event handler to bring the opacity of the back button to 0.3.
+			 * 
+			 * @author Nicholas Allaire
+			 * @param None
+			 */
+			backButtonImageView.setOnMouseExited(e->{
+				backButtonImageView.setStyle("-fx-opacity: 0.3;");
+			});
 			this.setCenter(backButtonImageView);
 		}
 		else {
