@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 public class GameForm extends GridPane {
 	Label titleLabel;
 	TextField gameTitle;
-	ObservableList<String> items;
+	ObservableList<String> genres;
 	ListView<String> genreList;
 	
 	
@@ -23,8 +23,8 @@ public class GameForm extends GridPane {
 		this.titleLabel = new Label("Game Title:");
 		
 		this.gameTitle = new TextField();
-		this.items = FXCollections.observableArrayList("Board Game","Card Game","Video Game");
-		this.genreList = new ListView<>(items);
+		this.genres = FXCollections.observableArrayList("Board Game","Card Game","Video Game");
+		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		this.genreList.setMaxHeight(75);
 		this.genreList.setOnMouseClicked(e->{
