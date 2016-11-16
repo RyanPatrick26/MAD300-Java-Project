@@ -1,11 +1,16 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.BindException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -17,23 +22,57 @@ public class Main {
 	public static void main(String[] args) {	
 		initDB();
 		
-		ServerSocket serverSocket;
-		int serverListenPort = 16383;
+		ServerSocket serverSocket = null;
+		int serverListenPort = 2000;
+		boolean serverRunning = true;
+		
+		
 		try {
 			serverSocket = new ServerSocket(serverListenPort);
 			
 			// Here is where all the client/server interaction will happen
+			Socket socket;
+			while (serverRunning) {
+				socket = serverSocket.accept();
+				try {
+					String currentTime = new Date().toString();
+					
+					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					try {
+						String inputString = in.readLine();
+						
+						System.out.println("[SERVER] Received \"" + inputString + "\" from the client.");
+						//System.out.println(inputString);
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					System.out.println("[SERVER] Sent \"" + currentTime + "\" to the client.");
+                	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                	out.println(currentTime);
+				} finally {
+					socket.close();
+				}
+			}
+			
 			
 		} catch (BindException e) {
 			System.out.println("Permission denied to create socket on port " + serverListenPort);
+			System.out.println("Is a proccess already listening on that port?\nIs the port number too low/high?");
 			System.out.println("[SHUTTING DOWN]");
 			System.exit(1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		
 	}
 	
 	static Connection connection;
