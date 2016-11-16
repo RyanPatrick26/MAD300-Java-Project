@@ -12,22 +12,6 @@ public class Game {
 	private String publisher;
 	private String releaseYear;
 	
-	public String getPublisher() {
-		return publisher;
-	}
-
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-
-	public String getReleaseYear() {
-		return releaseYear;
-	}
-
-	public void setReleaseYear(String releaseYear) {
-		this.releaseYear = releaseYear;
-	}
-
 	public Game(String name, ArrayList<String> category){
 		this.name = name;
 		this.category = category;
@@ -71,6 +55,10 @@ public class Game {
 
 	public void setLastPlayed(Calendar lastPlayed) {
 		this.lastPlayed = lastPlayed;
+	}
+	
+	public String toString(){
+		return getName();
 	}
 	
 }
