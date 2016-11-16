@@ -18,7 +18,7 @@ public class Main extends Application {
 
 	ArrayList<String> categoryList;
 	ArrayList<Game> gameList;
-	
+	ListView<Game> gameListView;	
 	
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -45,7 +45,7 @@ public class Main extends Application {
 		CheckBox cardGame = new CheckBox("Card Games");
 		
 		ArrayList<Game> selectedGameList = new ArrayList<Game>();
-		ListView gameListView = new ListView(FXCollections.observableArrayList(selectedGameList));
+		gameListView = new ListView<Game>();
 		
 		boardGame.selectedProperty().addListener(new ChangeListener<Boolean>(){
 			public void changed(ObservableValue a, Boolean oldValue, Boolean newValue){
