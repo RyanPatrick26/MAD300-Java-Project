@@ -93,6 +93,17 @@ public class Main {
 	}
 	
 	protected static void initDB() {
+		String password = "Banana";
+		String candidate = "Banana";
+		String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+		
+		//System.out.println(hashed);
+		
+		if (BCrypt.checkpw(candidate, hashed)) {
+		    System.out.println("It matches");
+		} else {
+		    System.out.println("It does not match");
+		}
 		
 		if (tableExists("GameManagement")) {
 			System.out.println("Table Already Exists!");
