@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,6 +35,13 @@ public class Main extends Application {
 		
 		// Create the form to add a new game to the game manager
 		Text addGameText = new Text("Add New Game");
+		GameForm gameForm = new GameForm();
+		
+		// Create HBox to store form title and form
+		HBox formBox = new HBox();
+		formBox.getChildren().addAll(addGameText, gameForm);
+		formBox.setPadding(new Insets(10,10,10,10));
+		formBox.setSpacing(10);
 
 		// Create the button to go the Previous games list
 		Button previousGamesButton = new Button("Previously Played Games");
@@ -51,7 +59,7 @@ public class Main extends Application {
 		BorderPane mainPane = new BorderPane();
 		mainPane.setPadding(new Insets(10,10,10,10));
 		mainPane.setTop(formTitleText);
-		mainPane.setCenter(addGameText);
+		mainPane.setCenter(formBox);
 		mainPane.setBottom(bottomBox);
 		BorderPane.setAlignment(formTitleText, Pos.CENTER);
 		
@@ -65,7 +73,7 @@ public class Main extends Application {
 		/* PREVIOUS GAMES SCREEN */
 		
 		// Create the back button
-		File backImage = new File("");
+		File backImage = new File("images/back-arrow-icon.png");
 		// Check if the image file is a file. If not, create a regular button
 		if(backImage.isFile()) {
 			customBackButton = new BackButton("Back", new Image("file:./images/back-arrow-icon.png"));
