@@ -25,7 +25,7 @@ public class Main {
 		ServerSocket serverSocket = null;
 		int serverListenPort = 2000;
 		boolean serverRunning = true;
-		
+		int interactionNumber = 0;
 		
 		try {
 			serverSocket = new ServerSocket(serverListenPort);
@@ -33,7 +33,14 @@ public class Main {
 			// Here is where all the client/server interaction will happen
 			Socket socket;
 			while (serverRunning) {
+				System.out.println("[SERVER] Started Instance");
 				socket = serverSocket.accept();
+				interactionNumber++;
+				System.out.println(
+						"\t> Client Number ----- " + interactionNumber + "\n" + 
+						"\t> Using Port -------- " + serverSocket.getLocalPort() + "\n" +
+						"\t> Client Address ---- " + socket.getInetAddress()
+						);
 				try {
 					String currentTime = new Date().toString();
 					
@@ -50,6 +57,7 @@ public class Main {
 					
 					System.out.println("[SERVER] Sent \"" + currentTime + "\" to the client.");
                 	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                	
                 	out.println(currentTime);
 				} finally {
 					socket.close();
@@ -59,7 +67,7 @@ public class Main {
 			
 		} catch (BindException e) {
 			System.out.println("Permission denied to create socket on port " + serverListenPort);
-			System.out.println("Is a proccess already listening on that port?\nIs the port number too low/high?");
+			System.out.println("\t> Is a proccess already listening on that port?\n\t> Is the port number too low/high?");
 			System.out.println("[SHUTTING DOWN]");
 			System.exit(1);
 		} catch (IOException e) {
