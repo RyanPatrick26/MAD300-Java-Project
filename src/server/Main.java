@@ -114,6 +114,22 @@ public class Main {
 				System.exit(1);
 			}
 		}
+		
+		String schema[] = {
+				"ID",
+				"GameName",
+				"Rating",
+				"Description"
+		};
+		String[][] results = dbUtilities.fetchRow("GameManagement", 9, schema);
+		
+		for (int i = 0; i < results[0].length; i++) {
+			System.out.print(results[0][i] + " | ");
+		}
+		System.out.println("");
+		for (int i = 0; i < results[1].length; i++) {
+			System.out.print(results[1][i] + " | ");
+		}
 
 //		String password = "Banana";
 //		String candidate = "Banana";
@@ -129,7 +145,7 @@ public class Main {
 
 		String insert[][] = {
 				{"GameName", "Rating", "Description"},
-				{"Candy Land", "5/6", "Age old game"}
+				{"Factorio", "95/100", "Factory Building Game"}
 				};
 		
 		System.out.println("Inserted: " + dbUtilities.insertInto("GameManagement", insert));

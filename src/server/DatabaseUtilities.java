@@ -3,6 +3,7 @@ package server;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -35,7 +36,6 @@ public class DatabaseUtilities {
 			return false;
 		} else if (tableExists(tableName)) {
 			return false;
-			
 		}
 		
 		// Build the query statement from the schema array
@@ -179,11 +179,11 @@ public class DatabaseUtilities {
 		// Check if the length of both "columns" are identical
 		} else if (schema[0].length != schema[1].length) {
 			return false;
+			
 		} else if (!tableExists(tableName)) {
 			return false;
-			
 		}
-		
+
 		// Build the query statement from the schema array
 		String query = "";
 		query += "INSERT INTO " + tableName + " (";
@@ -222,6 +222,50 @@ public class DatabaseUtilities {
 		}
 
 		return false;
+	}
+	
+	public String[][] fetchRow(String tableName, int id, String[] schema) {
+		
+		String query = "";
+		query += "SELECT ";
+		for (int i = 0; i < schema.length; i++) {
+			query += schema[i];
+			
+			if (i < schema.length - 1) {
+				query += ", ";
+			}
+		}
+		query += " FROM " + tableName + " WHERE ID = " + id + ";";
+		
+		try {
+			Connection connection = establishConnection();
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.executeQuery();
+			ResultSet result = preparedStatement.getResultSet();
+			if (result.next()) {
+				String results[][] = new String[2][schema.length];
+				for (int i = 0; i < schema.length; i++) {
+					results[0][i] = schema[i];
+					results[1][i] = result.getString(schema[i]);
+				}
+				
+				connection.close();
+				return results;
+				
+			} else {
+				connection.close();
+				return null;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
+		}
+		
+		return null;
 	}
 	
 	public Connection establishConnection() {
