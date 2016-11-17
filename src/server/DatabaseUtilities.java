@@ -61,6 +61,7 @@ public class DatabaseUtilities {
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
+			connection.close();
 			
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -100,6 +101,8 @@ public class DatabaseUtilities {
 				
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 				preparedStatement.execute();
+				connection.close();
+				
 				return true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -139,6 +142,8 @@ public class DatabaseUtilities {
 				
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 				preparedStatement.execute();
+				connection.close();
+				
 				return true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -174,6 +179,7 @@ public class DatabaseUtilities {
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement("SHOW TABLES LIKE '" + tableName + "'");
 			preparedStatement.execute();
 			ResultSet result = preparedStatement.getResultSet();
+			connection.close();
 			
 			return result.next() ? true : false;
 		} catch (ClassNotFoundException e) {
@@ -237,6 +243,7 @@ public class DatabaseUtilities {
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
+			connection.close();
 			
 			return true;
 		} catch (ClassNotFoundException e) {
