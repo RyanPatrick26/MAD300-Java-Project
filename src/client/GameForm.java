@@ -7,20 +7,37 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 public class GameForm extends GridPane {
+	
+	Text titleText;
+	
 	Label titleLabel;
 	TextField gameTitle;
+	
+	
 	ObservableList<String> genres;
 	ListView<String> genreList;
 	
 	
-	public GameForm() {
-		this.setPadding(new Insets(10));
+	public GameForm(String titleString) {
+		// Create default styling for the GameForm
+		this.setPadding(new Insets(15,10,15,10));
 		this.setVgap(15);
 		this.setHgap(15);
 		
+		// Set the title for the form and add it to the grid
+		titleText = new Text(titleString);
+		this.add(titleText,1,0);
+		
+		// Set the game title label and add it to the grid
 		this.titleLabel = new Label("Game Title:");
+		this.add(titleLabel,0,2);
+		
+		// Set the text field for the game title and add it to the grid
+		this.gameTitle = new TextField();
+		this.add(gameTitle,2,2);
 		
 		this.gameTitle = new TextField();
 		this.genres = FXCollections.observableArrayList("Board Game","Card Game","Video Game");
@@ -35,8 +52,7 @@ public class GameForm extends GridPane {
 		});
 		
 		
-		this.add(titleLabel, 0, 0);
-		this.add(genreList, 2, 2);
+		
 	}
 
 }
