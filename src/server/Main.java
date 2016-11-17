@@ -38,7 +38,7 @@ public class Main {
 			// Here is where all the client/server interaction will happen
 			Socket socket;
 			while (serverRunning) {
-				System.out.println("[SERVER] Started Instance");
+				System.out.println("[ SERVER ] Started Instance");
 				socket = serverSocket.accept();
 				interactionNumber++;
 				System.out.println(
@@ -100,16 +100,21 @@ public class Main {
 	}
 	
 	protected static void initDB() {
-		DatabaseUtilities dbUtilities = new DatabaseUtilities();
 		
-		System.out.println("Dropped Table: " + dbUtilities.dropTable(dbconf, "GameManagement"));
-		
-		String schema[][] = {
-				{"GameName", "Rating", "Description"},
-				{"VARCHAR(40)", "VARCHAR(40)", "TEXT"}
-				};
-		
-		System.out.println("Created Table: " + dbUtilities.createTable(dbconf, "GameManagement", schema));
+		System.out.println("[DATABASE] Checking if table exists");
+		if (!dbUtilities.tableExists(dbconf, "GameManagement")) {
+			System.out.println("[DATABASE] Table not found... Creating table");
+			String schema[][] = {
+					{"GameName", "Rating", "Description"},
+					{"VARCHAR(40)", "VARCHAR(40)", "TEXT"}
+					};
+			dbUtilities.createTable(dbconf, "GameManagement", schema);
+			if (!dbUtilities.tableExists(dbconf, "GameManagement")) {
+				// Should never be reached.
+				System.out.println("[DATABASE] Can't create table. Shutting Down.");
+				System.exit(1);
+			}
+		}
 
 //		String password = "Banana";
 //		String candidate = "Banana";
