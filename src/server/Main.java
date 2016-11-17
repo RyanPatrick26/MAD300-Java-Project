@@ -21,7 +21,6 @@ import com.mysql.jdbc.PreparedStatement;
 
 public class Main {
 
-	static DatabaseConfig dbconf = new DatabaseConfig();
 	static DatabaseUtilities dbUtilities = new DatabaseUtilities();
 	
 	public static void main(String[] args) {	
@@ -59,7 +58,7 @@ public class Main {
 								{game.getGameName(), game.getGameRating(), game.getGameDescription()}
 								};
 						
-						dbUtilities.insertInto(dbconf, "GameManagement", insert);
+						dbUtilities.insertInto("GameManagement", insert);
 						
 						//System.out.println("[SERVER] Received \"" + input + "\" from the client.");
 						//System.out.println(inputString);
@@ -102,14 +101,14 @@ public class Main {
 	protected static void initDB() {
 		
 		System.out.println("[DATABASE] Checking if table exists");
-		if (!dbUtilities.tableExists(dbconf, "GameManagement")) {
+		if (!dbUtilities.tableExists("GameManagement")) {
 			System.out.println("[DATABASE] Table not found... Creating table");
 			String schema[][] = {
 					{"GameName", "Rating", "Description"},
 					{"VARCHAR(40)", "VARCHAR(40)", "TEXT"}
 					};
-			dbUtilities.createTable(dbconf, "GameManagement", schema);
-			if (!dbUtilities.tableExists(dbconf, "GameManagement")) {
+			dbUtilities.createTable("GameManagement", schema);
+			if (!dbUtilities.tableExists("GameManagement")) {
 				// Should never be reached.
 				System.out.println("[DATABASE] Can't create table. Shutting Down.");
 				System.exit(1);
@@ -133,6 +132,6 @@ public class Main {
 				{"Candy Land", "5/6", "Age old game"}
 				};
 		
-		System.out.println("Inserted: " + dbUtilities.insertInto(dbconf, "GameManagement", insert));
+		System.out.println("Inserted: " + dbUtilities.insertInto("GameManagement", insert));
 	}
 }

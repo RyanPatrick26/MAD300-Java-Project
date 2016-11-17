@@ -16,6 +16,8 @@ import com.mysql.jdbc.PreparedStatement;
  */
 public class DatabaseUtilities {
 	
+	static DatabaseConfig dbconf = new DatabaseConfig();
+	
 	/**
 	 * Creates a table in the configured database
 	 * 
@@ -23,7 +25,7 @@ public class DatabaseUtilities {
 	 * @return	<code>false</code> if the table cannot be created;
 	 * 			<code>true</code> if the table was created successfully
 	 */
-	public boolean createTable(DatabaseConfig dbconf, String tableName, String[][] schema) {
+	public boolean createTable(String tableName, String[][] schema) {
 		// Check if there are 2 array "columns".
 		if (schema.length != 2) {
 			return false;
@@ -31,7 +33,7 @@ public class DatabaseUtilities {
 		// Check if the length of both "columns" are identical
 		} else if (schema[0].length != schema[1].length) {
 			return false;
-		} else if (tableExists(dbconf, tableName)) {
+		} else if (tableExists(tableName)) {
 			return false;
 			
 		}
@@ -51,7 +53,7 @@ public class DatabaseUtilities {
 		query += ");";
 		
 		try {
-			Connection connection = establishConnection(dbconf);
+			Connection connection = establishConnection();
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
@@ -78,10 +80,10 @@ public class DatabaseUtilities {
 	 * @return	<code>false</code> if the table was not dropped;
 	 * 			<code>true</code> if the table was dropped.
 	 */
-	public boolean dropTable(DatabaseConfig dbconf, String tableName) {
-		if (tableExists(dbconf, tableName)) {
+	public boolean dropTable(String tableName) {
+		if (tableExists(tableName)) {
 			try {
-				Connection connection = establishConnection(dbconf);
+				Connection connection = establishConnection();
 				
 				String query = "DROP TABLE " + tableName + ";";
 				
@@ -111,10 +113,10 @@ public class DatabaseUtilities {
 	 * @return	<code>false</code> if the table was not emptied;
 	 * 			<code>true</code> if the table was emptied.
 	 */
-	public boolean emptyTable(DatabaseConfig dbconf, String tableName) {
-		if (tableExists(dbconf, tableName)) {
+	public boolean emptyTable(String tableName) {
+		if (tableExists(tableName)) {
 			try {
-				Connection connection = establishConnection(dbconf);
+				Connection connection = establishConnection();
 				
 				String query = "DELETE FROM " + tableName + ";";
 				
@@ -142,9 +144,9 @@ public class DatabaseUtilities {
 	 * @return	<code>true</code> If the table exists in the database;
 	 * 			<code>false</code> If the table doesn't exist in the database
 	 */
-	public boolean tableExists(DatabaseConfig dbconf, String tableName) {
+	public boolean tableExists(String tableName) {
 		try {
-			Connection connection = establishConnection(dbconf);
+			Connection connection = establishConnection();
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement("SHOW TABLES LIKE '" + tableName + "'");
 			preparedStatement.execute();
@@ -169,7 +171,7 @@ public class DatabaseUtilities {
 	 * @return	<code>true</code> If the table exists in the database;
 	 * 			<code>false</code> If the table doesn't exist in the database
 	 */
-	public boolean insertInto(DatabaseConfig dbconf, String tableName, String[][] schema) {
+	public boolean insertInto(String tableName, String[][] schema) {
 		// Check if there are 2 array "columns".
 		if (schema.length != 2) {
 			return false;
@@ -177,7 +179,7 @@ public class DatabaseUtilities {
 		// Check if the length of both "columns" are identical
 		} else if (schema[0].length != schema[1].length) {
 			return false;
-		} else if (!tableExists(dbconf, tableName)) {
+		} else if (!tableExists(tableName)) {
 			return false;
 			
 		}
@@ -204,7 +206,7 @@ public class DatabaseUtilities {
 		query += ");";
 		
 		try {
-			Connection connection = establishConnection(dbconf);
+			Connection connection = establishConnection();
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
@@ -222,7 +224,7 @@ public class DatabaseUtilities {
 		return false;
 	}
 	
-	public Connection establishConnection(DatabaseConfig dbconf) {
+	public Connection establishConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
