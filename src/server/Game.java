@@ -17,6 +17,9 @@ public class Game implements Serializable {
 		this.gameRating = gameRating;
 		this.gameDescription = gameDescription;
 	}
+	public Game() {
+		super();
+	}
 	public void setId(String id) {
 		this.id = id;
 	}
