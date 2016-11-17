@@ -51,21 +51,13 @@ public class DatabaseUtilities {
 		query += ");";
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
-				dbconf.getDatabaseHost() + "/" +
-				dbconf.getDatabaseName() + "?useSSL=false",
-				dbconf.getDatabaseUser(),
-				dbconf.getDatabasePass()
-			);
+			Connection connection = establishConnection(dbconf);
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
 			connection.close();
 			
 			return true;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
@@ -89,13 +81,7 @@ public class DatabaseUtilities {
 	public boolean dropTable(DatabaseConfig dbconf, String tableName) {
 		if (tableExists(dbconf, tableName)) {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
-					dbconf.getDatabaseHost() + "/" +
-					dbconf.getDatabaseName() + "?useSSL=false",
-					dbconf.getDatabaseUser(),
-					dbconf.getDatabasePass()
-				);
+				Connection connection = establishConnection(dbconf);
 				
 				String query = "DROP TABLE " + tableName + ";";
 				
@@ -104,8 +90,6 @@ public class DatabaseUtilities {
 				connection.close();
 				
 				return true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (SQLException e) {
 				System.out.println("SQL Exception: " + e.getMessage());
 				System.out.println("SQL State: " + e.getSQLState());
@@ -130,13 +114,7 @@ public class DatabaseUtilities {
 	public boolean emptyTable(DatabaseConfig dbconf, String tableName) {
 		if (tableExists(dbconf, tableName)) {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
-					dbconf.getDatabaseHost() + "/" +
-					dbconf.getDatabaseName() + "?useSSL=false",
-					dbconf.getDatabaseUser(),
-					dbconf.getDatabasePass()
-				);
+				Connection connection = establishConnection(dbconf);
 				
 				String query = "DELETE FROM " + tableName + ";";
 				
@@ -145,8 +123,6 @@ public class DatabaseUtilities {
 				connection.close();
 				
 				return true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (SQLException e) {
 				System.out.println("SQL Exception: " + e.getMessage());
 				System.out.println("SQL State: " + e.getSQLState());
@@ -168,22 +144,17 @@ public class DatabaseUtilities {
 	 */
 	public boolean tableExists(DatabaseConfig dbconf, String tableName) {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
-				dbconf.getDatabaseHost() + "/" +
-				dbconf.getDatabaseName() + "?useSSL=false",
-				dbconf.getDatabaseUser(),
-				dbconf.getDatabasePass()
-			);
+			Connection connection = establishConnection(dbconf);
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement("SHOW TABLES LIKE '" + tableName + "'");
 			preparedStatement.execute();
 			ResultSet result = preparedStatement.getResultSet();
+			boolean tableExists = false;
+			tableExists = result.next();
 			connection.close();
+			return tableExists ? true : false;
 			
-			return result.next() ? true : false;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -233,21 +204,13 @@ public class DatabaseUtilities {
 		query += ");";
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
-				dbconf.getDatabaseHost() + "/" +
-				dbconf.getDatabaseName() + "?useSSL=false",
-				dbconf.getDatabaseUser(),
-				dbconf.getDatabasePass()
-			);
+			Connection connection = establishConnection(dbconf);
 			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.execute();
 			connection.close();
 			
 			return true;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
@@ -257,5 +220,29 @@ public class DatabaseUtilities {
 		}
 
 		return false;
+	}
+	
+	public Connection establishConnection(DatabaseConfig dbconf) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
+					dbconf.getDatabaseHost() + "/" +
+					dbconf.getDatabaseName() + "?useSSL=false",
+					dbconf.getDatabaseUser(),
+					dbconf.getDatabasePass()
+				);
+			
+			return connection;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
+		}
+		
+		return null;
 	}
 }
