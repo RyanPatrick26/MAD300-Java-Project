@@ -2,7 +2,9 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -10,6 +12,7 @@ import java.net.Socket;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.mysql.jdbc.Connection;
@@ -42,23 +45,49 @@ public class Main {
 						"\t> Client Address ---- " + socket.getInetAddress()
 						);
 				try {
-					String currentTime = new Date().toString();
+					//String currentTime = new Date().toString();
 					
-					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					//BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					try {
-						String inputString = in.readLine();
+						//String input = in;
 						
-						System.out.println("[SERVER] Received \"" + inputString + "\" from the client.");
+						InputStream inputStream = socket.getInputStream();
+						ObjectInputStream input = new ObjectInputStream(inputStream);
+						Game game;
+						game = (Game) input.readObject();
+						
+//						System.out.println(game.getId());
+//						System.out.println(game.getGameName());
+//						System.out.println(game.getGameDescription());
+//						System.out.println(game.getGameRating());
+						
+						ArrayList<String> columns = new ArrayList<String>();
+						columns.add("ID");
+						columns.add("GameName");
+						columns.add("Rating");
+						columns.add("Description");
+						
+						ArrayList<String> values = new ArrayList<String>();
+						values.add(game.getId());
+						values.add(game.getGameName());
+						values.add(game.getGameRating());
+						values.add(game.getGameDescription());
+						insertRecord("GameManagement", columns, values);
+						
+						//System.out.println("[SERVER] Received \"" + input + "\" from the client.");
 						//System.out.println(inputString);
 						
 					} catch (IOException e) {
 						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 					
-					System.out.println("[SERVER] Sent \"" + currentTime + "\" to the client.");
-                	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+					//System.out.println("[SERVER] Sent \"" + currentTime + "\" to the client.");
+                	//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 	
-                	out.println(currentTime);
+                	//out.println(currentTime);
 				} finally {
 					socket.close();
 				}
@@ -123,6 +152,52 @@ public class Main {
 			System.out.println("Looks like SQL had an oopsie!");
 		}
 		return false;
+	}
+	
+	public static void insertRecord(String tableName, ArrayList<String> columnNames, ArrayList<String> contents) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			try {
+				connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
+						dbconf.getDatabaseHost() + "/" +
+						dbconf.getDatabaseName() + "?useSSL=false",
+						dbconf.getDatabaseUser(),
+						dbconf.getDatabasePass()
+					);
+				
+				String columns = "";
+				
+				for (int i = 0; i < columnNames.size(); i++) {
+					columns += columnNames.get(i);
+					if (i != columnNames.size() - 1) {
+						columns += ", ";
+					}
+				}
+				
+				String values = "";
+				
+				for (int i = 0; i < contents.size(); i++) {
+					values += "\"" + contents.get(i) + "\"";
+					if (i != contents.size() - 1) {
+						values += ", ";
+					}
+				}
+				
+				String query = "INSERT INTO " + tableName + "(" + columns + ") VALUES (" + values + ");";
+				
+				//System.out.println(query);
+				
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.execute();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void createTable(String tableName, String SQLBody) {
@@ -193,5 +268,17 @@ public class Main {
 				System.exit(1);
 			}
 		}
+//		ArrayList<String> columns = new ArrayList<String>();
+//		columns.add("ID");
+//		columns.add("GameName");
+//		columns.add("Rating");
+//		columns.add("Description");
+//		
+//		ArrayList<String> values = new ArrayList<String>();
+//		values.add("0");
+//		values.add("Steak & Berries");
+//		values.add("101/100");
+//		values.add("Get eaten by bears!");
+//		insertRecord("GameManagement", columns, values);
 	}
 }
