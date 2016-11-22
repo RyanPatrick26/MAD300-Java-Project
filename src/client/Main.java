@@ -34,11 +34,10 @@ public class Main extends Application {
 		categoryList.add("Card Game");
 		
 		gameList.add(new Game("Risk", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
-		gameList.add(new Game("Magic the Gathering", new ArrayList<String>(Arrays.asList(categoryList.get(1), categoryList.get(2)))));
-		gameList.add(new Game("Mansions of Madness", new ArrayList<String>(Arrays.asList(categoryList.get(0), categoryList.get(2)))));
-		gameList.add(new Game("Exceed", new ArrayList<String>(Arrays.asList(categoryList.get(0), categoryList.get(1)))));
-		gameList.add(new Game("Total War: Warhammer", new ArrayList<String>(Arrays.asList(categoryList.get(2)))));
-		gameList.add(new Game("Splendor", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
+		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
+		gameList.add(new Game("Magic the Gathering", new ArrayList<String>(Arrays.asList(categoryList.get(2)))));
+		
+		
 		
 		CheckBox boardGame = new CheckBox("Board Games");
 		CheckBox videoGame = new CheckBox("Video Games");
@@ -52,14 +51,79 @@ public class Main extends Application {
 				for(int i = 0; i < gameList.size(); i++){
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Board Game")){
-							System.out.println(gameList.get(i));
 							selectedGameList.add(gameList.get(i));
+							for (int f = 0; f < selectedGameList.size(); f++) {
+								System.out.println(selectedGameList.get(f));
+							}
 						}
 					}
 					else{
 						if(gameList.get(i).getCategory().contains("Board Game")){
-							System.out.println(gameList.get(i));
 							selectedGameList.remove(gameList.get(i));
+							if (selectedGameList.isEmpty()) {
+								//do nothing
+							}
+							else {
+								for (int f = 0; f < selectedGameList.size(); f++) {
+									System.out.println(selectedGameList.get(f));
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		videoGame.selectedProperty().addListener(new ChangeListener<Boolean>(){
+			public void changed(ObservableValue a, Boolean oldValue, Boolean newValue){
+				for(int i = 0; i < gameList.size(); i++){
+					if(newValue){
+						if(gameList.get(i).getCategory().contains("Video Game")){
+							selectedGameList.add(gameList.get(i));
+							for (int f = 0; f < selectedGameList.size(); f++) {
+								System.out.println(selectedGameList.get(f));
+							}
+						}
+					}
+					else{
+						if(gameList.get(i).getCategory().contains("Video Game")){
+							selectedGameList.remove(gameList.get(i));
+							if (selectedGameList.isEmpty()) {
+								//do nothing
+							}
+							else {
+								for (int f = 0; f < selectedGameList.size(); f++) {
+									System.out.println(selectedGameList.get(f));
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		cardGame.selectedProperty().addListener(new ChangeListener<Boolean>(){
+			public void changed(ObservableValue a, Boolean oldValue, Boolean newValue){
+				for(int i = 0; i < gameList.size(); i++){
+					if(newValue){
+						if(gameList.get(i).getCategory().contains("Card Game")){
+							selectedGameList.add(gameList.get(i));
+							for (int f = 0; f < selectedGameList.size(); f++) {
+								System.out.println(selectedGameList.get(f));
+							}
+						}
+					}
+					else{
+						if(gameList.get(i).getCategory().contains("Card Game")){
+							selectedGameList.remove(gameList.get(i));
+							if (selectedGameList.isEmpty()) {
+								//do nothing
+							}
+							else {
+								for (int f = 0; f < selectedGameList.size(); f++) {
+									System.out.println(selectedGameList.get(f));
+								}
+							}
 						}
 					}
 				}
