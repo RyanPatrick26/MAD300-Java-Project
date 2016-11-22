@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
@@ -29,6 +30,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		categoryList = new ArrayList<String>();
 		gameList = new ArrayList<Game>();
+		
 		categoryList.add("Board Game");
 		categoryList.add("Video Game");
 		categoryList.add("Card Game");
@@ -52,22 +54,17 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Board Game")){
 							selectedGameList.add(gameList.get(i));
-							for (int f = 0; f < selectedGameList.size(); f++) {
-								System.out.println(selectedGameList.get(f));
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 					else{
 						if(gameList.get(i).getCategory().contains("Board Game")){
 							selectedGameList.remove(gameList.get(i));
-							if (selectedGameList.isEmpty()) {
-								//do nothing
-							}
-							else {
-								for (int f = 0; f < selectedGameList.size(); f++) {
-									System.out.println(selectedGameList.get(f));
-								}
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 				}
@@ -80,22 +77,17 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Video Game")){
 							selectedGameList.add(gameList.get(i));
-							for (int f = 0; f < selectedGameList.size(); f++) {
-								System.out.println(selectedGameList.get(f));
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 					else{
 						if(gameList.get(i).getCategory().contains("Video Game")){
 							selectedGameList.remove(gameList.get(i));
-							if (selectedGameList.isEmpty()) {
-								//do nothing
-							}
-							else {
-								for (int f = 0; f < selectedGameList.size(); f++) {
-									System.out.println(selectedGameList.get(f));
-								}
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 				}
@@ -108,22 +100,16 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Card Game")){
 							selectedGameList.add(gameList.get(i));
-							for (int f = 0; f < selectedGameList.size(); f++) {
-								System.out.println(selectedGameList.get(f));
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 					else{
 						if(gameList.get(i).getCategory().contains("Card Game")){
 							selectedGameList.remove(gameList.get(i));
-							if (selectedGameList.isEmpty()) {
-								//do nothing
-							}
-							else {
-								for (int f = 0; f < selectedGameList.size(); f++) {
-									System.out.println(selectedGameList.get(f));
-								}
-							}
+							gameListView.getItems().clear();
+							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 						}
 					}
 				}
