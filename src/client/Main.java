@@ -1,6 +1,8 @@
 package client;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -25,9 +27,18 @@ public class Main extends Application {
 		Application.launch(args);
 
 	}
+	
+	public class CustomComparator implements Comparator<Game> {
+	    @Override
+	    public int compare(Game o1, Game o2) {
+	        return o1.getName().compareTo(o2.getName());
+	    }
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		
 		categoryList = new ArrayList<String>();
 		gameList = new ArrayList<Game>();
 		
@@ -54,6 +65,7 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Board Game")){
 							selectedGameList.add(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 							gameListView.setItems(items);
@@ -62,6 +74,7 @@ public class Main extends Application {
 					else{
 						if(gameList.get(i).getCategory().contains("Board Game")){
 							selectedGameList.remove(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 							gameListView.setItems(items);
@@ -77,6 +90,7 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Video Game")){
 							selectedGameList.add(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 							gameListView.setItems(items);
@@ -85,6 +99,7 @@ public class Main extends Application {
 					else{
 						if(gameList.get(i).getCategory().contains("Video Game")){
 							selectedGameList.remove(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 							gameListView.setItems(items);
@@ -100,6 +115,7 @@ public class Main extends Application {
 					if(newValue){
 						if(gameList.get(i).getCategory().contains("Card Game")){
 							selectedGameList.add(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
 							gameListView.setItems(items);
@@ -108,8 +124,10 @@ public class Main extends Application {
 					else{
 						if(gameList.get(i).getCategory().contains("Card Game")){
 							selectedGameList.remove(gameList.get(i));
+							Collections.sort(selectedGameList, new CustomComparator());
 							gameListView.getItems().clear();
 							ObservableList<Game> items =FXCollections.observableArrayList (selectedGameList);
+							gameListView.setItems(items);
 						}
 					}
 				}
