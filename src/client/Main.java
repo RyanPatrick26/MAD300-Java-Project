@@ -52,8 +52,8 @@ public class Main extends Application {
 		// Create the text to prompt the user to add a new game
 		Text addGameText = new Text("Add New Game");
 		
-		// Add the form title and addGameText to an HBox
-		HBox topBox = new HBox();
+		// Add the form title and addGameText to a VBox
+		VBox topBox = new VBox();
 		topBox.getChildren().addAll(formTitleText, addGameText);
 		topBox.setAlignment(Pos.CENTER);
 		topBox.setPadding(new Insets(10,10,10,10));
@@ -85,7 +85,7 @@ public class Main extends Application {
 		// Create the BorderPane for the main scene
 		BorderPane mainPane = new BorderPane();
 		mainPane.setPadding(new Insets(10, 10, 10, 10));
-		mainPane.setTop(formTitleText);
+		mainPane.setTop(topBox);
 		mainPane.setCenter(formBox);
 		mainPane.setBottom(bottomBox);
 		BorderPane.setAlignment(formTitleText, Pos.CENTER);
