@@ -11,8 +11,6 @@ import javafx.scene.text.Text;
 
 public class GameForm extends GridPane {
 	
-	Text titleText;
-	
 	Label titleLabel;
 	TextField gameTitle;
 	
@@ -21,15 +19,11 @@ public class GameForm extends GridPane {
 	ListView<String> genreList;
 	
 	
-	public GameForm(String titleString) {
+	public GameForm() {
 		// Create default styling for the GameForm
 		this.setPadding(new Insets(15,10,15,10));
 		this.setVgap(15);
 		this.setHgap(15);
-		
-		// Set the title for the form and add it to the grid
-		titleText = new Text(titleString);
-		this.add(titleText,1,0);
 		
 		// Set the game title label and add it to the grid
 		this.titleLabel = new Label("Game Title:");

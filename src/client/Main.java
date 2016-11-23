@@ -50,7 +50,7 @@ public class Main extends Application {
 		Text formTitleText = new Text("Bearham Game Manager");
 
 		// Create the form to add a new game to the game manager
-		GameForm gameForm = new GameForm("Add New Game");
+		GameForm gameForm = new GameForm();
 		Text addGameText = new Text("Add New Game");
 
 		// Create HBox to store form title and form
@@ -66,23 +66,9 @@ public class Main extends Application {
 		// Create the copyright information Text
 		Text copyrightText = new Text("Copyright Team Bearham - 2016");
 
-		// Create a button to get to DuckDuckGo
-		Button duckButton = new Button("Head to DuckDuckGo");
-		duckButton.setStyle("-fx-opacity: 0.05;");
-		duckButton.setOnAction(e -> {
-			if (Desktop.isDesktopSupported()) {
-				try {
-					Desktop.getDesktop().browse(new URI("https://duckduckgo.com/"));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
-		bottomBox.getChildren().addAll(previousGamesButton, copyrightText,duckButton);
+		bottomBox.getChildren().addAll(previousGamesButton, copyrightText);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.setSpacing(10);
 
@@ -131,6 +117,11 @@ public class Main extends Application {
 		Scene previousGamesScene = new Scene(previousGamesPane, 800, 600);
 
 		// Create event handler for the Previous Games Button
+		/**
+		 * Switches to the previously played games screen
+		 * @author Nicholas Allaire
+		 * @param None
+		 */
 		previousGamesButton.setOnAction(e -> {
 			primaryStage.setScene(previousGamesScene);
 			primaryStage.show();
@@ -174,8 +165,6 @@ public class Main extends Application {
 				}
 			}
 		});
-		
-		
 		
 		VBox categoryBox = new VBox();
 		categoryBox.getChildren().addAll(boardGame, videoGame, cardGame);
