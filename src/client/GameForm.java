@@ -38,6 +38,7 @@ public class GameForm extends GridPane {
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		this.genreList.setMaxHeight(75);
+		
 		this.genreList.setOnMouseClicked(e->{
 			ObservableList<String> selectedGenres = genreList.getSelectionModel().getSelectedItems();
 			for(String genreString : selectedGenres) {

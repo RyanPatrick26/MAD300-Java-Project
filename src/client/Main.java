@@ -48,14 +48,23 @@ public class Main extends Application {
 
 		// Create the title for the primary stage
 		Text formTitleText = new Text("Bearham Game Manager");
+		
+		// Create the text to prompt the user to add a new game
+		Text addGameText = new Text("Add New Game");
+		
+		// Add the form title and addGameText to an HBox
+		HBox topBox = new HBox();
+		topBox.getChildren().addAll(formTitleText, addGameText);
+		topBox.setAlignment(Pos.CENTER);
+		topBox.setPadding(new Insets(10,10,10,10));
+		topBox.setSpacing(10);
 
 		// Create the form to add a new game to the game manager
 		GameForm gameForm = new GameForm();
-		Text addGameText = new Text("Add New Game");
 
 		// Create HBox to store form title and form
 		HBox formBox = new HBox();
-		formBox.getChildren().addAll(gameForm);
+		formBox.getChildren().add(gameForm);
 		formBox.setAlignment(Pos.CENTER);
 		formBox.setPadding(new Insets(10, 10, 10, 10));
 		formBox.setSpacing(10);
@@ -64,6 +73,7 @@ public class Main extends Application {
 		Button previousGamesButton = new Button("Previously Played Games");
 
 		// Create the copyright information Text
+		// TODO: Add correct copyright information
 		Text copyrightText = new Text("Copyright Team Bearham - 2016");
 
 		// Create an VBox to store the bottom of the BorderPane
@@ -171,6 +181,9 @@ public class Main extends Application {
 		
 		HBox pane = new HBox();
 		pane.getChildren().addAll(categoryBox, gameListView);
+		
+		// Add the categoryBox and gameListView to the previous games screen
+		previousGamesPane.setCenter(pane);
 		
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
