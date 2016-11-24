@@ -130,9 +130,9 @@ public class GameForm extends GridPane {
 
 		// Give the buttons functionality
 		/**
-		 * Clears the form on button press.
+		 * Checks to see if the form is empty using the checkForEmptyForm() method.
+		 * If the form is not empty, it will send the form information to a new game Object
 		 * TODO: Add database functionality.
-		 * TODO: Make sure user can't submit empty form fields
 		 * @author Nicholas Allaire
 		 * @param None
 		 */
