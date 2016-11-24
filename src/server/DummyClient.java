@@ -1,10 +1,12 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -37,16 +39,38 @@ public class DummyClient {
 //			values.add("101/100");
 //			values.add("Get eaten by bears!");
 			
-			Game game = new Game("0", "Solitare", "7/10", "Played by bored office employees everywhere.");
+			//Game game = new Game("0", "Solitare", "7/10", "Played by bored office employees everywhere.");
 			
 			//outString = 
 			
 			OutputStream outputStream = clientSocket.getOutputStream();
-			ObjectOutputStream objout = new ObjectOutputStream(outputStream);
+			//ObjectOutputStream objout = new ObjectOutputStream(outputStream);
 			
-			objout.writeObject(game);
-			objout.close();
+			//objout.writeObject(game);
+			//objout.close();
 			
+			//OutputStreamWriter out = new OutputStreamWriter(outputStream);
+			DataOutputStream out = new DataOutputStream(outputStream);
+			
+			String request = "GET";
+			
+			out.writeUTF(request);
+			out.flush();
+			
+			request = "SEND";
+			
+			out.writeUTF(request);
+			out.flush();
+			
+			request = "banana";
+			
+			out.writeUTF(request);
+			out.flush();
+			
+			//PrintWriter print = new PrintWriter(outputStream);
+			//print.println(request);
+			
+			//outputStream
 					
 			//System.out.println("[CLIENT] Sent \"" + outString + "\" to the server.");
 			//out.write(outString);
