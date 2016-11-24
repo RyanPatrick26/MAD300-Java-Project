@@ -188,6 +188,7 @@ public class Main extends Application {
 	}
 
 	/**
+	 * TODO: Implement JavaDoc-style comments
 	 * Custom Function to sort the selectedGameList alphabetically. No inputs
 	 * needed, just needs to be set as the comparator to use. Added by: Megan
 	 * Caza
