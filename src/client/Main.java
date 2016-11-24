@@ -24,19 +24,18 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
 	private static BackButton customBackButton;
 	private static Button backButton;
 	ArrayList<String> categoryList;
 	ArrayList<Game> gameList;
 	ListView<Game> gameListView;
 	ArrayList<Game> selectedGameList = new ArrayList<Game>();
-	CheckBox boardGame = new CheckBox("Board Games");
-	CheckBox videoGame = new CheckBox("Video Games");
-	CheckBox cardGame = new CheckBox("Card Games");
-	
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// must store the game name, the genre(s), date last played, publisher,
@@ -144,19 +143,15 @@ public class Main extends Application {
 		categoryList.add("Card Game");
 
 		gameList.add(new Game("Risk", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
-		gameList.add(new Game("Magic the Gathering", new ArrayList<String>(Arrays.asList(categoryList.get(1), categoryList.get(2)))));
-		gameList.add(new Game("Mansions of Madness", new ArrayList<String>(Arrays.asList(categoryList.get(0), categoryList.get(1)))));
-		gameList.add(new Game("Exceed", new ArrayList<String>(Arrays.asList(categoryList.get(0), categoryList.get(2)))));
-		gameList.add(new Game("Total War: Warhammer", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
-		gameList.add(new Game("Splendor", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
 		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
-		
-		
+		gameList.add(new Game("Magic the Gathering", new ArrayList<String>(Arrays.asList(categoryList.get(2)))));
 
-		//selectedGameList = FXCollections.observableList(new ArrayList<Game>());
+		CheckBox boardGame = new CheckBox("Board Games");
+		CheckBox videoGame = new CheckBox("Video Games");
+		CheckBox cardGame = new CheckBox("Card Games");
+
 		gameListView = new ListView<Game>();
-		
-		//Event Listeners for selecting and deselecting the checkboxes
+
 		boardGame.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue a, Boolean oldValue, Boolean newValue) {
 				buildListView(newValue, "Board Game");
@@ -208,50 +203,24 @@ public class Main extends Application {
 	 * Custom Function used to find the selected game category, search through
 	 * the games created, add games to the selectedGameList, sort the
 	 * selectedGameList alphabetically, and insert selectedGameList into the
-	 * listview to display to the screen. 
-	 * 
-	 * @param: boolean newValue, String, gameType 
-	 * @author: Megan Caza, Ryan Patrick
-	 */
+	 * listview to display to the screen. INPUTS: boolean newValue, String
+	 * gameType OUTPUTS: void Created by: Megan Caza
+	 **/
 	public void buildListView(boolean newValue, String gameType) {
-		//loop through the overall game list to find any games that
-		//are part of a given category
 		for (int i = 0; i < gameList.size(); i++) {
-			//if statement checks if the checkbox is checked or not
-			//runs if the checkbox is checked
 			if (newValue) {
-				//check to see if the game at the given index is part of the category selected
 				if (gameList.get(i).getCategory().contains(gameType)) {
-					//check to see if the list shown to the user already has a game in it
-					if(!selectedGameList.contains(gameList.get(i))){
-						//add the game to the list
-						selectedGameList.add(gameList.get(i));
-						Collections.sort(selectedGameList, new CustomComparator());
-						gameListView.getItems().clear();
-						ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
-						gameListView.setItems(items);
-					}
+					selectedGameList.add(gameList.get(i));
+					Collections.sort(selectedGameList, new CustomComparator());
+					gameListView.getItems().clear();
+					ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
+					gameListView.setItems(items);
 				}
-			} 
-			//runs if the checkbox is unchecked
-			else {
-				//check to see if the game at the given index is part of the category selected
-				//after unchecking a checkbox, checks if the game is part
-				//of any of the other categories still selected
-				if (gameList.get(i).getCategory().contains(gameType)){
-					selectedGameList.clear();
-					if(boardGame.isSelected()){
-						buildListView(true, "Board Game");
-					}
-					if(videoGame.isSelected()){
-						buildListView(true, "Video Game");
-					}
-					if(cardGame.isSelected()){
-						buildListView(true, "Card Game");
-					}
-//					selectedGameList.remove(gameList.get(i));
-//					Collections.sort(selectedGameList, new CustomComparator());
-//					gameListView.getItems().clear();
+			} else {
+				if (gameList.get(i).getCategory().contains(gameType)) {
+					selectedGameList.remove(gameList.get(i));
+					Collections.sort(selectedGameList, new CustomComparator());
+					gameListView.getItems().clear();
 					ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
 					gameListView.setItems(items);
 				}
@@ -259,4 +228,5 @@ public class Main extends Application {
 		}
 
 	}
+
 }
