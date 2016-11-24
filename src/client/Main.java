@@ -150,10 +150,8 @@ public class Main extends Application {
 		gameList.add(new Game("Total War: Warhammer", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
 		gameList.add(new Game("Splendor", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
 		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
-		
-		
+;
 
-		//selectedGameList = FXCollections.observableList(new ArrayList<Game>());
 		gameListView = new ListView<Game>();
 		
 		//Event Listeners for selecting and deselecting the checkboxes
@@ -249,9 +247,6 @@ public class Main extends Application {
 					if(cardGame.isSelected()){
 						buildListView(true, "Card Game");
 					}
-//					selectedGameList.remove(gameList.get(i));
-//					Collections.sort(selectedGameList, new CustomComparator());
-//					gameListView.getItems().clear();
 					ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
 					gameListView.setItems(items);
 				}
