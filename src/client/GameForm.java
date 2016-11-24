@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 
 public class GameForm extends GridPane {
 
+	// Declare all the form variables
 	private Label gameTitleLabel;
 	private TextField gameTitleField;
 	private Label genreLabel;
@@ -31,6 +33,10 @@ public class GameForm extends GridPane {
 
 	private Label gameDescriptionLabel;
 	private TextArea gameDescriptionArea;
+	
+	// Create an array for the textfields
+	private TextField[] textfields = {gameTitleField, publisherField,
+			yearField, hoursPlayedField};
 
 	public GameForm() {
 		// Create default styling for the GameForm
@@ -107,6 +113,7 @@ public class GameForm extends GridPane {
 		gameDescriptionArea = new TextArea();
 		gameDescriptionArea.setMaxSize(320, 100);
 		this.add(gameDescriptionArea, 3, 7);
+		
 
 		// Create the submit and clear buttons
 		Button submitButton = new Button("Submit Game");
@@ -116,20 +123,25 @@ public class GameForm extends GridPane {
 
 		// Give the buttons functionality
 		/**
-		 * Clears the form on button press. TODO: Add database functionality.
-		 * 
+		 * Clears the form on button press.
+		 * TODO: Add database functionality.
+		 * TODO: Make sure user can't submit empty form fields
 		 * @author Nicholas Allaire
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
 			// Check if all the fields are filled
+			if(this.checkForEmptyForm(this, gameDescriptionArea, genreList, textfields)) {
+				System.out.println("FORM IS EMPTY IN SOME WAY");
+			}
 			
 			gameTitleField.clear();
-			genreList.getSelectionModel().clearSelection();
 			yearField.clear();
 			publisherField.clear();
 			hoursPlayedField.clear();
+			
 			gameDescriptionArea.clear();
+			genreList.getSelectionModel().clearSelection();
 
 		});
 		/**
@@ -140,11 +152,12 @@ public class GameForm extends GridPane {
 		 */
 		clearButton.setOnAction(e -> {
 			gameTitleField.clear();
-			genreList.getSelectionModel().clearSelection();
 			yearField.clear();
 			publisherField.clear();
 			hoursPlayedField.clear();
+			
 			gameDescriptionArea.clear();
+			genreList.getSelectionModel().clearSelection();
 		});
 
 		// Create HBox
@@ -157,6 +170,39 @@ public class GameForm extends GridPane {
 		// Add the buttons to the grid
 		this.add(buttonBox, 1, 9);
 
+	}
+	
+	/**
+	 * Method to check the form and make sure it is completely filled
+	 * 	or if the form is empty in any way, shape, or form.
+	 * @author Nicholas Allaire
+	 * @param GridPane grid
+	 * @param TextArea desc
+	 * @param ListView list
+	 * @param TextField array fields
+	 * @return boolean true is the form is empty in any way
+	 * 	or false if the form is filled completely
+	 */
+	public static boolean checkForEmptyForm(GridPane grid, TextArea desc, 
+			ListView<String> list, TextField[] fields) {
+		boolean isFormEmpty = false;
+		// Check the array of textfields for emptiness
+		for (int i = 0; i < fields.length; i++) {
+			if (fields[i].getText().isEmpty()) {
+				isFormEmpty = true;
+			}
+		}
+		// Check the textarea for emptiness
+		if (desc.getText().isEmpty()) {
+			isFormEmpty = true;
+		}
+		
+		// Check if the listview is empty
+		if (list.getSelectionModel().isEmpty()) {
+			isFormEmpty = true;
+		}
+		// Return the results of the emptiness check
+		return isFormEmpty;
 	}
 
 }
