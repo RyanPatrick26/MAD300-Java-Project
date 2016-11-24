@@ -35,8 +35,7 @@ public class GameForm extends GridPane {
 	private TextArea gameDescriptionArea;
 	
 	// Create an array for the textfields
-	private TextField[] textfields = {gameTitleField, publisherField,
-			yearField, hoursPlayedField};
+	private TextField[] textfields = new TextField[4];
 
 	public GameForm() {
 		// Create default styling for the GameForm
@@ -51,6 +50,8 @@ public class GameForm extends GridPane {
 		// Set the textfield for the game title and add it to the grid
 		this.gameTitleField = new TextField();
 		this.add(gameTitleField, 3, 2);
+		// Add the game title field to the textfields array
+		textfields[0] = gameTitleField;
 
 		// Set the genre label and add it to the grid
 		this.genreLabel = new Label("Genre(s) - Shift click to select more than 1:");
@@ -86,6 +87,8 @@ public class GameForm extends GridPane {
 		// Set the textfield for the game release year and add it to the grid
 		this.yearField = new TextField();
 		this.add(yearField, 3, 4);
+		// Add the game year field to the textfields array
+		textfields[1] = gameTitleField;
 
 		// Set the publisher label and add it to the grid
 		this.publisherLabel = new Label("Game Publisher:");
@@ -94,6 +97,8 @@ public class GameForm extends GridPane {
 		// Set the textfield for the publisher and add it to the grid
 		this.publisherField = new TextField();
 		this.add(publisherField, 3, 5);
+		// Add the game publisher field to the textfields array
+		textfields[2] = gameTitleField;
 
 		// Set the label for the hours played and add it to the grid
 		hoursPlayedLabel = new Label("Hours Played:");
@@ -102,6 +107,8 @@ public class GameForm extends GridPane {
 		// Set the textfield for the hours played and add it to the grid
 		hoursPlayedField = new TextField("");
 		this.add(hoursPlayedField, 3, 6);
+		// Add the hours played field to the textfields array
+		textfields[3] = gameTitleField;
 
 		// Set the label for the game description
 		gameDescriptionLabel = new Label("Game Description:");
@@ -130,18 +137,27 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
-			// Check if all the fields are filled
-			if(this.checkForEmptyForm(this, gameDescriptionArea, genreList, textfields)) {
-				System.out.println("FORM IS EMPTY IN SOME WAY");
+			// Create a boolean to check if it is okay to submit
+			boolean okayToSubmit = true;
+			
+			// Check if the form is empty in any way
+			if(checkForEmptyForm(this, gameDescriptionArea, genreList, textfields)) {
+				System.out.println("Form not fully filled.");
+				okayToSubmit = false;
+			} else {
+			// If the form is not empty check for the correct data types	
+				
 			}
 			
-			gameTitleField.clear();
-			yearField.clear();
-			publisherField.clear();
-			hoursPlayedField.clear();
-			
-			gameDescriptionArea.clear();
-			genreList.getSelectionModel().clearSelection();
+			if (okayToSubmit) {
+				// Submit the form
+				gameTitleField.clear();
+				yearField.clear();
+				publisherField.clear();
+				hoursPlayedField.clear();
+				gameDescriptionArea.clear();
+				genreList.getSelectionModel().clearSelection();
+			}
 
 		});
 		/**
@@ -180,15 +196,16 @@ public class GameForm extends GridPane {
 	 * @param TextArea desc
 	 * @param ListView list
 	 * @param TextField array fields
-	 * @return boolean true is the form is empty in any way
-	 * 	or false if the form is filled completely
+	 * @return 	<code>true</code> if the form is empty in any way
+	 * 			or <code>false</code> if the form is filled completely
 	 */
 	public static boolean checkForEmptyForm(GridPane grid, TextArea desc, 
 			ListView<String> list, TextField[] fields) {
+		// 
 		boolean isFormEmpty = false;
 		// Check the array of textfields for emptiness
 		for (int i = 0; i < fields.length; i++) {
-			if (fields[i].getText().isEmpty()) {
+			if (fields[i].getText().trim().isEmpty()) {
 				isFormEmpty = true;
 			}
 		}
