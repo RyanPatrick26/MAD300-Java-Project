@@ -122,6 +122,8 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
+			// Check if all the fields are filled
+			
 			gameTitleField.clear();
 			genreList.getSelectionModel().clearSelection();
 			yearField.clear();
