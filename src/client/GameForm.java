@@ -1,7 +1,12 @@
 package client;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.TimelineBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -14,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 public class GameForm extends GridPane {
 
@@ -137,6 +143,16 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
+			
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    ft.play();
+
+			
 			// Create a boolean to check if it is okay to submit
 			boolean okayToSubmit = true;
 			
@@ -167,11 +183,19 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		clearButton.setOnAction(e -> {
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    ft.play();
+		    
+		    //Clears all fields
 			gameTitleField.clear();
 			yearField.clear();
 			publisherField.clear();
 			hoursPlayedField.clear();
-			
 			gameDescriptionArea.clear();
 			genreList.getSelectionModel().clearSelection();
 		});
@@ -221,5 +245,7 @@ public class GameForm extends GridPane {
 		// Return the results of the emptiness check
 		return isFormEmpty;
 	}
+	
+	
 
 }
