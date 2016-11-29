@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,9 +21,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Main extends Application {
 	private static BackButton customBackButton;
@@ -128,12 +133,34 @@ public class Main extends Application {
 		/**
 		 * Switches to the previously played games screen
 		 * 
-		 * @author Nicholas Allaire
+		 * @author Nicholas Allaire, Megan Caza
 		 * @param None
 		 */
 		previousGamesButton.setOnAction(e -> {
-			primaryStage.setScene(previousGamesScene);
-			primaryStage.show();
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    
+		    /**
+			 * Makes sure the animation has finished before the scene is switched
+			 * 
+			 * @author Megan Caza
+			 * @param None
+			 */
+		    ft.setOnFinished(new EventHandler<ActionEvent>(){
+		    	 
+	            @Override
+	            public void handle(ActionEvent arg0) {
+	            	primaryStage.setScene(previousGamesScene);
+	    			primaryStage.show();
+	            }
+	        });
+		    
+		    ft.play();
+		    
 		});
 
 		categoryList = new ArrayList<String>();
