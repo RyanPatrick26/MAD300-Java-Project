@@ -39,7 +39,14 @@ public class ServerThread implements Runnable {
 					try {
 						String message = input.readUTF();
 						
-						System.out.println(message);
+						//System.out.println(message);
+						if (message.equals("GET")) {
+							System.out.println("Received a get request from the client");
+						} else if (message.equals("SEND")) {
+							System.out.println("Received a send request from the client");
+						} else {
+							System.out.println("Client sent nonsense to the server");
+						}
 						
 						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 						
