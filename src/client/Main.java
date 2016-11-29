@@ -108,9 +108,31 @@ public class Main extends Application {
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
 			backButton = new Button("Back");
-			backButton.setOnAction(e -> {
-				primaryStage.setScene(mainScene);
-				primaryStage.show();
+			backButton.setOnAction(e -> {	
+				//Quick transition to show button has been clicked
+				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);
+			    fb.setFromValue(1.0);
+			    fb.setToValue(0.2);
+			    fb.setCycleCount(2);
+			    fb.setAutoReverse(true);
+			    
+			    /**
+				 * Makes sure the animation has finished before the scene is switched
+				 * 
+				 * @author Megan Caza
+				 * @param None
+				 */
+			    fb.setOnFinished(new EventHandler<ActionEvent>(){
+			    	 
+		            @Override
+		            public void handle(ActionEvent arg0) {
+		            	primaryStage.setScene(mainScene);
+						primaryStage.show();
+		            }
+		        });
+			    
+			    fb.play();
+				
 			});
 		}
 

@@ -144,15 +144,6 @@ public class GameForm extends GridPane {
 		 */
 		submitButton.setOnAction(e -> {
 			
-			//Quick transition to show button has been clicked
-			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0.2);
-		    ft.setCycleCount(2);
-		    ft.setAutoReverse(true);
-		    ft.play();
-
-			
 			// Create a boolean to check if it is okay to submit
 			boolean okayToSubmit = true;
 			
@@ -166,6 +157,14 @@ public class GameForm extends GridPane {
 			}
 			
 			if (okayToSubmit) {
+				//Quick transition to show button has been clicked
+				FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+			    ft.setFromValue(1.0);
+			    ft.setToValue(0.2);
+			    ft.setCycleCount(2);
+			    ft.setAutoReverse(true);
+			    ft.play();
+				
 				// Submit the form
 				gameTitleField.clear();
 				yearField.clear();
@@ -184,7 +183,7 @@ public class GameForm extends GridPane {
 		 */
 		clearButton.setOnAction(e -> {
 			//Quick transition to show button has been clicked
-			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
 		    ft.setFromValue(1.0);
 		    ft.setToValue(0.2);
 		    ft.setCycleCount(2);
