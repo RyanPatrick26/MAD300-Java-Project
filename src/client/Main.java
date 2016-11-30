@@ -98,7 +98,7 @@ public class Main extends Application {
 		BorderPane.setAlignment(formTitleText, Pos.CENTER);
 
 		// Create the scene for the main screen
-		Scene mainScene = new Scene(mainPane, 800, 700);
+		Scene mainScene = new Scene(mainPane, 800, 750);
 		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
@@ -154,7 +154,7 @@ public class Main extends Application {
 		}
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 700);
+		Scene previousGamesScene = new Scene(previousGamesPane, 800, 750);
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		// Create event handler for the Previous Games Button
