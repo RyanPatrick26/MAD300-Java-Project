@@ -237,7 +237,7 @@ public class Main extends Application {
 		// Add the categoryBox and gameListView to the previous games screen
 		previousGamesPane.setCenter(pane);
 
-		primaryStage.setTitle("[MAD300 Java Project]");
+		primaryStage.setTitle("Game Manager - by Team Bearham");
 		primaryStage.setScene(mainScene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
