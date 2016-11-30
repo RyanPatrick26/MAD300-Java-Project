@@ -6,7 +6,6 @@
 .button {
   -fx-border:0.0;
   -fx-outline:none;
-  -fx-background-radius: 0.0;
   -fx-padding:15.0px 0.0;
   -fx-font-size:13.0px;
   -fx-font-weight:bold;
@@ -14,6 +13,7 @@
   -fx-letter-spacing:1.0px;
   -fx-background-color:#1ab188;
   -fx-text-fill:#ffffff;
+  -fx-background-radius: 10;
 }
 
 .button:hover {
@@ -51,20 +51,21 @@
   -fx-stroke-width: 1.0px;
   -fx-fill:#ffffff;
   -fx-border-radius:0.0pt;
-  -fx-background-radius: 0.0;
 }
 
 .list-view {
   -fx-padding:5.0px 5.0px;
   -fx-stroke: #a0b3b0;
-   -fx-stroke-width: 1.0px;
+  -fx-stroke-width: 1.0px;
   -fx-fill:#ffffff;
   -fx-background-radius: 0.0;
+  -fx-font-size: 12pt;
+  -fx-background-color: red;
 }
 
 .check-box {
 	-fx-text-fill: #ffffff;
-	-fx-font-size: 10.0pt;
+	-fx-font-size: 13.0pt;
 	-fx-padding:5.0px 10.0px 5.0px 5.0px;
 }
 

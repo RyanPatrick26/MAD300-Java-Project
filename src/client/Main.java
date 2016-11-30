@@ -115,7 +115,7 @@ public class Main extends Application {
 			backButton = new Button("BACK");
 			backButton.setOnAction(e -> {	
 				//Quick transition to show button has been clicked
-				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);
+				FadeTransition fb = new FadeTransition(Duration.millis(200), backButton);
 			    fb.setFromValue(1.0);
 			    fb.setToValue(0.2);
 			    fb.setCycleCount(2);
@@ -166,7 +166,7 @@ public class Main extends Application {
 		 */
 		previousGamesButton.setOnAction(e -> {
 			//Quick transition to show button has been clicked
-			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
+			FadeTransition ft = new FadeTransition(Duration.millis(200), previousGamesButton);
 		    ft.setFromValue(1.0);
 		    ft.setToValue(0.2);
 		    ft.setCycleCount(2);

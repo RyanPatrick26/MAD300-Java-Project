@@ -160,7 +160,7 @@ public class GameForm extends GridPane {
 			
 			if (okayToSubmit) {
 				//Quick transition to show button has been clicked
-				FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+				FadeTransition ft = new FadeTransition(Duration.millis(200), submitButton);
 			    ft.setFromValue(1.0);
 			    ft.setToValue(0.2);
 			    ft.setCycleCount(2);
