@@ -11,7 +11,32 @@ public class Game {
 	private Calendar lastPlayed;
 	private String publisher;
 	private String releaseYear;
+	private int hoursPlayed;
 	
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+
+	public String getReleaseYear() {
+		return releaseYear;
+	}
+
+	public void setReleaseYear(String releaseYear) {
+		this.releaseYear = releaseYear;
+	}
+
+	public int getHoursPlayed() {
+		return hoursPlayed;
+	}
+
+	public void setHoursPlayed(int hoursPlayed) {
+		this.hoursPlayed = hoursPlayed;
+	}
+
 	public Game(String name, ArrayList<String> category){
 		this.name = name;
 		this.category = category;
