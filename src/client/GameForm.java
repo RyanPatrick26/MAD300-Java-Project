@@ -68,7 +68,7 @@ public class GameForm extends GridPane {
 		// Put the observable array list in a listView
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		this.genreList.setMaxHeight(75);
+		this.genreList.setMinHeight(80);
 		// Add the listview to the gridpane
 		this.add(genreList, 3, 3);
 
