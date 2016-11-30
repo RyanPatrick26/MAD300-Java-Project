@@ -95,6 +95,7 @@ public class Main extends Application {
 
 		// Create the scene for the main screen
 		Scene mainScene = new Scene(mainPane, 800, 700);
+		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
 
@@ -150,6 +151,7 @@ public class Main extends Application {
 
 		// Create the main and previousGames scenes
 		Scene previousGamesScene = new Scene(previousGamesPane, 800, 700);
+		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		// Create event handler for the Previous Games Button
 		/**
