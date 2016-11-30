@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -125,6 +126,8 @@ public class GameForm extends GridPane {
 		// Set the textarea for the game description and add it to the grid
 		gameDescriptionArea = new TextArea();
 		gameDescriptionArea.setMaxSize(320, 100);
+		gameDescriptionArea.setMinSize(320, 100);
+		gameDescriptionArea.setWrapText(true);
 		this.add(gameDescriptionArea, 3, 7);
 		
 
@@ -143,7 +146,6 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
-			
 			// Create a boolean to check if it is okay to submit
 			boolean okayToSubmit = true;
 			
@@ -183,7 +185,7 @@ public class GameForm extends GridPane {
 		 */
 		clearButton.setOnAction(e -> {
 			//Quick transition to show button has been clicked
-			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
+			FadeTransition ft = new FadeTransition(Duration.millis(200), clearButton);
 		    ft.setFromValue(1.0);
 		    ft.setToValue(0.2);
 		    ft.setCycleCount(2);
@@ -203,11 +205,12 @@ public class GameForm extends GridPane {
 		HBox buttonBox = new HBox();
 		buttonBox.getChildren().addAll(submitButton, clearButton);
 		buttonBox.setPadding(new Insets(5, 5, 5, 5));
-		buttonBox.setSpacing(15);
-		GridPane.setColumnSpan(buttonBox, 2);
+		buttonBox.setSpacing(20);
+		buttonBox.setAlignment(Pos.CENTER);
+		GridPane.setColumnSpan(buttonBox, 4);
 
 		// Add the buttons to the grid
-		this.add(buttonBox, 1, 9);
+		this.add(buttonBox, 0, 9);
 
 	}
 	
@@ -224,7 +227,7 @@ public class GameForm extends GridPane {
 	 */
 	public static boolean checkForEmptyForm(GridPane grid, TextArea desc, 
 			ListView<String> list, TextField[] fields) {
-		// 
+		// create boolean to test if the form is empty or not
 		boolean isFormEmpty = false;
 		// Check the array of textfields for emptiness
 		for (int i = 0; i < fields.length; i++) {

@@ -80,7 +80,7 @@ public class Main extends Application {
 
 		// Create the copyright information Text
 		// TODO: Add correct copyright information
-		Text copyrightText = new Text("Copyright Team Bearham - 2016");
+		Text copyrightText = new Text("Copyright (c) Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
@@ -171,6 +171,7 @@ public class Main extends Application {
 		    ft.setToValue(0.2);
 		    ft.setCycleCount(2);
 		    ft.setAutoReverse(true);
+		    ft.play();
 		    
 		    /**
 			 * Makes sure the animation has finished before the scene is switched
@@ -186,8 +187,6 @@ public class Main extends Application {
 	    			primaryStage.show();
 	            }
 	        });
-		    
-		    ft.play();
 		    
 		});
 
