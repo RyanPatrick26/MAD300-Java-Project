@@ -10,8 +10,17 @@ public class Game {
 	private String description;
 	private Calendar lastPlayed;
 	private String publisher;
-	private String releaseYear;
+	private int releaseYear;
 	private int hoursPlayed;
+	
+	public Game(){
+	
+	}
+	
+	public Game(String name, ArrayList<String> category){
+		this.name = name;
+		this.category = category;
+	}
 	
 	public String getPublisher() {
 		return publisher;
@@ -21,12 +30,12 @@ public class Game {
 		this.publisher = publisher;
 	}
 
-	public String getReleaseYear() {
+	public int getReleaseYear() {
 		return releaseYear;
 	}
 
-	public void setReleaseYear(String releaseYear) {
-		this.releaseYear = releaseYear;
+	public void setReleaseYear(int i) {
+		this.releaseYear = i;
 	}
 
 	public int getHoursPlayed() {
@@ -35,11 +44,6 @@ public class Game {
 
 	public void setHoursPlayed(int hoursPlayed) {
 		this.hoursPlayed = hoursPlayed;
-	}
-
-	public Game(String name, ArrayList<String> category){
-		this.name = name;
-		this.category = category;
 	}
 
 	public String getName() {
@@ -83,7 +87,8 @@ public class Game {
 	}
 	
 	public String toString(){
-		return getName();
+		return getName() + " " + getCategory() + " " + getRating() + " " + getDescription() + " " + getLastPlayed() + 
+			 " " + getPublisher() + " " + getReleaseYear() + " " + getHoursPlayed();
 	}
 	
 }

@@ -98,7 +98,7 @@ public class Main extends Application {
 		BorderPane.setAlignment(formTitleText, Pos.CENTER);
 
 		// Create the scene for the main screen
-		Scene mainScene = new Scene(mainPane, 800, 750);
+		Scene mainScene = new Scene(mainPane, 800, 850);
 		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
