@@ -12,6 +12,8 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import common.Game;
+
 public class DummyClient {
 	
 	public static void main(String[] args) throws IOException {
@@ -22,7 +24,15 @@ public class DummyClient {
 //		
 		API api = new API();
 		
-		System.out.println(api.getGame(9));
+		ArrayList<String> categories = new ArrayList<String>(); 
+		categories.add("Sandbox");
+		categories.add("Puzzle");
+		Game game = new Game("Factorio", categories);
+		game.setDescription("Factory Building Game");
+		api.addGame(game);
+		
+		//System.out.println();
+		//System.out.println(api.getGame(9).getName());
 		
 //		try {
 //			//clientSocket = new Socket(server, portNumber);

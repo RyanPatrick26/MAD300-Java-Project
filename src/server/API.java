@@ -72,9 +72,48 @@ public class API {
 		return outputArray;
 	}
 	
-	private String sendToServer() throws IOException {
-		return null;
+	private boolean sendToServer(String sendingWhat, ArrayList[] sendingData) throws IOException {
+		Socket socket = createClientSocket();
+		OutputStream outputStream = socket.getOutputStream();
+		DataOutputStream out = new DataOutputStream(outputStream);
 		
+		
+		
+		
+		for (int i = 0; i < sendingData.length; i++) {
+			for (int j = 0; j < sendingData[i].size(); j++) {
+				System.out.println("SENDTOSERVER() [" + i + "]: " + sendingData[i].get(j));
+			}
+		}
+		
+		System.out.println(sendingData[0].size());
+		
+		out.writeUTF("SEND");
+		out.writeUTF(sendingWhat);
+		for (int i = 0; i < sendingData[0].size(); i++) {
+			System.out.println("SENDTOSERVER() [0]: " + sendingData[0].get(i));
+			out.writeUTF(String.valueOf(sendingData[0].get(i)));
+			System.out.println("SENDTOSERVER() [1]: " + sendingData[1].get(i));
+			out.writeUTF(String.valueOf(sendingData[1].get(i)));
+		}
+		
+//		for (int i = 0; i < sendingData[0].size(); i++) {
+//			//for (int j = 0; j < sendingData[i].size(); j++) {
+//				System.out.println(sendingData[0].get(i) + " | " + sendingData[1].get(i));
+//				//out.writeUTF((String) sendingData[i].get(j));
+//				out.writeUTF(String.valueOf(sendingData[0].get(i)));
+//				out.writeUTF(String.valueOf(sendingData[1].get(i)));
+//			//}
+//		}
+		
+		out.writeUTF("<<<END>>>");
+		
+		System.out.println("Waiting for response!");
+		
+		InputStream inputStream = socket.getInputStream();
+		DataInputStream in = new DataInputStream(inputStream);
+		//in.readBoolean();
+		return false;
 	}
 	
 	public Game getGame(int id) throws IOException {
@@ -91,5 +130,30 @@ public class API {
 		game.setDescription((String) gameArray[1].get(3));
 		
 		return game;
+	}
+	
+	public boolean addGame(Game game) throws IOException {
+		
+		ArrayList[] sendingData = new ArrayList[2];
+		sendingData[0] = new ArrayList();
+		sendingData[1] = new ArrayList();
+		
+		sendingData[0].add("ID");
+		sendingData[0].add("GameName");
+		sendingData[0].add("Rating");
+		sendingData[0].add("Description");
+		
+		sendingData[1].add("0");
+		sendingData[1].add(game.getName());
+		sendingData[1].add(game.getRating());
+		sendingData[1].add(game.getDescription());
+		
+//		for (int i = 0; i < sendingData.length; i++) {
+//			for (int j = 0; j < sendingData[i].size(); j++) {
+//				System.out.println("ADDGAME() [" + i + "]: " + sendingData[i].get(j));
+//			}
+//		}
+
+		return sendToServer("GAME", sendingData);
 	}
 }
