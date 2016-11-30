@@ -1,6 +1,7 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,16 +50,33 @@ public class Main {
 					try {
 						
 						InputStream inputStream = socket.getInputStream();
-						ObjectInputStream input = new ObjectInputStream(inputStream);
-						Game game;
-						game = (Game) input.readObject();
+						DataInputStream in = new DataInputStream(inputStream);
 						
-						String insert[][] = {
-								{"GameName", "Rating", "Description"},
-								{game.getGameName(), game.getGameRating(), game.getGameDescription()}
-								};
+						String request = in.readUTF();
 						
-						dbUtilities.insertInto("GameManagement", insert);
+						//System.out.println(request);
+						
+						if (request.equals("GET")) {
+							// The client has requested data from the server.
+							System.out.println("GET");
+						} else if (request.equals("SEND")) {
+							// The client is sending data to the server
+							System.out.println("SEND");
+						} else {
+							// The client sent something invalid to the server
+							System.out.println("NONSENSE");
+						}
+
+						//ObjectInputStream input = new ObjectInputStream(inputStream);
+						//Game game;
+						//game = (Game) input.readObject();
+						
+//						String insert[][] = {
+//								{"GameName", "Rating", "Description"},
+//								{game.getGameName(), game.getGameRating(), game.getGameDescription()}
+//								};
+//						
+//						dbUtilities.insertInto("GameManagement", insert);
 						
 						//System.out.println("[SERVER] Received \"" + input + "\" from the client.");
 						//System.out.println(inputString);
@@ -66,10 +84,11 @@ public class Main {
 						System.out.println("Client sent wrong object, or server/client is out of date.");
 					} catch (IOException e) {
 						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
+//					} catch (ClassNotFoundException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 					
 					//System.out.println("[SERVER] Sent \"" + currentTime + "\" to the client.");
                 	//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -115,21 +134,21 @@ public class Main {
 			}
 		}
 		
-		String schema[] = {
-				"ID",
-				"GameName",
-				"Rating",
-				"Description"
-		};
-		String[][] results = dbUtilities.fetchRow("GameManagement", 9, schema);
-		
-		for (int i = 0; i < results[0].length; i++) {
-			System.out.print(results[0][i] + " | ");
-		}
-		System.out.println("");
-		for (int i = 0; i < results[1].length; i++) {
-			System.out.print(results[1][i] + " | ");
-		}
+//		String schema[] = {
+//				"ID",
+//				"GameName",
+//				"Rating",
+//				"Description"
+//		};
+//		String[][] results = dbUtilities.fetchRow("GameManagement", 1, schema);
+//		
+//		for (int i = 0; i < results[0].length; i++) {
+//			System.out.print(results[0][i] + " | ");
+//		}
+//		System.out.println("");
+//		for (int i = 0; i < results[1].length; i++) {
+//			System.out.print(results[1][i] + " | ");
+//		}
 
 //		String password = "Banana";
 //		String candidate = "Banana";
@@ -143,11 +162,11 @@ public class Main {
 //		    System.out.println("It does not match");
 //		}
 
-		String insert[][] = {
-				{"GameName", "Rating", "Description"},
-				{"Factorio", "95/100", "Factory Building Game"}
-				};
+//		String insert[][] = {
+//				{"GameName", "Rating", "Description"},
+//				{"Factorio", "95/100", "Factory Building Game"}
+//				};
 		
-		System.out.println("Inserted: " + dbUtilities.insertInto("GameManagement", insert));
+		//System.out.println("Inserted: " + dbUtilities.insertInto("GameManagement", insert));
 	}
 }
