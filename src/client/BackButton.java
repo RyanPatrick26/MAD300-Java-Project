@@ -8,11 +8,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class BackButton extends BorderPane {
-	private String backButtonString;
 	private Image backButtonImage = null;
 	
 	public BackButton(String backButtonString, Image backButtonImage) {
-		this.backButtonString = backButtonString;
 		this.backButtonImage = backButtonImage;
 		Text backButtonText = new Text(backButtonString);
 		
