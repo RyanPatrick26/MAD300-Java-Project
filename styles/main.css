@@ -1,0 +1,16 @@
+.root{
+	-fx-background-color: #13232f;
+}
+
+.button{
+  -fx-border:0;
+  -fx-outline:none;
+  -fx-border-radius:0;
+  -fx-padding:15px 0;
+  -fx-font-size:14px;
+  -fx-font-weight:bold;
+  -fx-text-transform:uppercase;
+  -fx-letter-spacing:1px;
+  -fx-background-color:#1ab188;
+  -fx-text-fill:#ffffff;
+}

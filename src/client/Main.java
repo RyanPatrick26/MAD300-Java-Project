@@ -73,7 +73,8 @@ public class Main extends Application {
 		formBox.setSpacing(10);
 
 		// Create the button to go the Previous games list
-		Button previousGamesButton = new Button("Previously Played Games");
+		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
+		previousGamesButton.setMinWidth(225);
 
 		// Create the copyright information Text
 		// TODO: Add correct copyright information
@@ -108,7 +109,7 @@ public class Main extends Application {
 			// Assign the event handler for the Back Button
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
-			backButton = new Button("Back");
+			backButton = new Button("BACK");
 			backButton.setOnAction(e -> {	
 				//Quick transition to show button has been clicked
 				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);

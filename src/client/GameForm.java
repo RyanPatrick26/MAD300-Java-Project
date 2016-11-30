@@ -129,10 +129,10 @@ public class GameForm extends GridPane {
 		
 
 		// Create the submit and clear buttons
-		Button submitButton = new Button("Submit Game");
-		submitButton.setMinWidth(100);
-		Button clearButton = new Button("Clear Form");
-		clearButton.setMinWidth(100);
+		Button submitButton = new Button("SUBMIT GAME");
+		submitButton.setMinWidth(150);
+		Button clearButton = new Button("CLEAR FORM");
+		clearButton.setMinWidth(150);
 
 		// Give the buttons functionality
 		/**
