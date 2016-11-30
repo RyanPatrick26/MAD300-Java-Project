@@ -51,9 +51,11 @@ public class Main extends Application {
 
 		// Create the title for the primary stage
 		Text formTitleText = new Text("Bearham Game Manager");
+		formTitleText.getStyleClass().add("title");
 
 		// Create the text to prompt the user to add a new game
 		Text addGameText = new Text("Add New Game");
+		addGameText.getStyleClass().add("subtitle");
 
 		// Add the form title and addGameText to a VBox
 		VBox topBox = new VBox();
@@ -79,6 +81,7 @@ public class Main extends Application {
 		// Create the copyright information Text
 		// TODO: Add correct copyright information
 		Text copyrightText = new Text("Copyright Team Bearham - 2016");
+		copyrightText.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
