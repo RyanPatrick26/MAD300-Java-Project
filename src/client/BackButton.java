@@ -22,9 +22,9 @@ public class BackButton extends BorderPane {
 		if(this.backButtonImage != null){
 			ImageView backButtonImageView = new ImageView(this.backButtonImage);
 			backButtonImageView.setPreserveRatio(false);
-			backButtonImageView.setFitHeight(100);
-			backButtonImageView.setFitWidth(100);
-			backButtonImageView.setStyle("-fx-opacity: 0.3;");
+			backButtonImageView.setFitHeight(125);
+			backButtonImageView.setFitWidth(250);
+			backButtonImageView.setStyle("-fx-opacity: 1.0;");
 			// TODO Fix issue with mouse hover/border creation
 			/**
 			 * Event handler to bring the opacity of the back button to 1.0.
@@ -33,7 +33,7 @@ public class BackButton extends BorderPane {
 			 * @param None
 			 */
 			backButtonImageView.setOnMouseEntered(e->{
-				backButtonImageView.setStyle("-fx-opacity: 1;");
+				backButtonImageView.setStyle("-fx-opacity: 0.3;");
 			});
 			/**
 			 * Event handler to bring the opacity of the back button to 0.3.
@@ -42,7 +42,7 @@ public class BackButton extends BorderPane {
 			 * @param None
 			 */
 			backButtonImageView.setOnMouseExited(e->{
-				backButtonImageView.setStyle("-fx-opacity: 0.3;");
+				backButtonImageView.setStyle("-fx-opacity: 1;");
 			});
 			this.setCenter(backButtonImageView);
 		}

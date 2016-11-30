@@ -1,0 +1,70 @@
+.root{
+	-fx-background-color: #13232f;
+	-fx-font-family: 'Titillium Web', Arial Black, sans-serif;
+}
+
+.button{
+  -fx-border:0;
+  -fx-outline:none;
+  -fx-background-radius: 0;
+  -fx-padding:15px 0;
+  -fx-font-size:14px;
+  -fx-font-weight:bold;
+  -fx-text-transform:uppercase;
+  -fx-letter-spacing:1px;
+  -fx-background-color:#1ab188;
+  -fx-text-fill:#ffffff;
+}
+
+.label {
+	-fx-text-fill: #ffffff;
+	-fx-font-size: 10pt;
+}
+
+.bottom {
+	-fx-fill: #ffffff;
+	-fx-font-size: 8pt;
+}
+
+.title {
+  -fx-fill:#ffffff;
+  -fx-font-weight:lighter;
+  -fx-margin:0 0 20px;
+  -fx-font-size: 20pt;
+}
+
+.subtitle {
+  -fx-fill:#ffffff;
+  -fx-font-weight:lighter;
+  -fx-margin:0 0 10px;
+  -fx-font-size: 15pt;
+}
+
+.text-field {
+  -fx-font-size:22px;
+  -fx-padding:5px 10px;
+  -fx-stroke: #a0b3b0;
+    -fx-stroke-width: 1px;
+  -fx-fill:#ffffff;
+  -fx-border-radius:0pt;
+  -fx-background-radius: 0;
+}
+
+.list-view {
+  -fx-padding:5px 5px;
+  -fx-stroke: #a0b3b0;
+   -fx-stroke-width: 1px;
+  -fx-fill:#ffffff;
+  -fx-background-radius: 0;
+}
+
+.check-box {
+	-fx-text-fill: #ffffff;
+	-fx-font-size: 10pt;
+	-fx-padding:5px 10px 5px 5px;
+}
+
+.check-box *.box {
+	-fx-background-radius: 0;
+	-fx-padding:5px 5px;
+}

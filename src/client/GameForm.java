@@ -1,7 +1,12 @@
 package client;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.TimelineBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -14,6 +19,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 public class GameForm extends GridPane {
 
@@ -62,7 +68,7 @@ public class GameForm extends GridPane {
 		// Put the observable array list in a listView
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		this.genreList.setMaxHeight(75);
+		this.genreList.setMinHeight(80);
 		// Add the listview to the gridpane
 		this.add(genreList, 3, 3);
 
@@ -123,10 +129,10 @@ public class GameForm extends GridPane {
 		
 
 		// Create the submit and clear buttons
-		Button submitButton = new Button("Submit Game");
-		submitButton.setMinWidth(100);
-		Button clearButton = new Button("Clear Form");
-		clearButton.setMinWidth(100);
+		Button submitButton = new Button("SUBMIT GAME");
+		submitButton.setMinWidth(150);
+		Button clearButton = new Button("CLEAR FORM");
+		clearButton.setMinWidth(150);
 
 		// Give the buttons functionality
 		/**
@@ -137,6 +143,7 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
+			
 			// Create a boolean to check if it is okay to submit
 			boolean okayToSubmit = true;
 			
@@ -150,6 +157,14 @@ public class GameForm extends GridPane {
 			}
 			
 			if (okayToSubmit) {
+				//Quick transition to show button has been clicked
+				FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+			    ft.setFromValue(1.0);
+			    ft.setToValue(0.2);
+			    ft.setCycleCount(2);
+			    ft.setAutoReverse(true);
+			    ft.play();
+				
 				// Submit the form
 				gameTitleField.clear();
 				yearField.clear();
@@ -167,11 +182,19 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		clearButton.setOnAction(e -> {
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    ft.play();
+		    
+		    //Clears all fields
 			gameTitleField.clear();
 			yearField.clear();
 			publisherField.clear();
 			hoursPlayedField.clear();
-			
 			gameDescriptionArea.clear();
 			genreList.getSelectionModel().clearSelection();
 		});
@@ -221,5 +244,7 @@ public class GameForm extends GridPane {
 		// Return the results of the emptiness check
 		return isFormEmpty;
 	}
+	
+	
 
 }
