@@ -17,6 +17,7 @@ public class ServerThread implements Runnable {
 	DataInputStream input;
 	DataOutputStream output;
 	Socket socket;
+	DatabaseUtilities dbUtilities = new DatabaseUtilities();
 	
 	/**
 	 * ServerThread constructor
@@ -37,12 +38,31 @@ public class ServerThread implements Runnable {
 				output = new DataOutputStream(socket.getOutputStream());
 				if (input.available() > 0) {
 					try {
-						String message = input.readUTF();
+						String request = input.readUTF();
+						String wantedType = input.readUTF();
+						String wantedData = input.readUTF();
 						
 						//System.out.println(message);
-						if (message.equals("GET")) {
+						if (request.equals("GET")) {
 							System.out.println("Received a get request from the client");
-						} else if (message.equals("SEND")) {
+							
+							if (wantedType.equals("GAME")) {
+								String schema[] = {
+									"ID",
+									"GameName",
+									"Rating",
+									"Description"
+								};
+								String[][] results = dbUtilities.fetchRow("GameManagement", Integer.parseInt(wantedData), schema);
+								for (int j = 0; j < results[0].length; j++) {
+									//System.out.print(results[0][j] + " | ");
+									output.writeUTF(results[0][j]);
+									output.writeUTF(results[1][j]);
+								}
+								output.writeUTF("<<<END>>>");
+							}
+						
+						} else if (request.equals("SEND")) {
 							System.out.println("Received a send request from the client");
 						} else {
 							System.out.println("Client sent nonsense to the server");
@@ -50,7 +70,7 @@ public class ServerThread implements Runnable {
 						
 						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 						
-						out.println("[" + i + "] " + message);
+						out.println("[" + i + "] " + request);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
