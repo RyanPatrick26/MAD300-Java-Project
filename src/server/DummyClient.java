@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import common.Game;
 
@@ -18,18 +19,47 @@ public class DummyClient {
 	
 	public static void main(String[] args) throws IOException {
 //	
+//		DatabaseUtilities db = new DatabaseUtilities();
+//		
+//		String schema[] = {
+//				"ID",
+//				"GameName",
+//				"Rating",
+//				"Description"
+//		};
+//		
+//		ArrayList<ArrayList<String>> rows = db.fetchAllRows("GameManagement", schema);
+//		for (int i = 0; i < rows.size(); i++) {
+//			for (int j = 0; j < rows.get(i).size(); j++) {
+//				System.out.println("[" + i + "][" + j + "]: " + rows.get(i).get(j));
+//			}
+//		}
+		
 //		String server = "localhost";
 //		int portNumber = 2000;
 //		Socket clientSocket;
+		
+		ArrayList<Game> games = new ArrayList<Game>();
 //		
 		API api = new API();
 		
 		ArrayList<String> categories = new ArrayList<String>(); 
+		categories.add("Survival");
 		categories.add("Sandbox");
-		categories.add("Puzzle");
-		Game game = new Game("Factorio", categories);
-		game.setDescription("Factory Building Game");
+		categories.add("Open World");
+		Game game = new Game("Minceraft", categories);
+		game.setDescription("The end is near");
 		api.addGame(game);
+		
+		//games = api.getAllGames();
+		
+		//for (int i = 0; i < games.size(); i++) {
+			//for (int j = 0; j < games.get(i).size(); j++) {
+		//		System.out.println(games.get(i).getName() + " - " + games.get(i).getDescription() + " - " + games.get(i).getRating());
+			//}
+		//}
+		
+		
 		
 		//System.out.println();
 		//System.out.println(api.getGame(9).getName());

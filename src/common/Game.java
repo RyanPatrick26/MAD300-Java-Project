@@ -12,6 +12,7 @@ public class Game {
 	private String publisher;
 	private String releaseYear;
 	private int hoursPlayed;
+	private int id;
 	
 	public String getPublisher() {
 		return publisher;
@@ -84,6 +85,14 @@ public class Game {
 	
 	public String toString(){
 		return getName();
+	}
+
+	public void setID(String string) {
+		this.id = id;
+	}
+	
+	public int getID() {
+		return this.id;
 	}
 	
 }
