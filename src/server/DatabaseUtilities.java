@@ -230,6 +230,29 @@ public class DatabaseUtilities {
 		return false;
 	}
 	
+	public boolean deleteRow(String tableName, String id) {
+		String query = "DELETE FROM " + tableName + " WHERE ID = " + id + ";";
+		
+		try {
+			Connection connection = establishConnection();
+			
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.execute();
+			connection.close();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
+		}
+		
+		return false;
+		
+	}
+	
 	public boolean updateRow(String tableName, String id, String[] schema, String[] data) {
 //		System.out.println("Updating Table!\n-------------------------------------");
 //		System.out.println(tableName);

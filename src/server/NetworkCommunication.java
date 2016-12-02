@@ -77,6 +77,35 @@ public class NetworkCommunication {
 		}
 	}
 	
+	public void deleteDataFromServer(String data, int id) {
+		Socket socket = createClientSocket();
+		InputStream inputStream;
+		OutputStream outputStream;
+		DataInputStream input;
+		DataOutputStream output;
+		
+		try {
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			input = new DataInputStream(inputStream);
+			output = new DataOutputStream(outputStream);
+			
+			output.writeUTF("DELETE");
+			output.writeUTF(data);
+			
+			output.writeInt(id);
+			
+			input.close();
+			output.close();
+			outputStream.close();
+			inputStream.close();
+			socket.close();
+			
+		} catch (IOException e) {
+			System.out.println("[NET] " + "There was a problem using the network stream");
+		}
+	}
+	
 	public void sendUpdatedDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
 		Socket socket = createClientSocket();
 		InputStream inputStream;

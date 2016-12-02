@@ -260,7 +260,12 @@ public class ServerThread implements Runnable {
 							}
 						} else if (request.equals("DELETE")) {
 							if (wantedType.equals("GAME")) {
+								String id = String.valueOf(input.readInt());
+								//System.out.println(id);
 								
+								
+								
+								dbUtilities.deleteRow("GameManagement", id);
 							}
 						} else {
 							System.out.println("Client sent nonsense to the server");

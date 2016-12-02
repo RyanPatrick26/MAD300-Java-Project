@@ -50,7 +50,8 @@ public class DummyClient {
 		Game game = new Game("Minecraft", categories);
 		game.setID(33);
 		game.setDescription("The end is nearer");
-		api.updateGame(game);
+		//api.updateGame(game);
+		api.deleteGame(game);
 		
 		//games = api.getAllGames();
 		

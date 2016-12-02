@@ -35,6 +35,14 @@ public class API {
 		
 		return returnArray;
 	}
+
+	public void deleteGame(Game game) {
+		NetworkCommunication nc = new NetworkCommunication();
+		
+		int id = game.getID();
+		
+		nc.deleteDataFromServer("GAME", id);
+	}
 	
 	public void updateGame(Game game) {
 		NetworkCommunication nc = new NetworkCommunication();
