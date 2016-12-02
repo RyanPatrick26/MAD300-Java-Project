@@ -87,7 +87,7 @@ public class Game {
 		return getName();
 	}
 
-	public void setID(String string) {
+	public void setID(int id) {
 		this.id = id;
 	}
 	

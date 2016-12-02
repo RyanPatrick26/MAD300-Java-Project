@@ -175,15 +175,20 @@ public class DatabaseUtilities {
 	public boolean insertInto(String tableName, String[][] schema) {
 		// Check if there are 2 array "columns".
 		if (schema.length != 2) {
+			//System.out.println("Got here 0");
 			return false;
 			
 		// Check if the length of both "columns" are identical
 		} else if (schema[0].length != schema[1].length) {
+			//System.out.println("Got here 1");
 			return false;
 			
 		} else if (!tableExists(tableName)) {
+			//System.out.println("Got here 2");
 			return false;
 		}
+		
+		//System.out.println("Got here 3");
 
 		// Build the query statement from the schema array
 		String query = "";
@@ -222,6 +227,49 @@ public class DatabaseUtilities {
 			System.exit(1);
 		}
 
+		return false;
+	}
+	
+	public boolean updateRow(String tableName, String id, String[] schema, String[] data) {
+//		System.out.println("Updating Table!\n-------------------------------------");
+//		System.out.println(tableName);
+//		System.out.println(id);
+//		for (int i = 0; i < schema.length; i++) {
+//			System.out.print(schema[i] + " | ");
+//		}System.out.println();
+//		for (int i = 0; i < data.length; i++) {
+//			System.out.print(data[i] + " | ");
+//		}System.out.println();
+		
+		String query = "UPDATE " + tableName + " SET ";
+		for (int i = 1; i < schema.length; i++) {
+			query += schema[i] + "='" + data[i] + "'";
+			if (i != schema.length-1) {
+				query += ",";
+			}
+		}
+		query += " WHERE ID = " + id + ";";
+		
+		System.out.println(query);
+		
+		//System.exit(01);
+		
+		try {
+			Connection connection = establishConnection();
+			
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.execute();
+			connection.close();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+			System.out.println("[SHUTTING DOWN]");
+			System.exit(1);
+		}
+		
 		return false;
 	}
 	

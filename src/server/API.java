@@ -26,7 +26,7 @@ public class API {
 			categories.add("Testing Category 1");
 			categories.add("Testing Category 2");
 			Game game = new Game(table.get(i).get(1), categories);
-			game.setID(table.get(i).get(0));
+			game.setID(Integer.parseInt(table.get(i).get(0)));
 			game.setRating(Integer.parseInt(table.get(i).get(2)));
 			game.setDescription(table.get(i).get(3));
 			
@@ -36,7 +36,7 @@ public class API {
 		return returnArray;
 	}
 	
-	public void addGame(Game game) {
+	public void updateGame(Game game) {
 		NetworkCommunication nc = new NetworkCommunication();
 		
 		ArrayList<String> schema = new ArrayList<String>();
@@ -46,13 +46,33 @@ public class API {
 		schema.add("Description");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
+		System.out.println("ID: " + game.getID());
 		insertionData.add(new ArrayList<String>());
 		insertionData.get(0).add(String.valueOf(game.getID()));
 		insertionData.get(0).add(game.getName());
 		insertionData.get(0).add(String.valueOf(game.getRating()));
 		insertionData.get(0).add(game.getDescription());
 		
-		nc.sendDataToServer(schema, "GAME", insertionData);
+		nc.sendUpdatedDataToServer(schema, "GAME", insertionData);
+	}
+	
+	public void addGame(Game game) {
+		NetworkCommunication nc = new NetworkCommunication();
+		
+		ArrayList<String> schema = new ArrayList<String>();
+//		schema.add("ID");
+		schema.add("GameName");
+		schema.add("Rating");
+		schema.add("Description");
+		
+		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
+		insertionData.add(new ArrayList<String>());
+//		insertionData.get(0).add(String.valueOf(game.getID()));
+		insertionData.get(0).add(game.getName());
+		insertionData.get(0).add(String.valueOf(game.getRating()));
+		insertionData.get(0).add(game.getDescription());
+		
+		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}
 	
 //	private ArrayList<Game> getGameFromServer() throws IOException {

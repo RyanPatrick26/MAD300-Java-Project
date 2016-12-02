@@ -77,13 +77,58 @@ public class NetworkCommunication {
 		}
 	}
 	
+	public void sendUpdatedDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
+		Socket socket = createClientSocket();
+		InputStream inputStream;
+		OutputStream outputStream;
+		DataInputStream input;
+		DataOutputStream output;
+		
+		try {
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			input = new DataInputStream(inputStream);
+			output = new DataOutputStream(outputStream);
+			
+			output.writeUTF("UPDATE");
+			output.writeUTF(data);
+			
+			//System.out.println(schema.size());
+			//System.out.println(insertionData.size());
+			
+			output.writeInt(schema.size());
+			output.writeInt(insertionData.size());
+			
+			for (int i = 0; i < schema.size(); i++) {
+				output.writeUTF(schema.get(i));
+				System.out.println(schema.get(i));
+			}
+			System.out.println("<<<END OF SCHEMA>>>");
+			for (int i = 0; i < insertionData.size(); i++) {
+				for (int j = 0; j < insertionData.get(i).size(); j++) {
+					System.out.println(insertionData.get(i).get(j));
+					output.writeUTF(insertionData.get(i).get(j));
+				}
+			}
+		
+			input.close();
+			output.close();
+			outputStream.close();
+			inputStream.close();
+			socket.close();
+			
+		} catch (IOException e) {
+			System.out.println("[NET] " + "There was a problem using the network stream");
+		}
+	}
+	
 	/**
 	 * Send data to the server for processing
 	 * @param schema The names of the columns to be inserted into
 	 * @param data The type of data being sent to the server, see API for options
 	 * @param insertionData The "row" of data to be inserted
 	 */
-	public void sendDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
+	public void sendNewDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
 		Socket socket = createClientSocket();
 		InputStream inputStream;
 		OutputStream outputStream;
@@ -99,13 +144,20 @@ public class NetworkCommunication {
 			output.writeUTF("SEND");
 			output.writeUTF(data);
 			
+			//System.out.println(schema.size());
+			//System.out.println(insertionData.size());
+			
 			output.writeInt(schema.size());
 			output.writeInt(insertionData.size());
+			
 			for (int i = 0; i < schema.size(); i++) {
 				output.writeUTF(schema.get(i));
+				System.out.println(schema.get(i));
 			}
+			System.out.println("<<<END OF SCHEMA>>>");
 			for (int i = 0; i < insertionData.size(); i++) {
 				for (int j = 0; j < insertionData.get(i).size(); j++) {
+					System.out.println(insertionData.get(i).get(j));
 					output.writeUTF(insertionData.get(i).get(j));
 				}
 			}

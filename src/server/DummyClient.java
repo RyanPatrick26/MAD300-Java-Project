@@ -47,9 +47,10 @@ public class DummyClient {
 		categories.add("Survival");
 		categories.add("Sandbox");
 		categories.add("Open World");
-		Game game = new Game("Minceraft", categories);
-		game.setDescription("The end is near");
-		api.addGame(game);
+		Game game = new Game("Minecraft", categories);
+		game.setID(33);
+		game.setDescription("The end is nearer");
+		api.updateGame(game);
 		
 		//games = api.getAllGames();
 		

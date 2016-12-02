@@ -40,8 +40,8 @@ public class ServerThread implements Runnable {
 				input = new DataInputStream(socket.getInputStream());
 				output = new DataOutputStream(socket.getOutputStream());
 				
-				InputStream inputStream = socket.getInputStream();
-				DataInputStream in = new DataInputStream(inputStream);
+//				InputStream inputStream = socket.getInputStream();
+//				DataInputStream in = new DataInputStream(inputStream);
 				
 				if (input.available() > 0) {
 					try {
@@ -103,37 +103,56 @@ public class ServerThread implements Runnable {
 							if (wantedType.equals("GAME")) {
 								
 								int numCols = input.readInt();
-								int numRows = input.readInt();
+								int numRows = input.readInt() + 1;
 								
-								//System.out.println(numCols);
-								//System.out.println(numRows);
+								System.out.println("Number of columns to add: " + numCols);
+								System.out.println("Number of rows to add: " + numRows);
 								
-								String[][] schema = new String[numCols][numRows];
+								String[][] schema = new String[numRows][numCols];
 								
 								for (int i = 0; i < numCols; i++) {
-									schema[i][0] = input.readUTF();
+									schema[0][i] = input.readUTF();
 								}
-								
+								for (int i = 0; i < numCols; i++) {
+									System.out.print(schema[0][i] + " | ");
+								}
+								System.out.println();
 								String data;
 								
-								for (int i = 0; i < numRows; i++) {
-									for (int j = 0; j < numCols; j++) {
-										data = input.readUTF();
-										System.out.println(data);
-										
-										schema[i+1][1] = data;
-									}
+//								for (int i = 0; i < numRows; i++) {
+//									for (int j = 0; j < numCols; j++) {
+//										data = input.readUTF();
+//										//System.out.println(data);
+//										System.out.println(i + " - " + j + " > " + data);
+//										schema[i][j] = data;
+//									}
+//								}
+								
+								for (int i = 0; i < numCols; i++) {
+									schema[1][i] = input.readUTF();
 								}
-								
-								for (int i = 0; i < numRows; i++) {
-									for (int j = 0; j < numCols; j++) {
-										System.out.println(schema[i] + " " + schema[j]);
-									}
+								for (int i = 0; i < numCols; i++) {
+									System.out.print(schema[1][i] + " | ");
 								}
+//								
+//								for (int i = 0; i < numCols; i++) {
+//									System.out.println(schema[i][0]);
+//								}
+//								for (int i = 0; i < numCols; i++) {
+//									System.out.println(schema[i][1]);
+//								}
 								
 								
 								
-								//dbUtilities.insertInto("GameManagement", schema);
+//								for (int i = 0; i < numRows; i++) {
+//									for (int j = 0; j < numCols; j++) {
+//										System.out.println(schema[i] + " " + schema[j]);
+//									}
+//								}
+//								
+								System.out.println(schema.length);
+								
+								System.out.println(dbUtilities.insertInto("GameManagement", schema));
 								
 //								ArrayList[] gameArray = new ArrayList[2];
 //								gameArray[0] = new ArrayList();
@@ -204,6 +223,45 @@ public class ServerThread implements Runnable {
 							}
 							
 							System.out.println("Finished receiving data from the client");
+						} else if (request.equals("UPDATE")) {
+							if (wantedType.equals("GAME")) {
+								
+								int numCols = input.readInt();
+								int numRows = input.readInt() + 1;
+								
+								System.out.println("Number of columns to update: " + numCols);
+								System.out.println("Number of rows to update: " + numRows);
+								
+								String[][] schema = new String[numRows][numCols];
+								
+								
+								
+								for (int i = 0; i < numCols; i++) {
+									schema[0][i] = input.readUTF();
+								}
+								for (int i = 0; i < numCols; i++) {
+									System.out.print(schema[0][i] + " | ");
+								}
+								
+								
+								System.out.println();
+								for (int i = 0; i < numCols; i++) {
+									schema[1][i] = input.readUTF();
+								}
+								for (int i = 0; i < numCols; i++) {
+									System.out.print(schema[1][i] + " | ");
+								}
+								System.out.println();
+								
+								String id = String.valueOf(schema[1][0]);
+								System.out.println("ID: " + id);
+								
+								dbUtilities.updateRow("GameManagement", id, schema[0], schema[1]);
+							}
+						} else if (request.equals("DELETE")) {
+							if (wantedType.equals("GAME")) {
+								
+							}
 						} else {
 							System.out.println("Client sent nonsense to the server");
 						}
@@ -213,6 +271,7 @@ public class ServerThread implements Runnable {
 						//out.println("[" + i + "] " + request);
 					} catch (Exception e) {
 						e.printStackTrace();
+						System.exit(1);
 					}
 					
 					//i++;
@@ -220,6 +279,7 @@ public class ServerThread implements Runnable {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		} finally {
 			try {
 				socket.close();
