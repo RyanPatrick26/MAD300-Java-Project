@@ -1,5 +1,6 @@
 package client;
 
+import common.Game;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.API;
 
 public class GameForm extends GridPane {
 
@@ -151,6 +153,15 @@ public class GameForm extends GridPane {
 			
 			if (okayToSubmit) {
 				// Submit the form
+				API api = new API();
+				
+				Game game = new Game();
+				game.setName(this.gameTitleField.getText());
+				game.setRating(2);
+				game.setDescription("TEST");
+				api.addGame(game);
+				
+				// Clear the form
 				gameTitleField.clear();
 				yearField.clear();
 				publisherField.clear();

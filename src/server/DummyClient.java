@@ -40,7 +40,6 @@ public class DummyClient {
 //		Socket clientSocket;
 		
 		ArrayList<Game> games = new ArrayList<Game>();
-//		
 		API api = new API();
 		
 		ArrayList<String> categories = new ArrayList<String>(); 

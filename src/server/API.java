@@ -23,8 +23,7 @@ public class API {
 		
 		for (int i = 0; i < table.size(); i++) {
 			ArrayList<String> categories = new ArrayList<String>();
-			categories.add("Testing Category 1");
-			categories.add("Testing Category 2");
+			categories.add("Video Game");
 			Game game = new Game(table.get(i).get(1), categories);
 			game.setID(Integer.parseInt(table.get(i).get(0)));
 			game.setRating(Integer.parseInt(table.get(i).get(2)));

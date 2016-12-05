@@ -25,23 +25,33 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import server.API;
 
 public class Main extends Application {
 	private static BackButton customBackButton;
 	private static Button backButton;
 	ArrayList<String> categoryList;
-	ArrayList<Game> gameList;
+	ArrayList<Game> gameList = new ArrayList<Game>();
 	ListView<Game> gameListView;
 	ArrayList<Game> selectedGameList = new ArrayList<Game>();
 	CheckBox boardGame = new CheckBox("Board Games");
 	CheckBox videoGame = new CheckBox("Video Games");
 	CheckBox cardGame = new CheckBox("Card Games");
+	API api = new API();
 	
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//Load the games from the server
+		gameList = api.getAllGames();
+		
+		
+		for (int i = 0; i < gameList.size(); i++) {
+			System.out.println(gameList.get(i).getName());
+		}
+		
 		// must store the game name, the genre(s), date last played, publisher,
 		// year the game was released
 
@@ -140,7 +150,7 @@ public class Main extends Application {
 		});
 
 		categoryList = new ArrayList<String>();
-		gameList = new ArrayList<Game>();
+		//gameList = new ArrayList<Game>();
 
 		categoryList.add("Board Game");
 		categoryList.add("Video Game");
@@ -153,7 +163,6 @@ public class Main extends Application {
 		gameList.add(new Game("Total War: Warhammer", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
 		gameList.add(new Game("Splendor", new ArrayList<String>(Arrays.asList(categoryList.get(0)))));
 		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
-;
 
 		gameListView = new ListView<Game>();
 		

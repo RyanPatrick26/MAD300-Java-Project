@@ -42,6 +42,10 @@ public class Game {
 		this.name = name;
 		this.category = category;
 	}
+	
+	public Game() {
+		
+	}
 
 	public String getName() {
 		return name;
