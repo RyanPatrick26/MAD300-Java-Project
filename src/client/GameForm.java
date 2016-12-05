@@ -1,8 +1,20 @@
 package client;
 
 import common.Game;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+
+import common.Game;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.TimelineBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -16,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import server.API;
+import javafx.util.Duration;
 
 public class GameForm extends GridPane {
 
@@ -25,6 +38,8 @@ public class GameForm extends GridPane {
 	private Label genreLabel;
 	private Label yearLabel;
 	private TextField yearField;
+	private Label ratingLabel;
+	private TextField ratingField;
 	private Label publisherLabel;
 	private TextField publisherField;
 	private ObservableList<String> genres;
@@ -37,9 +52,14 @@ public class GameForm extends GridPane {
 	private TextArea gameDescriptionArea;
 	
 	// Create an array for the textfields
-	private TextField[] textfields = new TextField[4];
+	private TextField[] textfields = new TextField[5];
+	
+	private Button submitButton;
+	
+	private Game tempGame;
 
 	public GameForm() {
+		
 		// Create default styling for the GameForm
 		this.setPadding(new Insets(15, 10, 15, 10));
 		this.setVgap(15);
@@ -64,7 +84,7 @@ public class GameForm extends GridPane {
 		// Put the observable array list in a listView
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		this.genreList.setMaxHeight(75);
+		this.genreList.setMinHeight(80);
 		// Add the listview to the gridpane
 		this.add(genreList, 3, 3);
 
@@ -77,9 +97,6 @@ public class GameForm extends GridPane {
 		 */
 		this.genreList.setOnMouseClicked(e -> {
 			ObservableList<String> selectedGenres = genreList.getSelectionModel().getSelectedItems();
-			for (String genreString : selectedGenres) {
-				System.out.println(genreString);
-			}
 		});
 
 		// Set the game release year label and add it to the grid
@@ -89,6 +106,7 @@ public class GameForm extends GridPane {
 		// Set the textfield for the game release year and add it to the grid
 		this.yearField = new TextField();
 		this.add(yearField, 3, 4);
+		
 		// Add the game year field to the textfields array
 		textfields[1] = gameTitleField;
 
@@ -99,6 +117,7 @@ public class GameForm extends GridPane {
 		// Set the textfield for the publisher and add it to the grid
 		this.publisherField = new TextField();
 		this.add(publisherField, 3, 5);
+		
 		// Add the game publisher field to the textfields array
 		textfields[2] = gameTitleField;
 
@@ -109,26 +128,38 @@ public class GameForm extends GridPane {
 		// Set the textfield for the hours played and add it to the grid
 		hoursPlayedField = new TextField("");
 		this.add(hoursPlayedField, 3, 6);
+		
 		// Add the hours played field to the textfields array
 		textfields[3] = gameTitleField;
+		
+		// Set the label for the rating and add it to the grid
+		ratingLabel = new Label("Rating:");
+		this.add(ratingLabel, 0, 7);
+		
+		// Set the textfield for the hours played and add it to the grid
+		ratingField = new TextField("");
+		this.add(ratingField, 3, 7);
+		
+		// Add the hours played field to the textfields array
+		textfields[4] = ratingField;
 
 		// Set the label for the game description
 		gameDescriptionLabel = new Label("Game Description:");
 		GridPane.setHalignment(gameDescriptionLabel, HPos.LEFT);
 		GridPane.setValignment(gameDescriptionLabel, VPos.TOP);
-		this.add(gameDescriptionLabel, 0, 7);
+		this.add(gameDescriptionLabel, 0, 8);
 
 		// Set the textarea for the game description and add it to the grid
 		gameDescriptionArea = new TextArea();
 		gameDescriptionArea.setMaxSize(320, 100);
-		this.add(gameDescriptionArea, 3, 7);
+		this.add(gameDescriptionArea, 3, 8);
 		
 
 		// Create the submit and clear buttons
-		Button submitButton = new Button("Submit Game");
-		submitButton.setMinWidth(100);
-		Button clearButton = new Button("Clear Form");
-		clearButton.setMinWidth(100);
+		submitButton = new Button("SUBMIT GAME");
+		submitButton.setMinWidth(150);
+		Button clearButton = new Button("CLEAR FORM");
+		clearButton.setMinWidth(150);
 
 		// Give the buttons functionality
 		/**
@@ -139,37 +170,7 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		submitButton.setOnAction(e -> {
-			// Create a boolean to check if it is okay to submit
-			boolean okayToSubmit = true;
-			
-			// Check if the form is empty in any way
-			if(checkForEmptyForm(this, gameDescriptionArea, genreList, textfields)) {
-				System.out.println("Form not fully filled.");
-				okayToSubmit = false;
-			} else {
-			// If the form is not empty check for the correct data types	
-				
-			}
-			
-			if (okayToSubmit) {
-				// Submit the form
-				API api = new API();
-				
-				Game game = new Game();
-				game.setName(this.gameTitleField.getText());
-				game.setRating(2);
-				game.setDescription("TEST");
-				api.addGame(game);
-				
-				// Clear the form
-				gameTitleField.clear();
-				yearField.clear();
-				publisherField.clear();
-				hoursPlayedField.clear();
-				gameDescriptionArea.clear();
-				genreList.getSelectionModel().clearSelection();
-			}
-
+			submitForm();
 		});
 		/**
 		 * Clears the form on button press.
@@ -178,13 +179,16 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		clearButton.setOnAction(e -> {
-			gameTitleField.clear();
-			yearField.clear();
-			publisherField.clear();
-			hoursPlayedField.clear();
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    ft.play();
+		
+		    clearForm();
 			
-			gameDescriptionArea.clear();
-			genreList.getSelectionModel().clearSelection();
 		});
 
 		// Create HBox
@@ -195,42 +199,99 @@ public class GameForm extends GridPane {
 		GridPane.setColumnSpan(buttonBox, 2);
 
 		// Add the buttons to the grid
-		this.add(buttonBox, 1, 9);
+		this.add(buttonBox, 1, 10);
 
 	}
 	
 	/**
-	 * Method to check the form and make sure it is completely filled
-	 * 	or if the form is empty in any way, shape, or form.
-	 * @author Nicholas Allaire
-	 * @param GridPane grid
-	 * @param TextArea desc
-	 * @param ListView list
-	 * @param TextField array fields
-	 * @return 	<code>true</code> if the form is empty in any way
-	 * 			or <code>false</code> if the form is filled completely
+	 * Method to submit the entries in the form
+	 * First creates a temporary game object to store the data
+	 * before inserting it into the database.  Then checks to make
+	 * sure that the entries in the form are valid.  If they are,
+	 * inserts the information into the object then clears the form.
+	 * If not, informs the user, and prompts them to try again
+	 * 
+	 * @author Ryan Patrick
+	 * @param none
 	 */
-	public static boolean checkForEmptyForm(GridPane grid, TextArea desc, 
-			ListView<String> list, TextField[] fields) {
-		// 
-		boolean isFormEmpty = false;
-		// Check the array of textfields for emptiness
-		for (int i = 0; i < fields.length; i++) {
-			if (fields[i].getText().trim().isEmpty()) {
-				isFormEmpty = true;
-			}
+	private void submitForm() {
+		tempGame = new Game();
+		if(checkForValidEntry()){
+			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    ft.play();
+		    
+		    ArrayList<String> categoryList = new ArrayList<>();
+		    for(int i = 0; i < genres.size(); i++){
+		    	if(genreList.getSelectionModel().isSelected(i)){
+		    		categoryList.add(genreList.getSelectionModel().getSelectedItem());
+		    	}
+		    }
+		    
+		    DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		    Calendar temp = Calendar.getInstance();
+		    format.setCalendar(temp);
+		    
+		    tempGame.setName(gameTitleField.getText());
+		    tempGame.setCategory(categoryList);
+		    tempGame.setPublisher(publisherField.getText());
+		    tempGame.setDescription(gameDescriptionArea.getText());
+		    tempGame.setRating(Integer.parseInt(ratingField.getText()));
+		    tempGame.setHoursPlayed(Integer.parseInt(hoursPlayedField.getText()));
+		    tempGame.setReleaseYear(Integer.parseInt(yearField.getText()));
+		    tempGame.setLastPlayed(format.getCalendar());
+		    
+		    API api = new API();
+
+			api.addGame(tempGame);
+		    
+			clearForm();
 		}
-		// Check the textarea for emptiness
-		if (desc.getText().isEmpty()) {
-			isFormEmpty = true;
-		}
-		
-		// Check if the listview is empty
-		if (list.getSelectionModel().isEmpty()) {
-			isFormEmpty = true;
-		}
-		// Return the results of the emptiness check
-		return isFormEmpty;
+		else{
+			System.out.println("Not a valid entry");
+		}		
 	}
 
+	/**
+	 * Method to clear all data from the form
+	 * @author: Ryan Patrick
+	 * @param: none
+	 */
+	private void clearForm() {
+		gameTitleField.clear();
+		yearField.clear();
+		publisherField.clear();
+		hoursPlayedField.clear();
+		gameDescriptionArea.clear();
+		ratingField.clear();
+		genreList.getSelectionModel().clearSelection();
+	}
+
+	private boolean checkForValidEntry() {
+		// TODO Auto-generated method stub
+		if(gameDescriptionArea.getText().isEmpty()){
+			return false;
+		}
+		for(int i = 0; i < textfields.length; i++){
+			if(textfields[i].getText().isEmpty()){
+				return false;
+			}
+		}
+		
+		try{
+			int tempYear = Integer.parseInt(yearField.getText());
+			int tempRating = Integer.parseInt(ratingField.getText());
+			int tempHoursPlayed = Integer.parseInt(hoursPlayedField.getText());
+		}
+		catch(NumberFormatException ex){
+			return false;
+		}
+		
+		
+		return true;
+		
+	}
 }

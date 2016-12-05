@@ -1,13 +1,15 @@
 package client;
 
+import common.Game;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import common.Game;
-
+import client.BackButton;
+import client.GameForm;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,10 +24,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import server.API;
+import javafx.util.Duration;
 
 public class Main extends Application {
 	private static BackButton customBackButton;
@@ -42,6 +47,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//Load the games from the server
@@ -59,9 +65,11 @@ public class Main extends Application {
 
 		// Create the title for the primary stage
 		Text formTitleText = new Text("Bearham Game Manager");
+		formTitleText.getStyleClass().add("title");
 
 		// Create the text to prompt the user to add a new game
 		Text addGameText = new Text("Add New Game");
+		addGameText.getStyleClass().add("subtitle");
 
 		// Add the form title and addGameText to a VBox
 		VBox topBox = new VBox();
@@ -81,11 +89,13 @@ public class Main extends Application {
 		formBox.setSpacing(10);
 
 		// Create the button to go the Previous games list
-		Button previousGamesButton = new Button("Previously Played Games");
+		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
+		previousGamesButton.setMinWidth(225);
 
 		// Create the copyright information Text
 		// TODO: Add correct copyright information
 		Text copyrightText = new Text("Copyright Team Bearham - 2016");
+		copyrightText.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
@@ -102,7 +112,8 @@ public class Main extends Application {
 		BorderPane.setAlignment(formTitleText, Pos.CENTER);
 
 		// Create the scene for the main screen
-		Scene mainScene = new Scene(mainPane, 800, 700);
+		Scene mainScene = new Scene(mainPane, 800, 850);
+		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
 
@@ -115,10 +126,32 @@ public class Main extends Application {
 			// Assign the event handler for the Back Button
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
-			backButton = new Button("Back");
-			backButton.setOnAction(e -> {
-				primaryStage.setScene(mainScene);
-				primaryStage.show();
+			backButton = new Button("BACK");
+			backButton.setOnAction(e -> {	
+				//Quick transition to show button has been clicked
+				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);
+			    fb.setFromValue(1.0);
+			    fb.setToValue(0.2);
+			    fb.setCycleCount(2);
+			    fb.setAutoReverse(true);
+			    
+			    /**
+				 * Makes sure the animation has finished before the scene is switched
+				 * 
+				 * @author Megan Caza
+				 * @param None
+				 */
+			    fb.setOnFinished(new EventHandler<ActionEvent>(){
+			    	 
+		            @Override
+		            public void handle(ActionEvent arg0) {
+		            	primaryStage.setScene(mainScene);
+						primaryStage.show();
+		            }
+		        });
+			    
+			    fb.play();
+				
 			});
 		}
 
@@ -135,18 +168,41 @@ public class Main extends Application {
 		}
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 700);
+		Scene previousGamesScene = new Scene(previousGamesPane, 800, 750);
+		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		// Create event handler for the Previous Games Button
 		/**
 		 * Switches to the previously played games screen
 		 * 
-		 * @author Nicholas Allaire
+		 * @author Nicholas Allaire, Megan Caza
 		 * @param None
 		 */
 		previousGamesButton.setOnAction(e -> {
-			primaryStage.setScene(previousGamesScene);
-			primaryStage.show();
+			//Quick transition to show button has been clicked
+			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
+		    ft.setFromValue(1.0);
+		    ft.setToValue(0.2);
+		    ft.setCycleCount(2);
+		    ft.setAutoReverse(true);
+		    
+		    /**
+			 * Makes sure the animation has finished before the scene is switched
+			 * 
+			 * @author Megan Caza
+			 * @param None
+			 */
+		    ft.setOnFinished(new EventHandler<ActionEvent>(){
+		    	 
+	            @Override
+	            public void handle(ActionEvent arg0) {
+	            	primaryStage.setScene(previousGamesScene);
+	    			primaryStage.show();
+	            }
+	        });
+		    
+		    ft.play();
+		    
 		});
 
 		categoryList = new ArrayList<String>();
@@ -203,10 +259,10 @@ public class Main extends Application {
 	}
 
 	/**
-	 * TODO: Implement JavaDoc-style comments
-	 * Custom Function to sort the selectedGameList alphabetically. No inputs
-	 * needed, just needs to be set as the comparator to use. Added by: Megan
-	 * Caza
+	 * Custom Function to sort the selectedGameList alphabetically. 
+	 * 
+	 * @param: none 
+	 * @author: Megan Caza
 	 **/
 	public class CustomComparator implements Comparator<Game> {
 		@Override
@@ -225,6 +281,9 @@ public class Main extends Application {
 	 * @author: Megan Caza, Ryan Patrick
 	 */
 	public void buildListView(boolean newValue, String gameType) {
+		
+		gameList = api.getAllGames();
+		
 		//loop through the overall game list to find any games that
 		//are part of a given category
 		for (int i = 0; i < gameList.size(); i++) {
