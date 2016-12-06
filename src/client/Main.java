@@ -93,7 +93,6 @@ public class Main extends Application {
 		previousGamesButton.setMinWidth(225);
 
 		// Create the copyright information Text
-		// TODO: Add correct copyright information
 		Text copyrightText = new Text("Copyright Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
 
@@ -245,11 +244,9 @@ public class Main extends Application {
 		VBox categoryBox = new VBox();
 		categoryBox.getChildren().addAll(boardGame, videoGame, cardGame);
 
-		HBox pane = new HBox();
-		pane.getChildren().addAll(categoryBox, gameListView);
-
 		// Add the categoryBox and gameListView to the previous games screen
-		previousGamesPane.setCenter(pane);
+		previousGamesPane.setCenter(gameListView);
+		previousGamesPane.setLeft(categoryBox);
 
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
