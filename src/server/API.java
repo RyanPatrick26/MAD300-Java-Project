@@ -1,95 +1,175 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import common.Game;
 
+/**
+ * API class for the project, oversees interaction between the form
+ * and the server software + database
+ * @author Brandon Brown
+ * @version 1.0
+ */
 public class API {
 	
-	private Socket createClientSocket() {
-		String server = "localhost";
-		int portNumber = 2000;
-		Socket clientSocket;
-		try {
-			clientSocket = new Socket(server, portNumber);
-			return clientSocket;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private ArrayList[] getFromServer(String wantedWhat, String wantedData) throws IOException {
-		Socket socket = createClientSocket();
-		OutputStream outputStream = socket.getOutputStream();
-		DataOutputStream out = new DataOutputStream(outputStream);
+	/**
+	 * API function to retrieve all games from the database
+	 * @return ArrayList<Game>	of games with their properties populated
+	 * @author Brandon Brown
+	 */
+	public ArrayList<Game> getAllGames() {
+		NetworkCommunication nc = new NetworkCommunication();
+		ArrayList<ArrayList<String>> table = nc.getDataFromServer("GAMES.ALL");
 		
-		out.writeUTF("GET");
-		out.writeUTF(wantedWhat);
-		out.writeUTF(wantedData);
+		ArrayList<Game> returnArray = new ArrayList<Game>();
 		
-		InputStream inputStream = socket.getInputStream();
-		DataInputStream in = new DataInputStream(inputStream);
-		
-		ArrayList[] outputArray = new ArrayList[2];
-		outputArray[0] = new ArrayList();
-		outputArray[1] = new ArrayList();
-		
-		String response;
-		boolean schemaToggle = false;
-		int counter = 0;
-		boolean running = true;
-		do {
-			response = in.readUTF();
-			//System.out.println(response);
-			if (response.equals("<<<END>>>")) {
-				running = false;
+		if (table != null) {
+			for (int i = 0; i < table.size(); i++) {
+				//System.out.println(table.get(i));
 			}
-			
-			if (running) {
-				if (!schemaToggle) {
-					outputArray[0].add(response);
-				} else {
-					outputArray[1].add(response);
+			for (int i = 0; i < table.size(); i++) {
+				//ArrayList<String> categories = new ArrayList<String>();
+				//categories.add("Video Game");
+				Game game = new Game();
+				try {
+					game.setID(Integer.parseInt(table.get(i).get(0)));
+				} catch (NumberFormatException e) {
+					game.setID(-1);
 				}
+				game.setName(table.get(i).get(1));
+				try {
+					game.setRating(Integer.parseInt(table.get(i).get(2)));
+				} catch (NumberFormatException e) {
+					game.setRating(-1);
+				}
+				game.setDescription(table.get(i).get(3));
+				try {
+					game.setReleaseYear(Integer.parseInt(table.get(i).get(4)));
+				} catch (NumberFormatException e) {
+					game.setReleaseYear(-1);
+				}
+				try {
+					game.setHoursPlayed(Integer.parseInt(table.get(i).get(5)));
+				} catch (NumberFormatException e) {
+					game.setHoursPlayed(-1);
+				}
+				game.setPublisher(table.get(i).get(6));
 				
-				schemaToggle = !schemaToggle;
-				counter++;
+				String stringCategories = table.get(i).get(7);
+				System.out.println(stringCategories);
+				ArrayList<String> categories = new  ArrayList<String>(Arrays.asList(stringCategories.split(",")));
+				
+				for (int j = 0; j < categories.size(); j++) {
+					//System.out.println(categories.get(j));
+				}
+				game.setCategory(categories);
+				
+				
+				returnArray.add(game);
 			}
-			
-			
-		} while (running);
+		}
+		
+		nc = null;
+		return returnArray;
+	}
 
-		return outputArray;
+	/**
+	 * API call to delete a game from the server based on it's id
+	 * @param game	Game object for extracting it's ID so it can be
+	 * 				removed from the database
+	 * @author Brandon Brown
+	 */
+	public void deleteGame(Game game) {
+		NetworkCommunication nc = new NetworkCommunication();
+		
+		int id = game.getID();
+		
+		nc.deleteDataFromServer("GAME", id);
+		nc = null;
 	}
 	
-	private String sendToServer() throws IOException {
-		return null;
+	/**
+	 * API call to update a row in the database from a game object
+	 * @param gmae	Game object with it's properties to be sent to
+	 * 				the server to overwrite the current ones.
+	 * @author Brandon Brown
+	 */
+	public void updateGame(Game game) {
+		NetworkCommunication nc = new NetworkCommunication();
 		
+		ArrayList<String> schema = new ArrayList<String>();
+		schema.add("ID");
+		schema.add("GameName");
+		schema.add("Rating");
+		schema.add("Description");
+		schema.add("ReleaseYear");
+		schema.add("HoursPlayed");
+		schema.add("GamePublisher");
+		schema.add("Categories");
+		
+		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
+		System.out.println("ID: " + game.getID());
+		insertionData.add(new ArrayList<String>());
+		insertionData.get(0).add(String.valueOf(game.getID()));
+		insertionData.get(0).add(game.getName());
+		insertionData.get(0).add(String.valueOf(game.getRating()));
+		insertionData.get(0).add(game.getDescription());
+		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
+		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
+		insertionData.get(0).add(game.getPublisher());
+		String categories = "";
+		for (int i = 0; i < game.getCategory().size(); i++) {
+			categories += game.getCategory().get(i);
+			if (i < game.getCategory().size() - 1) {
+				categories += ",";
+			}
+		}
+		System.out.println("CATEGORIES" + categories);
+		insertionData.get(0).add(String.valueOf(categories));
+		
+		nc.sendUpdatedDataToServer(schema, "GAME", insertionData);
 	}
 	
-	public Game getGame(int id) throws IOException {
-		ArrayList[] gameArray = getFromServer("GAME", Integer.toString(id));
-
-		// Print the response for testing purposes
-//		for (int i = 0; i < gameArray.length; i++) {
-//			for (int j = 0; j < gameArray[i].size(); j++) {
-//				System.out.println("[" + i + "]: " + gameArray[i].get(j));
-//			}
-//		}
+	/**
+	 * API function to add a new game to the server from it's object file
+	 * @param game	Game to be taken apart and inserted into a database row
+	 * @author Brandon Brown
+	 */
+	public void addGame(Game game) {
+		NetworkCommunication nc = new NetworkCommunication();
 		
-		Game game = new Game((String) gameArray[1].get(1), null);
-		game.setDescription((String) gameArray[1].get(3));
+		ArrayList<String> schema = new ArrayList<String>();
+		//schema.add("ID");
+		schema.add("GameName");
+		schema.add("Rating");
+		schema.add("Description");
+		schema.add("ReleaseYear");
+		schema.add("HoursPlayed");
+		schema.add("GamePublisher");
+		schema.add("Categories");
 		
-		return game;
+		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
+		//System.out.println("ID: " + game.getID());
+		insertionData.add(new ArrayList<String>());
+		//insertionData.get(0).add(String.valueOf(game.getID()));
+		insertionData.get(0).add(game.getName());
+		insertionData.get(0).add(String.valueOf(game.getRating()));
+		insertionData.get(0).add(game.getDescription());
+		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
+		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
+		insertionData.get(0).add(game.getPublisher());
+		String categories = "";
+		for (int i = 0; i < game.getCategory().size(); i++) {
+			categories += game.getCategory().get(i);
+			if (i < game.getCategory().size() - 1) {
+				categories += ",";
+			}
+		}
+		System.out.println("CATEGORIES: " + categories);
+		insertionData.get(0).add(String.valueOf(categories));
+		
+		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}
 }

@@ -12,6 +12,7 @@ public class Game {
 	private String publisher;
 	private int releaseYear;
 	private int hoursPlayed;
+	private int id;
 	
 	public Game(){
 	
@@ -87,8 +88,15 @@ public class Game {
 	}
 	
 	public String toString(){
-		return getName() + " " + getCategory() + " " + getRating() + " " + getDescription() + " " + getLastPlayed() + 
-			 " " + getPublisher() + " " + getReleaseYear() + " " + getHoursPlayed();
+		return getName();
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
+	
+	public int getID() {
+		return this.id;
 	}
 	
 }

@@ -129,8 +129,8 @@ public class DatabaseUtilities {
 				System.out.println("SQL Exception: " + e.getMessage());
 				System.out.println("SQL State: " + e.getSQLState());
 				System.out.println("SQL Error Code: " + e.getErrorCode());
-				System.out.println("[SHUTTING DOWN]");
-				System.exit(1);
+//				System.out.println("[SHUTTING DOWN]");
+//				System.exit(1);
 			}
 		}
 		
@@ -155,7 +155,6 @@ public class DatabaseUtilities {
 			tableExists = result.next();
 			connection.close();
 			return tableExists ? true : false;
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -217,10 +216,63 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 
+		return false;
+	}
+	
+	public boolean deleteRow(String tableName, String id) {
+		String query = "DELETE FROM " + tableName + " WHERE ID = " + id + ";";
+		
+		try {
+			Connection connection = establishConnection();
+			
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.execute();
+			connection.close();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean updateRow(String tableName, String id, String[] schema, String[] data) {
+		
+		String query = "UPDATE " + tableName + " SET ";
+		for (int i = 1; i < schema.length; i++) {
+			query += schema[i] + "='" + data[i] + "'";
+			if (i != schema.length-1) {
+				query += ",";
+			}
+		}
+		query += " WHERE ID = " + id + ";";
+		
+		try {
+			Connection connection = establishConnection();
+			
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.execute();
+			connection.close();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
+		}
+		
 		return false;
 	}
 	
@@ -261,8 +313,57 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<ArrayList<String>> fetchAllRows(String tableName, String[] schema) {
+		
+		
+		ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();
+		
+		String query = "";
+		query += "SELECT ";
+		for (int i = 0; i < schema.length; i++) {
+			query += schema[i];
+			
+			if (i < schema.length - 1) {
+				query += ", ";
+			}
+		}
+		query += " FROM " + tableName + ";";
+		
+		try {
+			Connection connection = establishConnection();
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.executeQuery();
+			ResultSet result = preparedStatement.getResultSet();
+			while (result.next()) {
+				ArrayList<String> row = null;
+
+				for (int i = 0; i < schema.length; i++) {
+					if (i == 0) {
+						row = new ArrayList<String>();
+					}
+					row.add(result.getString(schema[i]));
+					
+				}
+				rows.add(row);
+
+			}
+
+			connection.close();
+			return rows;
+			
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: " + e.getMessage());
+			System.out.println("SQL State: " + e.getSQLState());
+			System.out.println("SQL Error Code: " + e.getErrorCode());
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 		
 		return null;

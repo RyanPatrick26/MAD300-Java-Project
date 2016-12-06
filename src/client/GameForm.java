@@ -1,5 +1,6 @@
 package client;
 
+import common.Game;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.API;
 import javafx.util.Duration;
 
 public class GameForm extends GridPane {
@@ -57,6 +59,7 @@ public class GameForm extends GridPane {
 	private Game tempGame;
 
 	public GameForm() {
+		
 		// Create default styling for the GameForm
 		this.setPadding(new Insets(15, 10, 15, 10));
 		this.setVgap(15);
@@ -212,6 +215,7 @@ public class GameForm extends GridPane {
 	 * @param none
 	 */
 	private void submitForm() {
+		
 		tempGame = new Game();
 		if(checkForValidEntry()){
 			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
@@ -222,10 +226,9 @@ public class GameForm extends GridPane {
 		    ft.play();
 		    
 		    ArrayList<String> categoryList = new ArrayList<>();
-		    for(int i = 0; i < genres.size(); i++){
-		    	if(genreList.getSelectionModel().isSelected(i)){
-		    		categoryList.add(genreList.getSelectionModel().getSelectedItem());
-		    	}
+		    ObservableList<String> selectedItems = genreList.getSelectionModel().getSelectedItems();
+		    for (int i = 0; i < selectedItems.size(); i++) {
+		    	categoryList.add(selectedItems.get(i));
 		    }
 		    
 		    DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -240,6 +243,10 @@ public class GameForm extends GridPane {
 		    tempGame.setHoursPlayed(Integer.parseInt(hoursPlayedField.getText()));
 		    tempGame.setReleaseYear(Integer.parseInt(yearField.getText()));
 		    tempGame.setLastPlayed(format.getCalendar());
+		    
+		    API api = new API();
+
+			api.addGame(tempGame);
 		    
 			clearForm();
 		}

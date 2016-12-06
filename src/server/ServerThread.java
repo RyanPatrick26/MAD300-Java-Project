@@ -3,8 +3,8 @@ package server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Server thread for every new connection to the server
@@ -14,75 +14,135 @@ import java.net.Socket;
  */
 public class ServerThread implements Runnable {
 
-	DataInputStream input;
-	DataOutputStream output;
-	Socket socket;
-	DatabaseUtilities dbUtilities = new DatabaseUtilities();
+	private DataInputStream input;
+	private DataOutputStream output;
+	private Socket socket;
+	private int connectionNumber;
+	private DatabaseUtilities dbUtilities = new DatabaseUtilities();
 	
 	/**
 	 * ServerThread constructor
 	 * @param socket	is passed from the Master Server to it's
 	 * 					threads for handling of the client's connection
+	 * @author Brandon Brown
 	 */
-	public ServerThread(Socket socket) {
+	public ServerThread(Socket socket, int connectionNumber) {
 		this.socket = socket;
+		this.connectionNumber = connectionNumber;
 	}
 	
+	/**
+	 * Main server loop, where connections are served and communication
+	 * between the server and client happens
+	 * @author Brandon Brown
+	 */
 	@Override
 	public void run() {
-		int i = 0;
-		
+		System.out.println("[ SERVER ] Thread #" + this.connectionNumber + " created to service " + socket.getRemoteSocketAddress());
 		try {
-			while (true) {
-				input = new DataInputStream(socket.getInputStream());
-				output = new DataOutputStream(socket.getOutputStream());
-				if (input.available() > 0) {
-					try {
-						String request = input.readUTF();
-						String wantedType = input.readUTF();
-						String wantedData = input.readUTF();
-						
-						//System.out.println(message);
-						if (request.equals("GET")) {
-							System.out.println("Received a get request from the client");
-							
-							if (wantedType.equals("GAME")) {
-								String schema[] = {
-									"ID",
-									"GameName",
-									"Rating",
-									"Description"
-								};
-								String[][] results = dbUtilities.fetchRow("GameManagement", Integer.parseInt(wantedData), schema);
-								for (int j = 0; j < results[0].length; j++) {
-									//System.out.print(results[0][j] + " | ");
-									output.writeUTF(results[0][j]);
-									output.writeUTF(results[1][j]);
-								}
-								output.writeUTF("<<<END>>>");
-							}
-						
-						} else if (request.equals("SEND")) {
-							System.out.println("Received a send request from the client");
-						} else {
-							System.out.println("Client sent nonsense to the server");
+			input = new DataInputStream(socket.getInputStream());
+			output = new DataOutputStream(socket.getOutputStream());
+
+			String requestType = input.readUTF();
+			String requestedData = input.readUTF();
+			
+			System.out.println("[ SERVER ] Client Sent: \"" + requestType + " " + requestedData + "\"");
+
+			if (requestType.equals("GET")) {
+				System.out.println("[ SERVER ] Client requested data using GET");
+
+				if (requestedData.equals("GAMES.ALL")) {
+					String schema[] = {
+						"ID",
+						"GameName",
+						"Rating",
+						"Description",
+						"ReleaseYear",
+						"HoursPlayed",
+						"GamePublisher",
+						"Categories"
+					};
+					ArrayList<ArrayList<String>> results = dbUtilities.fetchAllRows("GameManagement", schema);
+
+					output.writeInt(results.size());
+					if (!results.isEmpty()) {
+						output.writeInt(results.get(0).size());
+					} else {
+						output.writeInt(0);
+					}
+
+					for (int r = 0; r < results.size(); r++) {
+						for (int j = 0; j < results.get(r).size(); j++) {
+							output.writeUTF(results.get(r).get(j));
 						}
-						
-						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-						
-						out.println("[" + i + "] " + request);
-					} catch (Exception e) {
-						e.printStackTrace();
+					}
+				} else if (requestedData.equals("GAME")) {
+					// TODO:
+				}
+
+			} else if (requestType.equals("SEND")) {
+				System.out.println("[ SERVER ] Client sent data using SEND");
+				
+				if (requestedData.equals("GAME")) {
+					
+					int numCols = input.readInt();
+					int numRows = input.readInt() + 1;
+
+					String[][] schema = new String[numRows][numCols];
+					
+					for (int i = 0; i < numCols; i++) {
+						schema[0][i] = input.readUTF();
+					}
+
+					for (int i = 0; i < numCols; i++) {
+						schema[1][i] = input.readUTF();
 					}
 					
-					i++;
+					dbUtilities.insertInto("GameManagement", schema);
 				}
+				
+				System.out.println("[ SERVER ] Finished receiving data from client");
+				
+			} else if (requestType.equals("UPDATE")) {
+				if (requestedData.equals("GAME")) {
+					
+					int numCols = input.readInt();
+					int numRows = input.readInt() + 1; // +1 because the schema is included
+					
+					String[][] schema = new String[numRows][numCols];
+
+					for (int i = 0; i < numCols; i++) {
+						schema[0][i] = input.readUTF();
+					}
+					for (int i = 0; i < numCols; i++) {
+						schema[1][i] = input.readUTF();
+					}
+					
+					String id = String.valueOf(schema[1][0]);
+					
+					dbUtilities.updateRow("GameManagement", id, schema[0], schema[1]);
+				}
+
+			} else if (requestType.equals("DELETE")) {
+				if (requestedData.equals("GAME")) {
+					String id = String.valueOf(input.readInt());
+
+					dbUtilities.deleteRow("GameManagement", id);
+				}
+			} else {
+				System.out.println("[ SERVER ] Client sent bad data");
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		} finally {
 			try {
+				input.close();
+				output.close();
 				socket.close();
+
+				System.out.println("[ SERVER ] Closing Thread.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
