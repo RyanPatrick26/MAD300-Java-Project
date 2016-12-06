@@ -10,14 +10,16 @@ import java.util.ArrayList;
 
 public class NetworkCommunication {
 
+	ServerConfig serverConfig = new ServerConfig();
+	
 	/**
 	 * Create a client socket to connect to the server on it's port
 	 * and return the socket to the requester
 	 * @return Socket
 	 */
 	public Socket createClientSocket() {
-		String server = "localhost";
-		int portNumber = 2000;
+		String server = serverConfig.getServerHost();
+		int portNumber = serverConfig.getServerPort();
 		Socket clientSocket;
 		try {
 			clientSocket = new Socket(server, portNumber);
@@ -78,6 +80,12 @@ public class NetworkCommunication {
 		}
 	}
 	
+	/**
+	 * Request information be deleted from the server
+	 * based on it's type and id
+	 * @param data	Type of data to be deleted from the server
+	 * @param id	Database ID to be removed
+	 */
 	public void deleteDataFromServer(String data, int id) {
 		Socket socket = createClientSocket();
 		InputStream inputStream;
@@ -107,6 +115,13 @@ public class NetworkCommunication {
 		}
 	}
 	
+	
+	/**
+	 * Request the server to update the database using the information provided
+	 * @param schema		Database schema for the server to use
+	 * @param data			Datatype to be updated
+	 * @param insertionData	Updated information in the form of a 2D arraylist of strings
+	 */
 	public void sendUpdatedDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
 		Socket socket = createClientSocket();
 		InputStream inputStream;
@@ -122,10 +137,7 @@ public class NetworkCommunication {
 			
 			output.writeUTF("UPDATE");
 			output.writeUTF(data);
-			
-			//System.out.println(schema.size());
-			//System.out.println(insertionData.size());
-			
+
 			output.writeInt(schema.size());
 			output.writeInt(insertionData.size());
 			
@@ -154,8 +166,8 @@ public class NetworkCommunication {
 	
 	/**
 	 * Send data to the server for processing
-	 * @param schema The names of the columns to be inserted into
-	 * @param data The type of data being sent to the server, see API for options
+	 * @param schema		The names of the columns to be inserted into
+	 * @param data			The type of data being sent to the server, see API for options
 	 * @param insertionData The "row" of data to be inserted
 	 */
 	public void sendNewDataToServer(ArrayList<String> schema, String data, ArrayList<ArrayList<String>> insertionData) {
@@ -173,10 +185,7 @@ public class NetworkCommunication {
 			
 			output.writeUTF("SEND");
 			output.writeUTF(data);
-			
-			//System.out.println(schema.size());
-			//System.out.println(insertionData.size());
-			
+
 			output.writeInt(schema.size());
 			output.writeInt(insertionData.size());
 			
@@ -192,20 +201,6 @@ public class NetworkCommunication {
 				}
 			}
 			
-//			ArrayList<ArrayList<String>> returnArray = new ArrayList<ArrayList<String>>();
-//			
-//			int numCols = input.readInt();
-//			int numRows = input.readInt();
-//			
-//			for (int i = 0; i < numCols; i++) {
-//				returnArray.add(new ArrayList<String>());
-//				for (int j = 0; j < numRows; j++) {
-//					String cell = input.readUTF();
-//					
-//					returnArray.get(i).add(cell);
-//				}
-//			}
-//			
 			input.close();
 			output.close();
 			outputStream.close();

@@ -15,17 +15,17 @@ public class Server extends Thread {
 	DataInputStream input;
 	DataOutputStream output;
 	ServerSocket listener;
+	ServerConfig serverConfig = new ServerConfig();
 	
 	/**
 	 * Server constructor, creates threads to handle all connections
 	 * @throws IOException
 	 */
-	public Server() throws IOException {
+	public Server() {
 		try {
 			System.out.println("[ SERVER ] Started");
 			System.out.println("[ SERVER ] Waiting for connections");
-			// TODO: Add the server socket's port to a configuration file.
-			listener = new ServerSocket(2000);
+			listener = new ServerSocket(serverConfig.getServerPort());
 			
 			int connectionNumber = 0;
 			
@@ -38,8 +38,23 @@ public class Server extends Thread {
 				thread.start();
 				connectionNumber++;
 			}
+		} catch (IllegalArgumentException e) {
+			System.out.println("[ SERVER ] Invalid port number, ensure the value is between 0 and 65535 in conf/server.properties");
+			System.out.println("[ SERVER ] SHUTTING DOWN");
+			System.exit(1);
+		} catch (IOException e) {
+			System.out.println("[ SERVER ] Unable to start server...");
+			System.out.println("           Is it already running?");
+			System.out.println("[ SERVER ] SHUTTING DOWN");
+			System.exit(1);
 		} finally {
-			listener.close();
+			try {
+				listener.close();
+			} catch (IOException e) {
+				System.out.println("[ SERVER ] There was a problem closing the serversocket");
+				System.out.println("[ SERVER ] SHUTTING DOWN");
+				System.exit(1);
+			}
 		}
 	}
 	
@@ -49,8 +64,7 @@ public class Server extends Thread {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		// TODO: Make use of application arguments to change the behavior of server
-		
+
 		// Start the server as soon as the application is launched.
 		new Server();
 	}
