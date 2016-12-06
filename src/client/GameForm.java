@@ -107,7 +107,7 @@ public class GameForm extends GridPane {
 		});
 
 		// Set the game release year label and add it to the grid
-		yearLabel = new Label("Year Released:");
+		yearLabel = new Label("Year Released (ex: 1998):");
 		this.add(yearLabel, 0, 4);
 
 		// Set the textfield for the game release year and add it to the grid
@@ -129,7 +129,7 @@ public class GameForm extends GridPane {
 		textfields[2] = gameTitleField;
 
 		// Set the label for the hours played and add it to the grid
-		hoursPlayedLabel = new Label("Hours Played:");
+		hoursPlayedLabel = new Label("Hours Played (ex: 5):");
 		this.add(hoursPlayedLabel, 0, 6);
 
 		// Set the textfield for the hours played and add it to the grid
@@ -140,7 +140,7 @@ public class GameForm extends GridPane {
 		textfields[3] = gameTitleField;
 		
 		// Set the label for the rating and add it to the grid
-		ratingLabel = new Label("Rating:");
+		ratingLabel = new Label("Rating: (ex: 10)");
 		this.add(ratingLabel, 0, 7);
 		
 		// Set the textfield for the hours played and add it to the grid
@@ -255,7 +255,10 @@ public class GameForm extends GridPane {
 
 			api.addGame(tempGame);
 		    
+			buttonSound();
+			
 			clearForm();
+			
 		}
 		else{
 			error();
@@ -275,6 +278,7 @@ public class GameForm extends GridPane {
 		gameDescriptionArea.clear();
 		ratingField.clear();
 		genreList.getSelectionModel().clearSelection();
+		buttonSound();
 	}
 
 	private boolean checkForValidEntry() {
@@ -301,7 +305,15 @@ public class GameForm extends GridPane {
 		return true;
 		
 	}
-	
+	/**
+	 * Creates a media and an media player and plays an error sound when the user
+	 * tries to submit an invalid form. An alert box is also displayed prompting the
+	 * user to enter the correct information in the form. An additional warning is
+	 * issued if the user decides to get sassy with the software.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
 	private void error() {
 		Media error = new Media(new File("./audio/error.wav").toURI().toString());
 		MediaPlayer errorPlayer = new MediaPlayer(error);
@@ -318,8 +330,16 @@ public class GameForm extends GridPane {
 			alertNo.showAndWait();
 		}
 	}
-	
+	/**
+	 * Creates a media and an media player and plays a button sound.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
 	private void buttonSound() {
-		
+		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
+		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
+		buttonPlayer.setVolume(0.7);
+		buttonPlayer.play();
 	}
 }

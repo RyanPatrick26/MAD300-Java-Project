@@ -1,9 +1,13 @@
 package client;
 
+import java.io.File;
+
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -62,6 +66,10 @@ public class BackButton extends BorderPane {
 	 */
 	public void setBackButtonEvent(Stage stage, Scene scene) {
 		this.setOnMouseClicked(e -> {
+			Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
+			MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
+			buttonPlayer.setVolume(0.7);
+			buttonPlayer.play();
 			stage.setScene(scene);
 			stage.show();
 		});

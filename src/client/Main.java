@@ -188,6 +188,7 @@ public class Main extends Application {
 		 */
 		previousGamesButton.setOnAction(e -> {
 			//Quick transition to show button has been clicked
+			buttonSound();
 			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
 		    ft.setFromValue(1.0);
 		    ft.setToValue(0.2);
@@ -347,5 +348,17 @@ public class Main extends Application {
 		mainSoundplayer.setVolume(0.3);
 		mainSoundplayer.setCycleCount(AudioClip.INDEFINITE);
 		mainSoundplayer.play();
+	}
+	/**
+	 * Creates a media and an media player and plays a button sound.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
+	private void buttonSound() {
+		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
+		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
+		buttonPlayer.setVolume(0.7);
+		buttonPlayer.play();
 	}
 }
