@@ -123,6 +123,8 @@ public class Main extends Application {
 
 		/* PREVIOUS GAMES SCREEN */
 
+		// Create a previous games title
+		Text previousGamesTitle = new Text("Previously Played Games");
 		// Create the back button
 		File backImage = new File("images/back-arrow-icon.png");
 		// Check if the image file is a file. If not, create a regular button
@@ -330,6 +332,14 @@ public class Main extends Application {
 		}
 
 	}
+	/**
+	 * Creates a media and an AudioClip player and plays the main game music
+	 * indefinitely. The music in an 8bit loop that is pleasant and theme
+	 * appropriate.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
 	public static void mainMusic() {
 		String string = "./audio/happy-8bit-loop.wav";
 		Media mainMedia = new Media(Paths.get(string).toUri().toString());

@@ -1,6 +1,8 @@
 package client;
 
 import common.Game;
+
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +21,10 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -27,6 +32,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import server.API;
 import javafx.util.Duration;
 
@@ -251,7 +258,7 @@ public class GameForm extends GridPane {
 			clearForm();
 		}
 		else{
-			System.out.println("Not a valid entry");
+			error();
 		}		
 	}
 
@@ -292,6 +299,27 @@ public class GameForm extends GridPane {
 		
 		
 		return true;
+		
+	}
+	
+	private void error() {
+		Media error = new Media(new File("./audio/error.wav").toURI().toString());
+		MediaPlayer errorPlayer = new MediaPlayer(error);
+		errorPlayer.setVolume(0.7);
+		errorPlayer.play();
+		Alert alert = new Alert(AlertType.WARNING, "Not a valid entry. Please fill out "
+				+"the form completely with the appropriate information. Thanks!", ButtonType.OK, ButtonType.NO);
+		alert.showAndWait();
+		if (alert.getResult() == ButtonType.NO) {
+			MediaPlayer errorPlayer2 = new MediaPlayer(error);
+			errorPlayer2.setVolume(0.7);
+			errorPlayer2.play();
+			Alert alertNo = new Alert(AlertType.WARNING, "You have to.", ButtonType.OK);
+			alertNo.showAndWait();
+		}
+	}
+	
+	private void buttonSound() {
 		
 	}
 }
