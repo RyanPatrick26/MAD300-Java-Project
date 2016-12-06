@@ -174,20 +174,15 @@ public class DatabaseUtilities {
 	public boolean insertInto(String tableName, String[][] schema) {
 		// Check if there are 2 array "columns".
 		if (schema.length != 2) {
-			//System.out.println("Got here 0");
 			return false;
 			
 		// Check if the length of both "columns" are identical
 		} else if (schema[0].length != schema[1].length) {
-			//System.out.println("Got here 1");
 			return false;
 			
 		} else if (!tableExists(tableName)) {
-			//System.out.println("Got here 2");
 			return false;
 		}
-		
-		//System.out.println("Got here 3");
 
 		// Build the query statement from the schema array
 		String query = "";
@@ -253,15 +248,6 @@ public class DatabaseUtilities {
 	}
 	
 	public boolean updateRow(String tableName, String id, String[] schema, String[] data) {
-//		System.out.println("Updating Table!\n-------------------------------------");
-//		System.out.println(tableName);
-//		System.out.println(id);
-//		for (int i = 0; i < schema.length; i++) {
-//			System.out.print(schema[i] + " | ");
-//		}System.out.println();
-//		for (int i = 0; i < data.length; i++) {
-//			System.out.print(data[i] + " | ");
-//		}System.out.println();
 		
 		String query = "UPDATE " + tableName + " SET ";
 		for (int i = 1; i < schema.length; i++) {
@@ -271,10 +257,6 @@ public class DatabaseUtilities {
 			}
 		}
 		query += " WHERE ID = " + id + ";";
-		
-		//System.out.println(query);
-		
-		//System.exit(01);
 		
 		try {
 			Connection connection = establishConnection();
@@ -361,14 +343,8 @@ public class DatabaseUtilities {
 			preparedStatement.executeQuery();
 			ResultSet result = preparedStatement.getResultSet();
 			while (result.next()) {
-//				String results[][] = new String[2][schema.length];
-//				for (int i = 0; i < schema.length; i++) {
-//					results[0][i] = schema[i];
-//					results[1][i] = result.getString(schema[i]);
-//				}
 				ArrayList<String> row = null;
-				//System.out.println(result.getString(schema[i]));
-				
+
 				for (int i = 0; i < schema.length; i++) {
 					if (i == 0) {
 						row = new ArrayList<String>();
@@ -379,15 +355,7 @@ public class DatabaseUtilities {
 				rows.add(row);
 
 			}
-			
-//			for (int i = 0; i < rows.size(); i++) {
-//				for (int j = 0; j < rows.get(i).size(); j++) {
-//					System.out.println(rows.get(i).get(j));
-//				}
-//			}
-//			
-//			System.out.println("END OF RESULT SET");
-			
+
 			connection.close();
 			return rows;
 			
