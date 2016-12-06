@@ -215,6 +215,7 @@ public class GameForm extends GridPane {
 	 * @param none
 	 */
 	private void submitForm() {
+		
 		tempGame = new Game();
 		if(checkForValidEntry()){
 			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
@@ -225,10 +226,9 @@ public class GameForm extends GridPane {
 		    ft.play();
 		    
 		    ArrayList<String> categoryList = new ArrayList<>();
-		    for(int i = 0; i < genres.size(); i++){
-		    	if(genreList.getSelectionModel().isSelected(i)){
-		    		categoryList.add(genreList.getSelectionModel().getSelectedItem());
-		    	}
+		    ObservableList<String> selectedItems = genreList.getSelectionModel().getSelectedItems();
+		    for (int i = 0; i < selectedItems.size(); i++) {
+		    	categoryList.add(selectedItems.get(i));
 		    }
 		    
 		    DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
