@@ -51,12 +51,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//Load the games from the server
-		gameList = api.getAllGames();
+		//gameList = api.getAllGames();
 		
 		
-		for (int i = 0; i < gameList.size(); i++) {
-			System.out.println(gameList.get(i).getName());
-		}
+//		for (int i = 0; i < gameList.size(); i++) {
+//			System.out.println(gameList.get(i).getName());
+//		}
 		
 		// must store the game name, the genre(s), date last played, publisher,
 		// year the game was released

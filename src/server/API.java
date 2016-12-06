@@ -1,6 +1,8 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import common.Game;
 
@@ -25,20 +27,45 @@ public class API {
 		
 		if (table != null) {
 			for (int i = 0; i < table.size(); i++) {
-				ArrayList<String> categories = new ArrayList<String>();
-				categories.add("Video Game");
-				Game game = new Game(table.get(i).get(1), categories);
+				//System.out.println(table.get(i));
+			}
+			for (int i = 0; i < table.size(); i++) {
+				//ArrayList<String> categories = new ArrayList<String>();
+				//categories.add("Video Game");
+				Game game = new Game();
 				try {
 					game.setID(Integer.parseInt(table.get(i).get(0)));
 				} catch (NumberFormatException e) {
 					game.setID(-1);
 				}
+				game.setName(table.get(i).get(1));
 				try {
 					game.setRating(Integer.parseInt(table.get(i).get(2)));
 				} catch (NumberFormatException e) {
 					game.setRating(-1);
 				}
 				game.setDescription(table.get(i).get(3));
+				try {
+					game.setReleaseYear(Integer.parseInt(table.get(i).get(4)));
+				} catch (NumberFormatException e) {
+					game.setReleaseYear(-1);
+				}
+				try {
+					game.setHoursPlayed(Integer.parseInt(table.get(i).get(5)));
+				} catch (NumberFormatException e) {
+					game.setHoursPlayed(-1);
+				}
+				game.setPublisher(table.get(i).get(6));
+				
+				String stringCategories = table.get(i).get(7);
+				System.out.println(stringCategories);
+				ArrayList<String> categories = new  ArrayList<String>(Arrays.asList(stringCategories.split(",")));
+				
+				for (int j = 0; j < categories.size(); j++) {
+					//System.out.println(categories.get(j));
+				}
+				game.setCategory(categories);
+				
 				
 				returnArray.add(game);
 			}
@@ -77,6 +104,10 @@ public class API {
 		schema.add("GameName");
 		schema.add("Rating");
 		schema.add("Description");
+		schema.add("ReleaseYear");
+		schema.add("HoursPlayed");
+		schema.add("GamePublisher");
+		schema.add("Categories");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		System.out.println("ID: " + game.getID());
@@ -85,6 +116,18 @@ public class API {
 		insertionData.get(0).add(game.getName());
 		insertionData.get(0).add(String.valueOf(game.getRating()));
 		insertionData.get(0).add(game.getDescription());
+		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
+		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
+		insertionData.get(0).add(game.getPublisher());
+		String categories = "";
+		for (int i = 0; i < game.getCategory().size(); i++) {
+			categories += game.getCategory().get(i);
+			if (i < game.getCategory().size() - 1) {
+				categories += ",";
+			}
+		}
+		System.out.println("CATEGORIES" + categories);
+		insertionData.get(0).add(String.valueOf(categories));
 		
 		nc.sendUpdatedDataToServer(schema, "GAME", insertionData);
 	}
@@ -98,15 +141,34 @@ public class API {
 		NetworkCommunication nc = new NetworkCommunication();
 		
 		ArrayList<String> schema = new ArrayList<String>();
+		//schema.add("ID");
 		schema.add("GameName");
 		schema.add("Rating");
 		schema.add("Description");
+		schema.add("ReleaseYear");
+		schema.add("HoursPlayed");
+		schema.add("GamePublisher");
+		schema.add("Categories");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
+		//System.out.println("ID: " + game.getID());
 		insertionData.add(new ArrayList<String>());
+		//insertionData.get(0).add(String.valueOf(game.getID()));
 		insertionData.get(0).add(game.getName());
 		insertionData.get(0).add(String.valueOf(game.getRating()));
 		insertionData.get(0).add(game.getDescription());
+		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
+		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
+		insertionData.get(0).add(game.getPublisher());
+		String categories = "";
+		for (int i = 0; i < game.getCategory().size(); i++) {
+			categories += game.getCategory().get(i);
+			if (i < game.getCategory().size() - 1) {
+				categories += ",";
+			}
+		}
+		System.out.println("CATEGORIES: " + categories);
+		insertionData.get(0).add(String.valueOf(categories));
 		
 		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}

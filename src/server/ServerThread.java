@@ -56,12 +56,20 @@ public class ServerThread implements Runnable {
 						"ID",
 						"GameName",
 						"Rating",
-						"Description"
+						"Description",
+						"ReleaseYear",
+						"HoursPlayed",
+						"GamePublisher",
+						"Categories"
 					};
 					ArrayList<ArrayList<String>> results = dbUtilities.fetchAllRows("GameManagement", schema);
 
 					output.writeInt(results.size());
-					output.writeInt(results.get(0).size());
+					if (!results.isEmpty()) {
+						output.writeInt(results.get(0).size());
+					} else {
+						output.writeInt(0);
+					}
 
 					for (int r = 0; r < results.size(); r++) {
 						for (int j = 0; j < results.get(r).size(); j++) {

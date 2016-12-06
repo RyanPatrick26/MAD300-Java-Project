@@ -22,6 +22,15 @@ public class Server extends Thread {
 	 * @throws IOException
 	 */
 	public Server() {
+		
+		// Check the database is in a usable condition
+		// if it isn't fix it.
+		if (!isDBOk()) {
+			System.out.println("[ SERVER ] Couldn't validate database");
+			System.out.println("[ SERVER ] SHUTTING DOWN");
+			System.exit(1);
+		}
+		
 		try {
 			System.out.println("[ SERVER ] Started");
 			System.out.println("[ SERVER ] Waiting for connections");
@@ -67,5 +76,23 @@ public class Server extends Thread {
 
 		// Start the server as soon as the application is launched.
 		new Server();
+	}
+	
+	private boolean isDBOk() {
+		DatabaseUtilities db = new DatabaseUtilities();
+		if (db.tableExists("GameManagement")) {
+			return true;
+		} else {
+			String[][] schema = {
+					{"GameName", "Rating", "Description", "ReleaseYear", "HoursPlayed", "GamePublisher", "Categories"},
+					{"VARCHAR(40)", "TINYINT", "TEXT", "YEAR(4)", "SMALLINT", "VARCHAR(40)", "TINYTEXT"}
+			};
+			db.createTable("GameManagement", schema);
+			if (db.tableExists("GameManagement")) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

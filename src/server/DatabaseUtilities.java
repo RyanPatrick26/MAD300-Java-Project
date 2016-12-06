@@ -129,8 +129,8 @@ public class DatabaseUtilities {
 				System.out.println("SQL Exception: " + e.getMessage());
 				System.out.println("SQL State: " + e.getSQLState());
 				System.out.println("SQL Error Code: " + e.getErrorCode());
-				System.out.println("[SHUTTING DOWN]");
-				System.exit(1);
+//				System.out.println("[SHUTTING DOWN]");
+//				System.exit(1);
 			}
 		}
 		
@@ -155,7 +155,6 @@ public class DatabaseUtilities {
 			tableExists = result.next();
 			connection.close();
 			return tableExists ? true : false;
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -217,8 +216,8 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 
 		return false;
@@ -239,8 +238,8 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 		
 		return false;
@@ -270,8 +269,8 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 		
 		return false;
@@ -314,8 +313,8 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 		
 		return null;
@@ -363,8 +362,8 @@ public class DatabaseUtilities {
 			System.out.println("SQL Exception: " + e.getMessage());
 			System.out.println("SQL State: " + e.getSQLState());
 			System.out.println("SQL Error Code: " + e.getErrorCode());
-			System.out.println("[SHUTTING DOWN]");
-			System.exit(1);
+//			System.out.println("[SHUTTING DOWN]");
+//			System.exit(1);
 		}
 		
 		return null;
