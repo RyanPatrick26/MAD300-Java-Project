@@ -73,6 +73,7 @@ public class NetworkCommunication {
 			
 		} catch (IOException e) {
 			System.out.println("[NET] " + "There was a problem using the network stream");
+			e.printStackTrace();
 			return null;
 		}
 	}

@@ -33,17 +33,20 @@ public class ServerThread implements Runnable {
 	
 	@Override
 	public void run() {
-		//int i = 0;
-		
 		try {
-			while (true) {
+			
+			//int instanceCount = 0;
+			
+			//System.out.println("Connection #" + instanceCount);
+
+			//while (true) {
 				input = new DataInputStream(socket.getInputStream());
 				output = new DataOutputStream(socket.getOutputStream());
 				
 //				InputStream inputStream = socket.getInputStream();
 //				DataInputStream in = new DataInputStream(inputStream);
 				
-				if (input.available() > 0) {
+				//if (true) {
 					try {
 						String request = input.readUTF();
 						String wantedType = input.readUTF();
@@ -279,18 +282,25 @@ public class ServerThread implements Runnable {
 						System.exit(1);
 					}
 					
-					//i++;
-				}
-			}
+					//instanceCount++;
+				//}
+				//break;
+			//}
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		} finally {
 			try {
+				input.close();
+				output.close();
 				socket.close();
+
+				System.out.println("Closing Thread.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	
 }

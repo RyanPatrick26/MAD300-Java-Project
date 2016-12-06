@@ -273,7 +273,7 @@ public class DatabaseUtilities {
 		}
 		query += " WHERE ID = " + id + ";";
 		
-		System.out.println(query);
+		//System.out.println(query);
 		
 		//System.exit(01);
 		
@@ -381,13 +381,13 @@ public class DatabaseUtilities {
 
 			}
 			
-			for (int i = 0; i < rows.size(); i++) {
-				for (int j = 0; j < rows.get(i).size(); j++) {
-					System.out.println(rows.get(i).get(j));
-				}
-			}
-			
-			System.out.println("END OF RESULT SET");
+//			for (int i = 0; i < rows.size(); i++) {
+//				for (int j = 0; j < rows.get(i).size(); j++) {
+//					System.out.println(rows.get(i).get(j));
+//				}
+//			}
+//			
+//			System.out.println("END OF RESULT SET");
 			
 			connection.close();
 			return rows;

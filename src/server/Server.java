@@ -22,6 +22,8 @@ public class Server extends Thread {
 	 */
 	public Server() throws IOException {
 		try {
+			System.out.println("[ SERVER ] Started");
+			System.out.println("[ SERVER ] Waiting for connections");
 			// TODO: Add the server socket's port to a configuration file.
 			listener = new ServerSocket(2000);
 			
@@ -32,6 +34,7 @@ public class Server extends Thread {
 				ServerThread serverThread = new ServerThread(socket);
 				Thread thread = new Thread(serverThread);
 				thread.start();
+				
 			}
 		} finally {
 			listener.close();

@@ -21,17 +21,28 @@ public class API {
 		
 		ArrayList<Game> returnArray = new ArrayList<Game>();
 		
-		for (int i = 0; i < table.size(); i++) {
-			ArrayList<String> categories = new ArrayList<String>();
-			categories.add("Video Game");
-			Game game = new Game(table.get(i).get(1), categories);
-			game.setID(Integer.parseInt(table.get(i).get(0)));
-			game.setRating(Integer.parseInt(table.get(i).get(2)));
-			game.setDescription(table.get(i).get(3));
-			
-			returnArray.add(game);
+		if (table != null) {
+			for (int i = 0; i < table.size(); i++) {
+				ArrayList<String> categories = new ArrayList<String>();
+				categories.add("Video Game");
+				Game game = new Game(table.get(i).get(1), categories);
+				try {
+					game.setID(Integer.parseInt(table.get(i).get(0)));
+				} catch (NumberFormatException e) {
+					game.setID(-1);
+				}
+				try {
+					game.setRating(Integer.parseInt(table.get(i).get(2)));
+				} catch (NumberFormatException e) {
+					game.setRating(-1);
+				}
+				game.setDescription(table.get(i).get(3));
+				
+				returnArray.add(game);
+			}
 		}
 		
+		nc = null;
 		return returnArray;
 	}
 
@@ -41,6 +52,7 @@ public class API {
 		int id = game.getID();
 		
 		nc.deleteDataFromServer("GAME", id);
+		nc = null;
 	}
 	
 	public void updateGame(Game game) {
