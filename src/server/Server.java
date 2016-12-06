@@ -27,14 +27,16 @@ public class Server extends Thread {
 			// TODO: Add the server socket's port to a configuration file.
 			listener = new ServerSocket(2000);
 			
+			int connectionNumber = 0;
+			
 			// Main server loop
-			while (true) {	
+			while (true) {
 				Socket socket = listener.accept();
 				System.out.println("[ SERVER ] Accepted Connection");
-				ServerThread serverThread = new ServerThread(socket);
+				ServerThread serverThread = new ServerThread(socket, connectionNumber);
 				Thread thread = new Thread(serverThread);
 				thread.start();
-				
+				connectionNumber++;
 			}
 		} finally {
 			listener.close();
