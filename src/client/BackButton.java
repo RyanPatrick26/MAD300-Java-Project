@@ -66,6 +66,7 @@ public class BackButton extends BorderPane {
 	 */
 	public void setBackButtonEvent(Stage stage, Scene scene) {
 		this.setOnMouseClicked(e -> {
+			Main.previousGamesInfo.clear();
 			Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
 			MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
 			buttonPlayer.setVolume(0.7);

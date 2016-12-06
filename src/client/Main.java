@@ -25,6 +25,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,6 +34,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import server.API;
 import javafx.util.Duration;
@@ -40,6 +42,7 @@ import javafx.util.Duration;
 public class Main extends Application {
 	private static BackButton customBackButton;
 	private static Button backButton;
+	public static TextArea previousGamesInfo;
 	ArrayList<String> categoryList;
 	ArrayList<Game> gameList = new ArrayList<Game>();
 	ListView<Game> gameListView;
@@ -125,6 +128,16 @@ public class Main extends Application {
 
 		// Create a previous games title
 		Text previousGamesTitle = new Text("Previously Played Games");
+		previousGamesTitle.getStyleClass().add("title");
+		previousGamesTitle.setTextAlignment(TextAlignment.CENTER);
+		
+		// Set the TextArea for the game info
+		previousGamesInfo = new TextArea("");
+		previousGamesInfo.setEditable(false);
+		previousGamesInfo.setWrapText(true);
+		previousGamesInfo.setMaxHeight(650);
+		previousGamesInfo.setMaxWidth(400);
+		
 		// Create the back button
 		File backImage = new File("images/back-arrow-icon.png");
 		// Check if the image file is a file. If not, create a regular button
@@ -167,16 +180,21 @@ public class Main extends Application {
 		BorderPane previousGamesPane = new BorderPane();
 		previousGamesPane.setPadding(new Insets(10, 10, 10, 10));
 
+		// Create an HBox for the back button and title
+		HBox previousGamesTopBox = new HBox();
+		
 		// Check if the image for the back button is a file. If not, set the
 		// regular button
 		if (backImage.isFile()) {
-			previousGamesPane.setTop(customBackButton);
+			previousGamesTopBox.getChildren().addAll(customBackButton,previousGamesTitle);
+			previousGamesPane.setTop(previousGamesTopBox);
 		} else {
-			previousGamesPane.setTop(backButton);
+			previousGamesTopBox.getChildren().addAll(backButton,previousGamesTitle);
+			previousGamesPane.setTop(previousGamesTopBox);
 		}
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 750);
+		Scene previousGamesScene = new Scene(previousGamesPane, 800, 850);
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		// Create event handler for the Previous Games Button
@@ -250,6 +268,25 @@ public class Main extends Application {
 				buildListView(newValue, "Card Game");
 			}
 		});
+		
+		// set the on click for the list view
+		// TODO: Add database functionality
+		gameListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Game>() {
+			@Override
+			public void changed(ObservableValue<? extends Game> observale, Game oldGame, Game newGame) {
+				previousGamesInfo.clear();
+				//TODO: Add database functionality to this
+				previousGamesInfo.appendText("Game: "+newGame.getName()+"\n"
+											+"Genre(s): "+newGame.getCategory()+"\n"
+											+"Release Year: "+newGame.getReleaseYear()+"\n"
+											+"Publisher: "+newGame.getPublisher()+"\n"
+											+"Hours Played: "+newGame.getHoursPlayed()+"\n"
+											+"Rating: "+newGame.getRating()+"\n"
+											+"Last time played: "+newGame.getLastPlayed()+"\n"
+											+"Description: "+newGame.getDescription());
+			}
+			
+		});
 
 		VBox categoryBox = new VBox();
 		categoryBox.getChildren().addAll(boardGame, videoGame, cardGame);
@@ -257,6 +294,7 @@ public class Main extends Application {
 		// Add the categoryBox and gameListView to the previous games screen
 		previousGamesPane.setCenter(gameListView);
 		previousGamesPane.setLeft(categoryBox);
+		previousGamesPane.setRight(previousGamesInfo);
 
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
