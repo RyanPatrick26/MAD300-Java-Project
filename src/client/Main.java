@@ -2,6 +2,7 @@ package client;
 
 import common.Game;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -50,6 +55,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		mainMusic();
+		
 		//Load the games from the server
 		//gameList = api.getAllGames();
 		
@@ -322,5 +329,13 @@ public class Main extends Application {
 			}
 		}
 
+	}
+	public static void mainMusic() {
+		String string = "./audio/happy-8bit-loop.wav";
+		Media mainMedia = new Media(Paths.get(string).toUri().toString());
+		AudioClip mainSoundplayer = new AudioClip(mainMedia.getSource());
+		mainSoundplayer.setVolume(0.3);
+		mainSoundplayer.setCycleCount(AudioClip.INDEFINITE);
+		mainSoundplayer.play();
 	}
 }
