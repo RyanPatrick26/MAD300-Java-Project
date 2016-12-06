@@ -103,8 +103,10 @@ public class Main extends Application {
 		previousGamesButton.setMinWidth(225);
 
 		// Create the copyright information Text
-		Text copyrightText = new Text("Copyright Team Bearham - 2016");
+		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
+		Text copyrightText2 = new Text("Copyright © Team Bearham - 2016");
+		copyrightText2.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
@@ -135,7 +137,7 @@ public class Main extends Application {
 		previousGamesInfo = new TextArea("");
 		previousGamesInfo.setEditable(false);
 		previousGamesInfo.setWrapText(true);
-		previousGamesInfo.setMaxHeight(650);
+		previousGamesInfo.setMaxHeight(400);
 		previousGamesInfo.setMaxWidth(400);
 		
 		// Create the back button
@@ -192,6 +194,7 @@ public class Main extends Application {
 			previousGamesTopBox.getChildren().addAll(backButton,previousGamesTitle);
 			previousGamesPane.setTop(previousGamesTopBox);
 		}
+		previousGamesTopBox.setPadding(new Insets(10,10,10,10));
 
 		// Create the main and previousGames scenes
 		Scene previousGamesScene = new Scene(previousGamesPane, 800, 850);
@@ -248,6 +251,7 @@ public class Main extends Application {
 		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
 
 		gameListView = new ListView<Game>();
+		gameListView.setMaxHeight(600);
 		
 		//Event Listeners for selecting and deselecting the checkboxes
 		boardGame.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -295,6 +299,12 @@ public class Main extends Application {
 		previousGamesPane.setCenter(gameListView);
 		previousGamesPane.setLeft(categoryBox);
 		previousGamesPane.setRight(previousGamesInfo);
+		
+		previousGamesPane.setMargin(gameListView, new Insets(0,10,0,10));
+		previousGamesPane.setAlignment(gameListView, Pos.TOP_CENTER);
+		
+		previousGamesPane.setBottom(copyrightText2);
+		previousGamesPane.setAlignment(copyrightText2, Pos.CENTER);
 
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
