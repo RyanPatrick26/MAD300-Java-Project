@@ -4,7 +4,12 @@ Free for commercial use
 No attribution required 
 https://creativecommons.org/publicdomain/zero/1.0/
 
+"joystick.png"
+CC0 Public Domain
+Free for commercial use 
+No attribution required 
+https://creativecommons.org/publicdomain/zero/1.0/
 
-
-
-
+"arrow.png"
+Icon made by Flaticon from www.flaticon.com 
+This work is licensed under the attribution license: https://creativecommons.org/licenses/by/3.0/

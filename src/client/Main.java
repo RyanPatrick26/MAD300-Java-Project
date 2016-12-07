@@ -11,9 +11,11 @@ import java.util.Comparator;
 import client.BackButton;
 import client.GameForm;
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -23,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.beans.value.ChangeListener;
@@ -51,6 +52,8 @@ public class Main extends Application {
 	CheckBox videoGame = new CheckBox("Video Games");
 	CheckBox cardGame = new CheckBox("Card Games");
 	API api = new API();
+	Scene previousGamesScene;
+	ButtonClick buttonSound = new ButtonClick();
 	
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -58,6 +61,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Image customMouse = new Image("file:./images/arrow.png");
 		mainMusic();
 		
 		//Load the games from the server
@@ -76,6 +80,12 @@ public class Main extends Application {
 		// Create the title for the primary stage
 		Text formTitleText = new Text("Bearham Game Manager");
 		formTitleText.getStyleClass().add("title");
+		ScaleTransition titleAnimation = new ScaleTransition(Duration.millis(300), formTitleText);
+		titleAnimation.setByX(0.4f);
+		titleAnimation.setByY(0.4f);
+		titleAnimation.setCycleCount(7);
+		titleAnimation.setAutoReverse(true);
+		titleAnimation.play();
 
 		// Create the text to prompt the user to add a new game
 		Text addGameText = new Text("Add New Game");
@@ -100,7 +110,43 @@ public class Main extends Application {
 
 		// Create the button to go the Previous games list
 		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
-		previousGamesButton.setMinWidth(225);
+		previousGamesButton.setMinWidth(250);
+		
+		// Create event handler for the Previous Games Button
+				/**
+				 * Switches to the previously played games screen
+				 * 
+				 * @author Nicholas Allaire, Megan Caza
+				 * @param None
+				 */
+				previousGamesButton.setOnAction(e -> {
+					Thread thread = new Thread(buttonSound);
+					thread.start();
+					// Quick transition when the button is clicked
+					FadeTransition ft = new FadeTransition(Duration.millis(200), previousGamesButton);
+				    ft.setFromValue(1.0);
+				    ft.setToValue(0.2);
+				    ft.setCycleCount(2);
+				    ft.setAutoReverse(true);
+				    
+				    /**
+					 * Makes sure the animation has finished before the scene is switched
+					 * 
+					 * @author Megan Caza
+					 * @param None
+					 */
+				    ft.setOnFinished(new EventHandler<ActionEvent>(){
+				    	 
+			            @Override
+			            public void handle(ActionEvent arg0) {
+			            	primaryStage.setScene(previousGamesScene);
+			    			primaryStage.show();
+			            }
+			        });
+				    
+				    ft.play();
+				    
+				});
 
 		// Create the copyright information Text
 		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
@@ -110,6 +156,7 @@ public class Main extends Application {
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
+		previousGamesButton.setAlignment(Pos.CENTER);
 		bottomBox.getChildren().addAll(previousGamesButton, copyrightText);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.setSpacing(10);
@@ -124,6 +171,7 @@ public class Main extends Application {
 
 		// Create the scene for the main screen
 		Scene mainScene = new Scene(mainPane, 800, 850);
+		mainScene.setCursor(new ImageCursor(customMouse));
 		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
@@ -150,9 +198,11 @@ public class Main extends Application {
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
 			backButton = new Button("BACK");
-			backButton.setOnAction(e -> {	
+			backButton.setOnAction(e -> {
+				Thread thread = new Thread(buttonSound);
+				thread.start();
 				//Quick transition to show button has been clicked
-				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);
+				FadeTransition fb = new FadeTransition(Duration.millis(200), backButton);
 			    fb.setFromValue(1.0);
 			    fb.setToValue(0.2);
 			    fb.setCycleCount(2);
@@ -180,7 +230,7 @@ public class Main extends Application {
 
 		// Create the BorderPane for the previous games scene
 		BorderPane previousGamesPane = new BorderPane();
-		previousGamesPane.setPadding(new Insets(10, 10, 10, 10));
+		previousGamesPane.setPadding(new Insets(10, 20, 10, 20));
 
 		// Create an HBox for the back button and title
 		HBox previousGamesTopBox = new HBox();
@@ -197,43 +247,9 @@ public class Main extends Application {
 		previousGamesTopBox.setPadding(new Insets(10,10,10,10));
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 850);
+		previousGamesScene = new Scene(previousGamesPane, 800, 850);
+		previousGamesScene.setCursor(new ImageCursor(customMouse));
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
-
-		// Create event handler for the Previous Games Button
-		/**
-		 * Switches to the previously played games screen
-		 * 
-		 * @author Nicholas Allaire, Megan Caza
-		 * @param None
-		 */
-		previousGamesButton.setOnAction(e -> {
-			//Quick transition to show button has been clicked
-			buttonSound();
-			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0.2);
-		    ft.setCycleCount(2);
-		    ft.setAutoReverse(true);
-		    
-		    /**
-			 * Makes sure the animation has finished before the scene is switched
-			 * 
-			 * @author Megan Caza
-			 * @param None
-			 */
-		    ft.setOnFinished(new EventHandler<ActionEvent>(){
-		    	 
-	            @Override
-	            public void handle(ActionEvent arg0) {
-	            	primaryStage.setScene(previousGamesScene);
-	    			primaryStage.show();
-	            }
-	        });
-		    
-		    ft.play();
-		    
-		});
 
 		categoryList = new ArrayList<String>();
 		//gameList = new ArrayList<Game>();
@@ -300,7 +316,7 @@ public class Main extends Application {
 		previousGamesPane.setLeft(categoryBox);
 		previousGamesPane.setRight(previousGamesInfo);
 		
-		previousGamesPane.setMargin(gameListView, new Insets(0,10,0,10));
+		previousGamesPane.setMargin(gameListView, new Insets(0,15,0,15));
 		previousGamesPane.setAlignment(gameListView, Pos.TOP_CENTER);
 		
 		previousGamesPane.setBottom(copyrightText2);
@@ -309,6 +325,7 @@ public class Main extends Application {
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
 		primaryStage.setResizable(false);
+		primaryStage.getIcons().add(new Image("file:./images/joystick.png"));
 		primaryStage.show();
 
 	}
@@ -396,17 +413,5 @@ public class Main extends Application {
 		mainSoundplayer.setVolume(0.3);
 		mainSoundplayer.setCycleCount(AudioClip.INDEFINITE);
 		mainSoundplayer.play();
-	}
-	/**
-	 * Creates a media and an media player and plays a button sound.
-	 * 
-	 * @author Nicholas Allaire
-	 * @param none
-	 */
-	private void buttonSound() {
-		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
-		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
-		buttonPlayer.setVolume(0.7);
-		buttonPlayer.play();
 	}
 }
