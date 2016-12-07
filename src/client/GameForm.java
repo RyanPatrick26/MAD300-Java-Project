@@ -88,7 +88,7 @@ public class GameForm extends GridPane {
 		textfields[0] = gameTitleField;
 
 		// Set the genre label and add it to the grid
-		this.genreLabel = new Label("Genre(s) - Shift click to select more than 1:");
+		this.genreLabel = new Label("Genre(s) - Shift click to select\nmore than 1:");
 		this.add(genreLabel, 0, 3);
 
 		// Create an observable array list for the game genres
@@ -96,7 +96,7 @@ public class GameForm extends GridPane {
 		// Put the observable array list in a listView
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		this.genreList.setMinHeight(80);
+		this.genreList.setMaxHeight(110);
 		// Add the listview to the gridpane
 		this.add(genreList, 3, 3);
 
