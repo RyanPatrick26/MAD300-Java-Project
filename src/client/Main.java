@@ -140,6 +140,7 @@ public class Main extends Application {
 			            @Override
 			            public void handle(ActionEvent arg0) {
 			            	primaryStage.setScene(previousGamesScene);
+			            	previousGamesScene.setCursor(new ImageCursor(customMouse));
 			    			primaryStage.show();
 			            }
 			        });
@@ -149,9 +150,9 @@ public class Main extends Application {
 				});
 
 		// Create the copyright information Text
-		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
+		Text copyrightText = new Text("Copyright (c) Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
-		Text copyrightText2 = new Text("Copyright © Team Bearham - 2016");
+		Text copyrightText2 = new Text("Copyright (c) Team Bearham - 2016");
 		copyrightText2.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
@@ -327,7 +328,6 @@ public class Main extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.getIcons().add(new Image("file:./images/joystick.png"));
 		primaryStage.show();
-
 	}
 
 	/**
@@ -370,8 +370,7 @@ public class Main extends Application {
 						selectedGameList.add(gameList.get(i));
 						Collections.sort(selectedGameList, new CustomComparator());
 						gameListView.getItems().clear();
-						ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
-						gameListView.setItems(items);
+						
 					}
 				}
 			} 
@@ -391,11 +390,16 @@ public class Main extends Application {
 					if(cardGame.isSelected()){
 						buildListView(true, "Card Game");
 					}
-					ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
-					gameListView.setItems(items);
 				}
 			}
 		}
+		for(int i = 1; i < selectedGameList.size(); i++){
+			if(selectedGameList.get(i).getID() == selectedGameList.get(i-1).getID()){
+				selectedGameList.remove(i);
+			}
+		}
+		ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
+		gameListView.setItems(items);
 
 	}
 	/**

@@ -94,7 +94,7 @@ public class GameForm extends GridPane {
 		textfields[0] = gameTitleField;
 
 		// Set the genre label and add it to the grid
-		this.genreLabel = new Label("Genre(s) - Shift click to select\nmore than 1:");
+		this.genreLabel = new Label("Genre(s) - Shift click or Command click\nto select more than 1:");
 		this.add(genreLabel, 0, 3);
 
 		// Create an observable array list for the game genres
