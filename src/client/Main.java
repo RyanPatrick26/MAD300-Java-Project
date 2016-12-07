@@ -11,6 +11,7 @@ import java.util.Comparator;
 import client.BackButton;
 import client.GameForm;
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -79,6 +80,12 @@ public class Main extends Application {
 		// Create the title for the primary stage
 		Text formTitleText = new Text("Bearham Game Manager");
 		formTitleText.getStyleClass().add("title");
+		ScaleTransition titleAnimation = new ScaleTransition(Duration.millis(300), formTitleText);
+		titleAnimation.setByX(0.4f);
+		titleAnimation.setByY(0.4f);
+		titleAnimation.setCycleCount(7);
+		titleAnimation.setAutoReverse(true);
+		titleAnimation.play();
 
 		// Create the text to prompt the user to add a new game
 		Text addGameText = new Text("Add New Game");
