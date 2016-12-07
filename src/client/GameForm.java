@@ -206,13 +206,12 @@ public class GameForm extends GridPane {
 		// Create HBox
 		HBox buttonBox = new HBox();
 		buttonBox.getChildren().addAll(submitButton, clearButton);
-		buttonBox.setPadding(new Insets(5, 5, 5, 5));
+		submitButton.setAlignment(Pos.CENTER);
+		clearButton.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(20);
-		buttonBox.setAlignment(Pos.BOTTOM_CENTER);
-		GridPane.setColumnSpan(buttonBox, 4);
-
-		// Add the buttons to the grid
-		this.add(buttonBox, 1, 10);
+		buttonBox.setAlignment(Pos.TOP_CENTER);
+		GameForm.setColumnSpan(buttonBox, 4);
+		this.add(buttonBox, 0, 11);
 
 	}
 
