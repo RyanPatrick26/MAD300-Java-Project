@@ -154,7 +154,7 @@ public class API {
 		schema.add("HoursPlayed");
 		schema.add("GamePublisher");
 		schema.add("Categories");
-		schema.add("LastPlayed");
+		//schema.add("LastPlayed");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		//System.out.println("ID: " + game.getID());
@@ -175,7 +175,7 @@ public class API {
 		}
 		System.out.println("CATEGORIES: " + categories);
 		insertionData.get(0).add(String.valueOf(categories));
-		insertionData.get(0).add("NOW()");
+		//insertionData.get(0).add("");
 		
 		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}
