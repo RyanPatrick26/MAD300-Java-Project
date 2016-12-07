@@ -374,7 +374,7 @@ public class DatabaseUtilities {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://" + 
 					dbconf.getDatabaseHost() + "/" +
-					dbconf.getDatabaseName() + "?useSSL=false",
+					dbconf.getDatabaseName() + "?useSSL=false&zeroDateTimeBehavior=convertToNull",
 					dbconf.getDatabaseUser(),
 					dbconf.getDatabasePass()
 				);

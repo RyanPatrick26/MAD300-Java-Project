@@ -58,6 +58,8 @@ public class API {
 				}
 				game.setPublisher(table.get(i).get(6));
 				
+				game.setLastPlayed(table.get(i).get(8));
+				
 				String stringCategories = table.get(i).get(7);
 				System.out.println(stringCategories);
 				ArrayList<String> categories = new  ArrayList<String>(Arrays.asList(stringCategories.split(",")));
@@ -109,6 +111,7 @@ public class API {
 		schema.add("HoursPlayed");
 		schema.add("GamePublisher");
 		schema.add("Categories");
+		//schema.add("LastPlayed");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		System.out.println("ID: " + game.getID());
@@ -120,6 +123,7 @@ public class API {
 		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
 		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
 		insertionData.get(0).add(game.getPublisher());
+		//insertionData.get(0).add(game.getLastPlayed());
 		String categories = "";
 		for (int i = 0; i < game.getCategory().size(); i++) {
 			categories += game.getCategory().get(i);
@@ -150,6 +154,7 @@ public class API {
 		schema.add("HoursPlayed");
 		schema.add("GamePublisher");
 		schema.add("Categories");
+		schema.add("LastPlayed");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		//System.out.println("ID: " + game.getID());
@@ -170,6 +175,7 @@ public class API {
 		}
 		System.out.println("CATEGORIES: " + categories);
 		insertionData.get(0).add(String.valueOf(categories));
+		insertionData.get(0).add("NOW()");
 		
 		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}

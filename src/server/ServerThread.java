@@ -60,7 +60,8 @@ public class ServerThread implements Runnable {
 						"ReleaseYear",
 						"HoursPlayed",
 						"GamePublisher",
-						"Categories"
+						"Categories",
+						"LastPlayed"
 					};
 					ArrayList<ArrayList<String>> results = dbUtilities.fetchAllRows("GameManagement", schema);
 

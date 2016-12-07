@@ -242,7 +242,7 @@ public class GameForm extends GridPane {
 			tempGame.setRating(Integer.parseInt(ratingField.getText()));
 			tempGame.setHoursPlayed(Integer.parseInt(hoursPlayedField.getText()));
 			tempGame.setReleaseYear(Integer.parseInt(yearField.getText()));
-			tempGame.setLastPlayed(format.getCalendar());
+			tempGame.setLastPlayed(format.getCalendar().toString());
 
 			API api = new API();
 

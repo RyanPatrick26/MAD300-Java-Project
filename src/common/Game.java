@@ -8,7 +8,7 @@ public class Game {
 	private ArrayList<String> category;
 	private int rating;
 	private String description;
-	private Calendar lastPlayed;
+	private String lastPlayed;
 	private String publisher;
 	private int releaseYear;
 	private int hoursPlayed;
@@ -79,14 +79,22 @@ public class Game {
 		this.description = description;
 	}
 
-	public Calendar getLastPlayed() {
+//	public Calendar getLastPlayed() {
+//		return lastPlayed;
+//	}
+//
+//	public void setLastPlayed(Calendar lastPlayed) {
+//		this.lastPlayed = lastPlayed;
+//	}
+	
+	public String getLastPlayed() {
 		return lastPlayed;
 	}
 
-	public void setLastPlayed(Calendar lastPlayed) {
+	public void setLastPlayed(String lastPlayed) {
 		this.lastPlayed = lastPlayed;
 	}
-	
+
 	public String toString(){
 		return getName();
 	}

@@ -84,8 +84,8 @@ public class Server extends Thread {
 			return true;
 		} else {
 			String[][] schema = {
-					{"GameName", "Rating", "Description", "ReleaseYear", "HoursPlayed", "GamePublisher", "Categories"},
-					{"VARCHAR(40)", "TINYINT", "TEXT", "YEAR(4)", "SMALLINT", "VARCHAR(40)", "TINYTEXT"}
+					{"GameName", "Rating", "Description", "ReleaseYear", "HoursPlayed", "GamePublisher", "Categories", "LastPlayed"},
+					{"VARCHAR(40)", "TINYINT", "TEXT", "YEAR(4)", "SMALLINT", "VARCHAR(40)", "TINYTEXT", "TIMESTAMP"}
 			};
 			db.createTable("GameManagement", schema);
 			if (db.tableExists("GameManagement")) {
