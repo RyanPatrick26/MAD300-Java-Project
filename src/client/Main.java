@@ -50,6 +50,8 @@ public class Main extends Application {
 	CheckBox videoGame = new CheckBox("Video Games");
 	CheckBox cardGame = new CheckBox("Card Games");
 	API api = new API();
+	Scene previousGamesScene;
+	ButtonClick buttonSound = new ButtonClick();
 	
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -100,6 +102,42 @@ public class Main extends Application {
 		// Create the button to go the Previous games list
 		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
 		previousGamesButton.setMinWidth(250);
+		
+		// Create event handler for the Previous Games Button
+				/**
+				 * Switches to the previously played games screen
+				 * 
+				 * @author Nicholas Allaire, Megan Caza
+				 * @param None
+				 */
+				previousGamesButton.setOnAction(e -> {
+					Thread thread = new Thread(buttonSound);
+					thread.start();
+					// Quick transition when the button is clicked
+					FadeTransition ft = new FadeTransition(Duration.millis(200), previousGamesButton);
+				    ft.setFromValue(1.0);
+				    ft.setToValue(0.2);
+				    ft.setCycleCount(2);
+				    ft.setAutoReverse(true);
+				    
+				    /**
+					 * Makes sure the animation has finished before the scene is switched
+					 * 
+					 * @author Megan Caza
+					 * @param None
+					 */
+				    ft.setOnFinished(new EventHandler<ActionEvent>(){
+				    	 
+			            @Override
+			            public void handle(ActionEvent arg0) {
+			            	primaryStage.setScene(previousGamesScene);
+			    			primaryStage.show();
+			            }
+			        });
+				    
+				    ft.play();
+				    
+				});
 
 		// Create the copyright information Text
 		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
@@ -150,9 +188,11 @@ public class Main extends Application {
 			customBackButton.setBackButtonEvent(primaryStage, mainScene);
 		} else {
 			backButton = new Button("BACK");
-			backButton.setOnAction(e -> {	
+			backButton.setOnAction(e -> {
+				Thread thread = new Thread(buttonSound);
+				thread.start();
 				//Quick transition to show button has been clicked
-				FadeTransition fb = new FadeTransition(Duration.millis(300), backButton);
+				FadeTransition fb = new FadeTransition(Duration.millis(200), backButton);
 			    fb.setFromValue(1.0);
 			    fb.setToValue(0.2);
 			    fb.setCycleCount(2);
@@ -197,43 +237,8 @@ public class Main extends Application {
 		previousGamesTopBox.setPadding(new Insets(10,10,10,10));
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 850);
+		previousGamesScene = new Scene(previousGamesPane, 800, 850);
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
-
-		// Create event handler for the Previous Games Button
-		/**
-		 * Switches to the previously played games screen
-		 * 
-		 * @author Nicholas Allaire, Megan Caza
-		 * @param None
-		 */
-		previousGamesButton.setOnAction(e -> {
-			//Quick transition to show button has been clicked
-			buttonSound();
-			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0.2);
-		    ft.setCycleCount(2);
-		    ft.setAutoReverse(true);
-		    
-		    /**
-			 * Makes sure the animation has finished before the scene is switched
-			 * 
-			 * @author Megan Caza
-			 * @param None
-			 */
-		    ft.setOnFinished(new EventHandler<ActionEvent>(){
-		    	 
-	            @Override
-	            public void handle(ActionEvent arg0) {
-	            	primaryStage.setScene(previousGamesScene);
-	    			primaryStage.show();
-	            }
-	        });
-		    
-		    ft.play();
-		    
-		});
 
 		categoryList = new ArrayList<String>();
 		//gameList = new ArrayList<Game>();
@@ -397,17 +402,5 @@ public class Main extends Application {
 		mainSoundplayer.setVolume(0.3);
 		mainSoundplayer.setCycleCount(AudioClip.INDEFINITE);
 		mainSoundplayer.play();
-	}
-	/**
-	 * Creates a media and an media player and plays a button sound.
-	 * 
-	 * @author Nicholas Allaire
-	 * @param none
-	 */
-	private void buttonSound() {
-		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
-		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
-		buttonPlayer.setVolume(0.7);
-		buttonPlayer.play();
 	}
 }

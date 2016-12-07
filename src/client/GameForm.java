@@ -14,6 +14,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.TimelineBuilder;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -35,6 +37,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import server.API;
 import javafx.util.Duration;
 
@@ -67,8 +70,11 @@ public class GameForm extends GridPane {
 	private TextField[] textfields = new TextField[5];
 
 	private Button submitButton;
+	private Button clearButton;
 
 	private Game tempGame;
+	
+	private ButtonClick buttonSound = new ButtonClick();
 
 	public GameForm() {
 
@@ -169,38 +175,16 @@ public class GameForm extends GridPane {
 		// Create the submit and clear buttons
 		submitButton = new Button("SUBMIT GAME");
 		submitButton.setMinWidth(150);
-		Button clearButton = new Button("CLEAR FORM");
+		clearButton = new Button("CLEAR FORM");
 		clearButton.setMinWidth(150);
 
 		// Give the buttons functionality
-		/**
-		 * Checks to see if the form is empty using the checkForEmptyForm()
-		 * method. If the form is not empty, it will send the form information
-		 * to a new game Object TODO: Add database functionality.
-		 * 
-		 * @author Nicholas Allaire
-		 * @param None
-		 */
 		submitButton.setOnAction(e -> {
 			submitForm();
 		});
-		/**
-		 * Clears the form on button press.
-		 * 
-		 * @author Nicholas Allaire
-		 * @param None
-		 */
+
 		clearButton.setOnAction(e -> {
-			// Quick transition to show button has been clicked
-			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
-			ft.setFromValue(1.0);
-			ft.setToValue(0.2);
-			ft.setCycleCount(2);
-			ft.setAutoReverse(true);
-			ft.play();
-
 			clearForm();
-
 		});
 
 		// Create HBox
@@ -229,7 +213,10 @@ public class GameForm extends GridPane {
 
 		tempGame = new Game();
 		if (checkForValidEntry()) {
-			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
+			Thread thread = new Thread(buttonSound);
+			thread.start();
+			
+			FadeTransition ft = new FadeTransition(Duration.millis(200), submitButton);
 			ft.setFromValue(1.0);
 			ft.setToValue(0.2);
 			ft.setCycleCount(2);
@@ -259,8 +246,6 @@ public class GameForm extends GridPane {
 
 			api.addGame(tempGame);
 
-			buttonSound();
-
 			clearForm();
 		} else {
 			error();
@@ -274,6 +259,17 @@ public class GameForm extends GridPane {
 	 * @param: none
 	 */
 	private void clearForm() {
+		Thread thread = new Thread(buttonSound);
+		thread.start();
+		
+		// Quick transition to show button has been clicked
+		FadeTransition ft = new FadeTransition(Duration.millis(200), clearButton);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.2);
+		ft.setCycleCount(2);
+		ft.setAutoReverse(true);
+		ft.play();
+		
 		gameTitleField.clear();
 		yearField.clear();
 		publisherField.clear();
@@ -281,7 +277,6 @@ public class GameForm extends GridPane {
 		gameDescriptionArea.clear();
 		ratingField.clear();
 		genreList.getSelectionModel().clearSelection();
-		buttonSound();
 	}
 
 	private boolean checkForValidEntry() {
@@ -318,6 +313,7 @@ public class GameForm extends GridPane {
 	 * @param none
 	 */
 	private void error() {
+		shakeScreen(this);
 		Media error = new Media(new File("./audio/error.wav").toURI().toString());
 		MediaPlayer errorPlayer = new MediaPlayer(error);
 		errorPlayer.setVolume(0.7);
@@ -334,17 +330,12 @@ public class GameForm extends GridPane {
 			alertNo.showAndWait();
 		}
 	}
-
-	/**
-	 * Creates a media and an media player and plays a button sound.
-	 * 
-	 * @author Nicholas Allaire
-	 * @param none
-	 */
-	private void buttonSound() {
-		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
-		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
-		buttonPlayer.setVolume(0.7);
-		buttonPlayer.play();
+	
+	public static void shakeScreen(Node node){
+		TranslateTransition shakeScreen = new TranslateTransition(Duration.millis(150), node);
+		shakeScreen.setByX(7);
+		shakeScreen.setCycleCount(8);
+		shakeScreen.setAutoReverse(true);
+		shakeScreen.playFromStart();
 	}
 }
