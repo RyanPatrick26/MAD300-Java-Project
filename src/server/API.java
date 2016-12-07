@@ -46,8 +46,9 @@ public class API {
 				}
 				game.setDescription(table.get(i).get(3));
 				try {
-					game.setReleaseYear(Integer.parseInt(table.get(i).get(4)));
+					game.setReleaseYear(Integer.parseInt(table.get(i).get(4).substring(0, 4)));
 				} catch (NumberFormatException e) {
+					
 					game.setReleaseYear(-1);
 				}
 				try {
