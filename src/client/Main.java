@@ -98,8 +98,9 @@ public class Main extends Application {
 		formBox.setSpacing(10);
 
 		// Create the button to go the Previous games list
-		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
-		previousGamesButton.setMinWidth(225);
+		Button previousGamesButton = new Button("PREVIOUSLY\nPLAYED GAMES");
+		previousGamesButton.setTextAlignment(TextAlignment.CENTER);
+		previousGamesButton.setMinWidth(150);
 
 		// Create the copyright information Text
 		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
@@ -308,6 +309,7 @@ public class Main extends Application {
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
 		primaryStage.setResizable(false);
+		primaryStage.getIcons().add(new Image("file:./images/joystick.png"));
 		primaryStage.show();
 
 	}
