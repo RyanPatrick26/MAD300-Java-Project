@@ -370,8 +370,7 @@ public class Main extends Application {
 						selectedGameList.add(gameList.get(i));
 						Collections.sort(selectedGameList, new CustomComparator());
 						gameListView.getItems().clear();
-						ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
-						gameListView.setItems(items);
+						
 					}
 				}
 			} 
@@ -391,11 +390,16 @@ public class Main extends Application {
 					if(cardGame.isSelected()){
 						buildListView(true, "Card Game");
 					}
-					ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
-					gameListView.setItems(items);
 				}
 			}
 		}
+		for(int i = 1; i < selectedGameList.size(); i++){
+			if(selectedGameList.get(i).getID() == selectedGameList.get(i-1).getID()){
+				selectedGameList.remove(i);
+			}
+		}
+		ObservableList<Game> items = FXCollections.observableArrayList(selectedGameList);
+		gameListView.setItems(items);
 
 	}
 	/**
