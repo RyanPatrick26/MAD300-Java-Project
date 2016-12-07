@@ -17,6 +17,15 @@
 }
 
 .button:hover {
+	-fx-border:0.0;
+  	-fx-outline:none;
+	 -fx-padding:15.0px 0.0;
+	 -fx-font-size:13.0px;
+	 -fx-font-weight:bold;
+	 -fx-text-transform:uppercase;
+	 -fx-letter-spacing:1.0px;
+	 -fx-text-fill:#ffffff;
+	 -fx-background-radius: 10;
 	-fx-background-color:#4ee4bc;
 }
 

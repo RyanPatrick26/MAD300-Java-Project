@@ -98,9 +98,8 @@ public class Main extends Application {
 		formBox.setSpacing(10);
 
 		// Create the button to go the Previous games list
-		Button previousGamesButton = new Button("PREVIOUSLY\nPLAYED GAMES");
-		previousGamesButton.setTextAlignment(TextAlignment.CENTER);
-		previousGamesButton.setMinWidth(150);
+		Button previousGamesButton = new Button("PREVIOUSLY PLAYED GAMES");
+		previousGamesButton.setMinWidth(250);
 
 		// Create the copyright information Text
 		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
@@ -110,6 +109,7 @@ public class Main extends Application {
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
+		previousGamesButton.setAlignment(Pos.CENTER);
 		bottomBox.getChildren().addAll(previousGamesButton, copyrightText);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.setSpacing(10);
