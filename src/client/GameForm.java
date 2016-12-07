@@ -331,11 +331,18 @@ public class GameForm extends GridPane {
 		}
 	}
 	
-	public static void shakeScreen(Node node){
-		TranslateTransition shakeScreen = new TranslateTransition(Duration.millis(150), node);
-		shakeScreen.setByX(7);
-		shakeScreen.setCycleCount(8);
-		shakeScreen.setAutoReverse(true);
-		shakeScreen.playFromStart();
+	/**
+	 * Shakes the form using a translate transition when the user tries to 
+	 * submit the form improperly.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param form
+	 */
+	public static void shakeScreen(Node form){
+		TranslateTransition formShake = new TranslateTransition(Duration.millis(150), form);
+		formShake.setCycleCount(8);
+		formShake.setByX(7);
+		formShake.setAutoReverse(true);
+		formShake.playFromStart();
 	}
 }
