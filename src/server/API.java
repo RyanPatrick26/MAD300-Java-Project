@@ -46,8 +46,9 @@ public class API {
 				}
 				game.setDescription(table.get(i).get(3));
 				try {
-					game.setReleaseYear(Integer.parseInt(table.get(i).get(4)));
+					game.setReleaseYear(Integer.parseInt(table.get(i).get(4).substring(0, 4)));
 				} catch (NumberFormatException e) {
+					
 					game.setReleaseYear(-1);
 				}
 				try {
@@ -56,6 +57,8 @@ public class API {
 					game.setHoursPlayed(-1);
 				}
 				game.setPublisher(table.get(i).get(6));
+				
+				game.setLastPlayed(table.get(i).get(8));
 				
 				String stringCategories = table.get(i).get(7);
 				System.out.println(stringCategories);
@@ -108,6 +111,7 @@ public class API {
 		schema.add("HoursPlayed");
 		schema.add("GamePublisher");
 		schema.add("Categories");
+		//schema.add("LastPlayed");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		System.out.println("ID: " + game.getID());
@@ -119,6 +123,7 @@ public class API {
 		insertionData.get(0).add(String.valueOf(game.getReleaseYear()));
 		insertionData.get(0).add(String.valueOf(game.getHoursPlayed()));
 		insertionData.get(0).add(game.getPublisher());
+		//insertionData.get(0).add(game.getLastPlayed());
 		String categories = "";
 		for (int i = 0; i < game.getCategory().size(); i++) {
 			categories += game.getCategory().get(i);
@@ -149,6 +154,7 @@ public class API {
 		schema.add("HoursPlayed");
 		schema.add("GamePublisher");
 		schema.add("Categories");
+		//schema.add("LastPlayed");
 		
 		ArrayList<ArrayList<String>> insertionData = new ArrayList<ArrayList<String>>();
 		//System.out.println("ID: " + game.getID());
@@ -169,6 +175,7 @@ public class API {
 		}
 		System.out.println("CATEGORIES: " + categories);
 		insertionData.get(0).add(String.valueOf(categories));
+		//insertionData.get(0).add("");
 		
 		nc.sendNewDataToServer(schema, "GAME", insertionData);
 	}
