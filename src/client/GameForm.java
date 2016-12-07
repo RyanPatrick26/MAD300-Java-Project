@@ -169,7 +169,7 @@ public class GameForm extends GridPane {
 
 		// Set the textarea for the game description and add it to the grid
 		gameDescriptionArea = new TextArea();
-		gameDescriptionArea.setMaxSize(320, 100);
+		gameDescriptionArea.setMaxSize(320, 150);
 		this.add(gameDescriptionArea, 3, 8);
 
 		// Create the submit and clear buttons

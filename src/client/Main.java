@@ -14,6 +14,7 @@ import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -59,6 +60,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Image customMouse = new Image("file:./images/arrow.png");
 		mainMusic();
 		
 		//Load the games from the server
@@ -162,6 +164,7 @@ public class Main extends Application {
 
 		// Create the scene for the main screen
 		Scene mainScene = new Scene(mainPane, 800, 850);
+		mainScene.setCursor(new ImageCursor(customMouse));
 		mainScene.getStylesheets().add("file:./styles/main.css");
 
 		/* PREVIOUS GAMES SCREEN */
@@ -220,7 +223,7 @@ public class Main extends Application {
 
 		// Create the BorderPane for the previous games scene
 		BorderPane previousGamesPane = new BorderPane();
-		previousGamesPane.setPadding(new Insets(10, 10, 10, 10));
+		previousGamesPane.setPadding(new Insets(10, 20, 10, 20));
 
 		// Create an HBox for the back button and title
 		HBox previousGamesTopBox = new HBox();
@@ -238,6 +241,7 @@ public class Main extends Application {
 
 		// Create the main and previousGames scenes
 		previousGamesScene = new Scene(previousGamesPane, 800, 850);
+		previousGamesScene.setCursor(new ImageCursor(customMouse));
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		categoryList = new ArrayList<String>();
@@ -305,7 +309,7 @@ public class Main extends Application {
 		previousGamesPane.setLeft(categoryBox);
 		previousGamesPane.setRight(previousGamesInfo);
 		
-		previousGamesPane.setMargin(gameListView, new Insets(0,10,0,10));
+		previousGamesPane.setMargin(gameListView, new Insets(0,15,0,15));
 		previousGamesPane.setAlignment(gameListView, Pos.TOP_CENTER);
 		
 		previousGamesPane.setBottom(copyrightText2);

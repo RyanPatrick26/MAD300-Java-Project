@@ -62,6 +62,10 @@
   -fx-border-radius:0.0pt;
 }
 
+.text-area {
+	-fx-font-size: 15px;
+}
+
 .list-view {
   -fx-padding:5.0px 5.0px;
   -fx-stroke: #a0b3b0;
