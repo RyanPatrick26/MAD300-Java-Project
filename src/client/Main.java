@@ -140,6 +140,7 @@ public class Main extends Application {
 			            @Override
 			            public void handle(ActionEvent arg0) {
 			            	primaryStage.setScene(previousGamesScene);
+			            	previousGamesScene.setCursor(new ImageCursor(customMouse));
 			    			primaryStage.show();
 			            }
 			        });
@@ -149,9 +150,9 @@ public class Main extends Application {
 				});
 
 		// Create the copyright information Text
-		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
+		Text copyrightText = new Text("Copyright (c) Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
-		Text copyrightText2 = new Text("Copyright © Team Bearham - 2016");
+		Text copyrightText2 = new Text("Copyright (c) Team Bearham - 2016");
 		copyrightText2.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
@@ -327,7 +328,6 @@ public class Main extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.getIcons().add(new Image("file:./images/joystick.png"));
 		primaryStage.show();
-
 	}
 
 	/**

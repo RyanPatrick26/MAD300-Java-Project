@@ -5,6 +5,7 @@ import java.io.File;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.util.Duration;
 public class BackButton extends BorderPane {
 	private String backButtonString;
 	private Image backButtonImage = null;
+	Image customMouse = new Image("file:./images/arrow.png");
 	
 	public BackButton(String backButtonString, Image backButtonImage) {
 		this.backButtonString = backButtonString;
@@ -93,6 +95,7 @@ public class BackButton extends BorderPane {
 	            @Override
 	            public void handle(ActionEvent arg0) {
 	            	stage.setScene(scene);
+	            	scene.setCursor(new ImageCursor(customMouse));
 	            	stage.show();
 	            }
 	        });
