@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -206,8 +207,9 @@ public class GameForm extends GridPane {
 		HBox buttonBox = new HBox();
 		buttonBox.getChildren().addAll(submitButton, clearButton);
 		buttonBox.setPadding(new Insets(5, 5, 5, 5));
-		buttonBox.setSpacing(15);
-		GridPane.setColumnSpan(buttonBox, 2);
+		buttonBox.setSpacing(20);
+		buttonBox.setAlignment(Pos.BOTTOM_CENTER);
+		GridPane.setColumnSpan(buttonBox, 4);
 
 		// Add the buttons to the grid
 		this.add(buttonBox, 1, 10);
