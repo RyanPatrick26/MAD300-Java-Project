@@ -2,6 +2,7 @@ package client;
 
 import common.Game;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +20,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,6 +34,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import server.API;
 import javafx.util.Duration;
@@ -35,6 +42,7 @@ import javafx.util.Duration;
 public class Main extends Application {
 	private static BackButton customBackButton;
 	private static Button backButton;
+	public static TextArea previousGamesInfo;
 	ArrayList<String> categoryList;
 	ArrayList<Game> gameList = new ArrayList<Game>();
 	ListView<Game> gameListView;
@@ -50,6 +58,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		mainMusic();
+		
 		//Load the games from the server
 		//gameList = api.getAllGames();
 		
@@ -93,9 +103,10 @@ public class Main extends Application {
 		previousGamesButton.setMinWidth(225);
 
 		// Create the copyright information Text
-		// TODO: Add correct copyright information
-		Text copyrightText = new Text("Copyright Team Bearham - 2016");
+		Text copyrightText = new Text("Copyright © Team Bearham - 2016");
 		copyrightText.getStyleClass().add("bottom");
+		Text copyrightText2 = new Text("Copyright © Team Bearham - 2016");
+		copyrightText2.getStyleClass().add("bottom");
 
 		// Create an VBox to store the bottom of the BorderPane
 		VBox bottomBox = new VBox();
@@ -117,6 +128,18 @@ public class Main extends Application {
 
 		/* PREVIOUS GAMES SCREEN */
 
+		// Create a previous games title
+		Text previousGamesTitle = new Text("Previously Played Games");
+		previousGamesTitle.getStyleClass().add("title");
+		previousGamesTitle.setTextAlignment(TextAlignment.CENTER);
+		
+		// Set the TextArea for the game info
+		previousGamesInfo = new TextArea("");
+		previousGamesInfo.setEditable(false);
+		previousGamesInfo.setWrapText(true);
+		previousGamesInfo.setMaxHeight(400);
+		previousGamesInfo.setMaxWidth(400);
+		
 		// Create the back button
 		File backImage = new File("images/back-arrow-icon.png");
 		// Check if the image file is a file. If not, create a regular button
@@ -159,16 +182,22 @@ public class Main extends Application {
 		BorderPane previousGamesPane = new BorderPane();
 		previousGamesPane.setPadding(new Insets(10, 10, 10, 10));
 
+		// Create an HBox for the back button and title
+		HBox previousGamesTopBox = new HBox();
+		
 		// Check if the image for the back button is a file. If not, set the
 		// regular button
 		if (backImage.isFile()) {
-			previousGamesPane.setTop(customBackButton);
+			previousGamesTopBox.getChildren().addAll(customBackButton,previousGamesTitle);
+			previousGamesPane.setTop(previousGamesTopBox);
 		} else {
-			previousGamesPane.setTop(backButton);
+			previousGamesTopBox.getChildren().addAll(backButton,previousGamesTitle);
+			previousGamesPane.setTop(previousGamesTopBox);
 		}
+		previousGamesTopBox.setPadding(new Insets(10,10,10,10));
 
 		// Create the main and previousGames scenes
-		Scene previousGamesScene = new Scene(previousGamesPane, 800, 750);
+		Scene previousGamesScene = new Scene(previousGamesPane, 800, 850);
 		previousGamesScene.getStylesheets().add("file:./styles/main.css");
 
 		// Create event handler for the Previous Games Button
@@ -180,6 +209,7 @@ public class Main extends Application {
 		 */
 		previousGamesButton.setOnAction(e -> {
 			//Quick transition to show button has been clicked
+			buttonSound();
 			FadeTransition ft = new FadeTransition(Duration.millis(300), previousGamesButton);
 		    ft.setFromValue(1.0);
 		    ft.setToValue(0.2);
@@ -221,6 +251,7 @@ public class Main extends Application {
 		gameList.add(new Game("Archeage", new ArrayList<String>(Arrays.asList(categoryList.get(1)))));
 
 		gameListView = new ListView<Game>();
+		gameListView.setMaxHeight(600);
 		
 		//Event Listeners for selecting and deselecting the checkboxes
 		boardGame.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -241,15 +272,39 @@ public class Main extends Application {
 				buildListView(newValue, "Card Game");
 			}
 		});
+		
+		// set the on click for the list view
+		// TODO: Add database functionality
+		gameListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Game>() {
+			@Override
+			public void changed(ObservableValue<? extends Game> observale, Game oldGame, Game newGame) {
+				previousGamesInfo.clear();
+				//TODO: Add database functionality to this
+				previousGamesInfo.appendText("Game: "+newGame.getName()+"\n"
+											+"Genre(s): "+newGame.getCategory()+"\n"
+											+"Release Year: "+newGame.getReleaseYear()+"\n"
+											+"Publisher: "+newGame.getPublisher()+"\n"
+											+"Hours Played: "+newGame.getHoursPlayed()+"\n"
+											+"Rating: "+newGame.getRating()+"\n"
+											+"Last time played: "+newGame.getLastPlayed()+"\n"
+											+"Description: "+newGame.getDescription());
+			}
+			
+		});
 
 		VBox categoryBox = new VBox();
 		categoryBox.getChildren().addAll(boardGame, videoGame, cardGame);
 
-		HBox pane = new HBox();
-		pane.getChildren().addAll(categoryBox, gameListView);
-
 		// Add the categoryBox and gameListView to the previous games screen
-		previousGamesPane.setCenter(pane);
+		previousGamesPane.setCenter(gameListView);
+		previousGamesPane.setLeft(categoryBox);
+		previousGamesPane.setRight(previousGamesInfo);
+		
+		previousGamesPane.setMargin(gameListView, new Insets(0,10,0,10));
+		previousGamesPane.setAlignment(gameListView, Pos.TOP_CENTER);
+		
+		previousGamesPane.setBottom(copyrightText2);
+		previousGamesPane.setAlignment(copyrightText2, Pos.CENTER);
 
 		primaryStage.setTitle("[MAD300 Java Project]");
 		primaryStage.setScene(mainScene);
@@ -325,5 +380,33 @@ public class Main extends Application {
 			}
 		}
 
+	}
+	/**
+	 * Creates a media and an AudioClip player and plays the main game music
+	 * indefinitely. The music in an 8bit loop that is pleasant and theme
+	 * appropriate.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
+	public static void mainMusic() {
+		String string = "./audio/happy-8bit-loop.wav";
+		Media mainMedia = new Media(Paths.get(string).toUri().toString());
+		AudioClip mainSoundplayer = new AudioClip(mainMedia.getSource());
+		mainSoundplayer.setVolume(0.3);
+		mainSoundplayer.setCycleCount(AudioClip.INDEFINITE);
+		mainSoundplayer.play();
+	}
+	/**
+	 * Creates a media and an media player and plays a button sound.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
+	private void buttonSound() {
+		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
+		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
+		buttonPlayer.setVolume(0.7);
+		buttonPlayer.play();
 	}
 }

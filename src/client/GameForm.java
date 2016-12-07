@@ -1,6 +1,8 @@
 package client;
 
 import common.Game;
+
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +21,10 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -27,6 +32,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import server.API;
 import javafx.util.Duration;
 
@@ -35,13 +42,17 @@ public class GameForm extends GridPane {
 	// Declare all the form variables
 	private Label gameTitleLabel;
 	private TextField gameTitleField;
-	private Label genreLabel;
+	
 	private Label yearLabel;
 	private TextField yearField;
+	
 	private Label ratingLabel;
 	private TextField ratingField;
+	
 	private Label publisherLabel;
 	private TextField publisherField;
+	
+	private Label genreLabel;
 	private ObservableList<String> genres;
 	private ListView<String> genreList;
 
@@ -50,16 +61,16 @@ public class GameForm extends GridPane {
 
 	private Label gameDescriptionLabel;
 	private TextArea gameDescriptionArea;
-	
+
 	// Create an array for the textfields
 	private TextField[] textfields = new TextField[5];
-	
+
 	private Button submitButton;
-	
+
 	private Game tempGame;
 
 	public GameForm() {
-		
+
 		// Create default styling for the GameForm
 		this.setPadding(new Insets(15, 10, 15, 10));
 		this.setVgap(15);
@@ -100,13 +111,13 @@ public class GameForm extends GridPane {
 		});
 
 		// Set the game release year label and add it to the grid
-		yearLabel = new Label("Year Released:");
+		yearLabel = new Label("Year Released (ex: 1998):");
 		this.add(yearLabel, 0, 4);
 
 		// Set the textfield for the game release year and add it to the grid
 		this.yearField = new TextField();
 		this.add(yearField, 3, 4);
-		
+
 		// Add the game year field to the textfields array
 		textfields[1] = gameTitleField;
 
@@ -117,29 +128,29 @@ public class GameForm extends GridPane {
 		// Set the textfield for the publisher and add it to the grid
 		this.publisherField = new TextField();
 		this.add(publisherField, 3, 5);
-		
+
 		// Add the game publisher field to the textfields array
 		textfields[2] = gameTitleField;
 
 		// Set the label for the hours played and add it to the grid
-		hoursPlayedLabel = new Label("Hours Played:");
+		hoursPlayedLabel = new Label("Hours Played (ex: 5):");
 		this.add(hoursPlayedLabel, 0, 6);
 
 		// Set the textfield for the hours played and add it to the grid
 		hoursPlayedField = new TextField("");
 		this.add(hoursPlayedField, 3, 6);
-		
+
 		// Add the hours played field to the textfields array
 		textfields[3] = gameTitleField;
-		
+
 		// Set the label for the rating and add it to the grid
-		ratingLabel = new Label("Rating:");
+		ratingLabel = new Label("Rating: (ex: 10)");
 		this.add(ratingLabel, 0, 7);
-		
+
 		// Set the textfield for the hours played and add it to the grid
 		ratingField = new TextField("");
 		this.add(ratingField, 3, 7);
-		
+
 		// Add the hours played field to the textfields array
 		textfields[4] = ratingField;
 
@@ -153,7 +164,6 @@ public class GameForm extends GridPane {
 		gameDescriptionArea = new TextArea();
 		gameDescriptionArea.setMaxSize(320, 100);
 		this.add(gameDescriptionArea, 3, 8);
-		
 
 		// Create the submit and clear buttons
 		submitButton = new Button("SUBMIT GAME");
@@ -163,9 +173,10 @@ public class GameForm extends GridPane {
 
 		// Give the buttons functionality
 		/**
-		 * Checks to see if the form is empty using the checkForEmptyForm() method.
-		 * If the form is not empty, it will send the form information to a new game Object
-		 * TODO: Add database functionality.
+		 * Checks to see if the form is empty using the checkForEmptyForm()
+		 * method. If the form is not empty, it will send the form information
+		 * to a new game Object TODO: Add database functionality.
+		 * 
 		 * @author Nicholas Allaire
 		 * @param None
 		 */
@@ -179,16 +190,16 @@ public class GameForm extends GridPane {
 		 * @param None
 		 */
 		clearButton.setOnAction(e -> {
-			//Quick transition to show button has been clicked
+			// Quick transition to show button has been clicked
 			FadeTransition ft = new FadeTransition(Duration.millis(500), clearButton);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0.2);
-		    ft.setCycleCount(2);
-		    ft.setAutoReverse(true);
-		    ft.play();
-		
-		    clearForm();
-			
+			ft.setFromValue(1.0);
+			ft.setToValue(0.2);
+			ft.setCycleCount(2);
+			ft.setAutoReverse(true);
+			ft.play();
+
+			clearForm();
+
 		});
 
 		// Create HBox
@@ -202,61 +213,62 @@ public class GameForm extends GridPane {
 		this.add(buttonBox, 1, 10);
 
 	}
-	
+
 	/**
-	 * Method to submit the entries in the form
-	 * First creates a temporary game object to store the data
-	 * before inserting it into the database.  Then checks to make
-	 * sure that the entries in the form are valid.  If they are,
-	 * inserts the information into the object then clears the form.
-	 * If not, informs the user, and prompts them to try again
+	 * Method to submit the entries in the form First creates a temporary game
+	 * object to store the data before inserting it into the database. Then
+	 * checks to make sure that the entries in the form are valid. If they are,
+	 * inserts the information into the object then clears the form. If not,
+	 * informs the user, and prompts them to try again
 	 * 
 	 * @author Ryan Patrick
 	 * @param none
 	 */
 	private void submitForm() {
-		
+
 		tempGame = new Game();
-		if(checkForValidEntry()){
+		if (checkForValidEntry()) {
 			FadeTransition ft = new FadeTransition(Duration.millis(500), submitButton);
-		    ft.setFromValue(1.0);
-		    ft.setToValue(0.2);
-		    ft.setCycleCount(2);
-		    ft.setAutoReverse(true);
-		    ft.play();
-		    
-		    ArrayList<String> categoryList = new ArrayList<>();
-		    ObservableList<String> selectedItems = genreList.getSelectionModel().getSelectedItems();
-		    for (int i = 0; i < selectedItems.size(); i++) {
-		    	categoryList.add(selectedItems.get(i));
-		    }
-		    
-		    DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-		    Calendar temp = Calendar.getInstance();
-		    format.setCalendar(temp);
-		    
-		    tempGame.setName(gameTitleField.getText());
-		    tempGame.setCategory(categoryList);
-		    tempGame.setPublisher(publisherField.getText());
-		    tempGame.setDescription(gameDescriptionArea.getText());
-		    tempGame.setRating(Integer.parseInt(ratingField.getText()));
-		    tempGame.setHoursPlayed(Integer.parseInt(hoursPlayedField.getText()));
-		    tempGame.setReleaseYear(Integer.parseInt(yearField.getText()));
-		    tempGame.setLastPlayed(format.getCalendar());
-		    
-		    API api = new API();
+			ft.setFromValue(1.0);
+			ft.setToValue(0.2);
+			ft.setCycleCount(2);
+			ft.setAutoReverse(true);
+			ft.play();
+
+			ArrayList<String> categoryList = new ArrayList<>();
+			ObservableList<String> selectedItems = genreList.getSelectionModel().getSelectedItems();
+			for (int i = 0; i < selectedItems.size(); i++) {
+				categoryList.add(selectedItems.get(i));
+			}
+
+			DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			Calendar temp = Calendar.getInstance();
+			format.setCalendar(temp);
+
+			tempGame.setName(gameTitleField.getText());
+			tempGame.setCategory(categoryList);
+			tempGame.setPublisher(publisherField.getText());
+			tempGame.setDescription(gameDescriptionArea.getText());
+			tempGame.setRating(Integer.parseInt(ratingField.getText()));
+			tempGame.setHoursPlayed(Integer.parseInt(hoursPlayedField.getText()));
+			tempGame.setReleaseYear(Integer.parseInt(yearField.getText()));
+			tempGame.setLastPlayed(format.getCalendar());
+
+			API api = new API();
 
 			api.addGame(tempGame);
-		    
+
+			buttonSound();
+
 			clearForm();
+		} else {
+			error();
 		}
-		else{
-			System.out.println("Not a valid entry");
-		}		
 	}
 
 	/**
 	 * Method to clear all data from the form
+	 * 
 	 * @author: Ryan Patrick
 	 * @param: none
 	 */
@@ -268,30 +280,70 @@ public class GameForm extends GridPane {
 		gameDescriptionArea.clear();
 		ratingField.clear();
 		genreList.getSelectionModel().clearSelection();
+		buttonSound();
 	}
 
 	private boolean checkForValidEntry() {
 		// TODO Auto-generated method stub
-		if(gameDescriptionArea.getText().isEmpty()){
+		if (gameDescriptionArea.getText().isEmpty()) {
 			return false;
 		}
-		for(int i = 0; i < textfields.length; i++){
-			if(textfields[i].getText().isEmpty()){
+		for (int i = 0; i < textfields.length; i++) {
+			if (textfields[i].getText().isEmpty()) {
 				return false;
 			}
 		}
-		
-		try{
+
+		try {
 			int tempYear = Integer.parseInt(yearField.getText());
 			int tempRating = Integer.parseInt(ratingField.getText());
 			int tempHoursPlayed = Integer.parseInt(hoursPlayedField.getText());
-		}
-		catch(NumberFormatException ex){
+		} catch (NumberFormatException ex) {
 			return false;
 		}
-		
-		
+
 		return true;
-		
+
+	}
+
+	/**
+	 * Creates a media and an media player and plays an error sound when the
+	 * user tries to submit an invalid form. An alert box is also displayed
+	 * prompting the user to enter the correct information in the form. An
+	 * additional warning is issued if the user decides to get sassy with the
+	 * software.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
+	private void error() {
+		Media error = new Media(new File("./audio/error.wav").toURI().toString());
+		MediaPlayer errorPlayer = new MediaPlayer(error);
+		errorPlayer.setVolume(0.7);
+		errorPlayer.play();
+		Alert alert = new Alert(AlertType.WARNING,
+				"Please fill out " + "the form completely with the appropriate information. Thanks!", ButtonType.OK,
+				ButtonType.NO);
+		alert.showAndWait();
+		if (alert.getResult() == ButtonType.NO) {
+			MediaPlayer errorPlayer2 = new MediaPlayer(error);
+			errorPlayer2.setVolume(0.7);
+			errorPlayer2.play();
+			Alert alertNo = new Alert(AlertType.ERROR, "You have to. Don't be sassy! >:(", ButtonType.OK);
+			alertNo.showAndWait();
+		}
+	}
+
+	/**
+	 * Creates a media and an media player and plays a button sound.
+	 * 
+	 * @author Nicholas Allaire
+	 * @param none
+	 */
+	private void buttonSound() {
+		Media buttonSound = new Media(new File("./audio/openbutton.wav").toURI().toString());
+		MediaPlayer buttonPlayer = new MediaPlayer(buttonSound);
+		buttonPlayer.setVolume(0.7);
+		buttonPlayer.play();
 	}
 }
