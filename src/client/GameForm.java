@@ -249,6 +249,10 @@ public class GameForm extends GridPane {
 			api.addGame(tempGame);
 
 			clearForm();
+			
+			Alert alert = new Alert(AlertType.INFORMATION,
+					"Game successfully submitted. Thanks!", ButtonType.OK);
+			alert.showAndWait();
 		} else {
 			error();
 		}
@@ -293,10 +297,14 @@ public class GameForm extends GridPane {
 		}
 
 		try {
-			int tempYear = Integer.parseInt(yearField.getText());
-			int tempRating = Integer.parseInt(ratingField.getText());
-			int tempHoursPlayed = Integer.parseInt(hoursPlayedField.getText());
+			int tempYear = Integer.parseInt(yearField.getText().trim());
+			int tempRating = Integer.parseInt(ratingField.getText().trim());
+			int tempHoursPlayed = Integer.parseInt(hoursPlayedField.getText().trim());
 		} catch (NumberFormatException ex) {
+			return false;
+		}
+		
+		if(Integer.parseInt(yearField.getText().trim()) < 1000){
 			return false;
 		}
 
