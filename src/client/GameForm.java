@@ -102,7 +102,7 @@ public class GameForm extends GridPane {
 		// Put the observable array list in a listView
 		this.genreList = new ListView<>(genres);
 		this.genreList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		this.genreList.setMaxHeight(110);
+		this.genreList.setMaxHeight(125);
 		// Add the listview to the gridpane
 		this.add(genreList, 3, 3);
 
@@ -170,6 +170,8 @@ public class GameForm extends GridPane {
 		// Set the textarea for the game description and add it to the grid
 		gameDescriptionArea = new TextArea();
 		gameDescriptionArea.setMaxSize(320, 150);
+		gameDescriptionArea.setEditable(true);
+		gameDescriptionArea.setWrapText(true);
 		this.add(gameDescriptionArea, 3, 8);
 
 		// Create the submit and clear buttons
@@ -318,7 +320,7 @@ public class GameForm extends GridPane {
 		MediaPlayer errorPlayer = new MediaPlayer(error);
 		errorPlayer.setVolume(0.7);
 		errorPlayer.play();
-		Alert alert = new Alert(AlertType.WARNING,
+		Alert alert = new Alert(AlertType.ERROR,
 				"Please fill out " + "the form completely with the appropriate information. Thanks!", ButtonType.OK,
 				ButtonType.NO);
 		alert.showAndWait();
@@ -326,7 +328,7 @@ public class GameForm extends GridPane {
 			MediaPlayer errorPlayer2 = new MediaPlayer(error);
 			errorPlayer2.setVolume(0.7);
 			errorPlayer2.play();
-			Alert alertNo = new Alert(AlertType.ERROR, "You have to. Don't be sassy! >:(", ButtonType.OK);
+			Alert alertNo = new Alert(AlertType.WARNING, "You have to. Don't be sassy! >:(", ButtonType.OK);
 			alertNo.showAndWait();
 		}
 	}
@@ -339,7 +341,7 @@ public class GameForm extends GridPane {
 	 * @param form
 	 */
 	public static void shakeScreen(Node form){
-		TranslateTransition formShake = new TranslateTransition(Duration.millis(150), form);
+		TranslateTransition formShake = new TranslateTransition(Duration.millis(100), form);
 		formShake.setCycleCount(8);
 		formShake.setByX(7);
 		formShake.setAutoReverse(true);
